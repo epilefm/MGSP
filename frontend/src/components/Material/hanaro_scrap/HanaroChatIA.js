@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useState, useEffect, useRef } from 'react';
 import { Send, Square, Bot, Sparkles, Maximize2, Minus, User, RefreshCw } from 'lucide-react';
 
@@ -425,7 +426,7 @@ const HanaroChatIA = ({
     
     setIaDadosLoading(true);
     try {
-      const response = await fetch('http://105.103.39.102:8080/api/hanaro_scrap_dados_ia?limite=500');
+      const response = await fetch(`${API_URL}/api/hanaro_scrap_dados_ia?limite=500`);
       const result = await response.json();
       
       if (result.success) {

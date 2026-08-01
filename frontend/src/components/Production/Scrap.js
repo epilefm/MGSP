@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import React, { useEffect, useState } from "react";
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -28,7 +29,7 @@ export default function App() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    Axios.post('http://105.103.39.102:808080/scrap', {
+    Axios.post(`${API_URL}/scrap`, {
       id: values.id,
       Processo: values.Processo,
       CN: values.CN,
@@ -64,13 +65,13 @@ export default function App() {
   };
 
   useEffect(() => {
-    Axios.get("http://105.103.39.102:808080/getscrap").then((response) => {
+    Axios.get(`${API_URL}/getscrap`).then((response) => {
       setLista(response.data);
     });
   }, []);
 
   useEffect(() => {
-    Axios.get("http://105.103.39.102:808080/getModelo").then((response) => {
+    Axios.get(`${API_URL}/getModelo`).then((response) => {
       setListModelo(response.data);
     });
   }, []);
@@ -88,7 +89,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    Axios.get("http://105.103.39.102:808080/getModelo").then((response) => {
+    Axios.get(`${API_URL}/getModelo`).then((response) => {
       setListHalb(response.data);
     });
   }, []);

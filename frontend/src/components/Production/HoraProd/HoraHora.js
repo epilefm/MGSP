@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useEffect, useMemo, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './HoraProd.css';
@@ -50,7 +51,7 @@ export default function Tabela() {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const response = await Axios.get(`http://105.103.39.102:8080/HoraProd?data=${date}`);
+        const response = await Axios.get(`${API_URL}/HoraProd?data=${date}`);
         setListCard(response.data);
       } catch (error) {
         console.error('Erro ao buscar dados no HoraProdução Mounter:', error);
@@ -66,7 +67,7 @@ export default function Tabela() {
   // Check if a cell has a comment (função atualizada para verificar ambos os tipos de comentário)
   const hasComment = async (linha, modelo, horario) => {
     try {
-      const response = await Axios.get(`http://105.103.39.102:8080/horaProd_comments`, {
+      const response = await Axios.get(`${API_URL}/horaProd_comments`, {
         params: {
           data: date,
           linha,
@@ -89,7 +90,7 @@ export default function Tabela() {
   // Função para obter o nome do operador com base na matrícula (apenas nome e sobrenome)
   const getOperatorName = async (matricula) => {
     try {
-      const response = await Axios.get(`http://105.103.39.102:8080/pessoas`);
+      const response = await Axios.get(`${API_URL}/pessoas`);
       const operator = response.data.find(person => person.matricula === matricula);
       if (operator) {
         // Retornar apenas os 2 primeiros nomes
@@ -106,7 +107,7 @@ export default function Tabela() {
   // Função para obter o nome do técnico com base na matrícula (apenas nome e sobrenome)
   const getTechnicianName = async (matricula) => {
     try {
-      const response = await Axios.get(`http://105.103.39.102:8080/pessoas`);
+      const response = await Axios.get(`${API_URL}/pessoas`);
       const technician = response.data.find(person => person.matricula === matricula);
       if (technician) {
         // Retornar apenas os 2 primeiros nomes
@@ -175,7 +176,7 @@ export default function Tabela() {
     setCurrentCell({ linha, modelo, horario });
     
     try {
-      const response = await Axios.get(`http://105.103.39.102:8080/horaProd_comments`, {
+      const response = await Axios.get(`${API_URL}/horaProd_comments`, {
         params: {
           data: date,
           linha,
@@ -260,7 +261,7 @@ export default function Tabela() {
     const cellKey = `${date}-${linha}-${modelo}-${horario}`;
     if (markedCells[cellKey]) {
       try {
-        const response = await Axios.get(`http://105.103.39.102:8080/horaProd_comments`, {
+        const response = await Axios.get(`${API_URL}/horaProd_comments`, {
           params: {
             data: date,
             linha,
@@ -336,7 +337,7 @@ export default function Tabela() {
     }
 
     try {
-      const response = await Axios.get(`http://105.103.39.102:8080/pessoas`);
+      const response = await Axios.get(`${API_URL}/pessoas`);
       const technician = response.data.find(person => person.matricula === matricula);
       
       if (technician) {
@@ -369,7 +370,7 @@ export default function Tabela() {
     }
 
     try {
-      const response = await Axios.get(`http://105.103.39.102:8080/pessoas`);
+      const response = await Axios.get(`${API_URL}/pessoas`);
       console.log('Resposta da API de pessoas:', response.data);
       const operator = response.data.find(person => person.matricula === matricula);
       console.log('Operador encontrado:', operator);
@@ -461,7 +462,7 @@ export default function Tabela() {
         tipo_comentario: 'manutencao'
       };
       console.log('Dados de manutenção a serem salvos:', maintenanceData);
-      const response = await Axios.post(`http://105.103.39.102:8080/horaProdUp_comments`, maintenanceData);
+      const response = await Axios.post(`${API_URL}/horaProdUp_comments`, maintenanceData);
       console.log('Resposta do servidor ao salvar manutenção:', response.data);
     } else {
       // Salvar comentário de produção (comportamento original)
@@ -479,7 +480,7 @@ export default function Tabela() {
         tipo_comentario: 'producao'
       };
       console.log('Dados de produção a serem salvos:', productionData);
-      const response = await Axios.post(`http://105.103.39.102:8080/horaProdUp_comments`, productionData);
+      const response = await Axios.post(`${API_URL}/horaProdUp_comments`, productionData);
       console.log('Resposta do servidor ao salvar produção:', response.data);
     }
     

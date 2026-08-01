@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Chart from "react-apexcharts";
@@ -8,7 +9,7 @@ export default function Grafico({value, turno}) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://105.103.39.102:8080/splicing?data=${value}`);
+        const response = await axios.get(`${API_URL}/splicing?data=${value}`);
         setChartData(response.data);
       } catch (error) {
         console.error('Erro ao buscar dados', error);

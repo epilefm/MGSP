@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import React, { useState, useEffect } from 'react';
 import { 
   Box, 
@@ -235,7 +236,7 @@ export default function EntMaterial2() {
   // Função para verificar se o Reel ID já existe no banco de dados
   const checkReelIdExists = async (reelId) => {
     try {
-      const response = await Axios.get(`http://105.103.112.18:8080/checkReelId/${reelId}`);
+      const response = await Axios.get(`${API_URL}/checkReelId/${reelId}`);
       return response.data.exists;
     } catch (err) {
       console.error('Erro ao verificar Reel ID:', err);
@@ -419,7 +420,7 @@ export default function EntMaterial2() {
       console.log('Enviando dados para o servidor:', dataToSend);
 
       // Enviar dados para o servidor
-      const response = await Axios.post('http://105.103.112.18:8080/saveEntradawip', dataToSend);
+      const response = await Axios.post(`${API_URL}/saveEntradawip`, dataToSend);
       console.log('Resposta do servidor:', response.data);
 
       setSuccess(`${products.length} produto(s) vinculado(s) ao plano ${selectedPlan.prodOrder} com sucesso!`);

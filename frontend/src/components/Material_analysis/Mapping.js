@@ -39,13 +39,13 @@ if ((current.getMonth() + 1) < 10) {
     const [data, setData] = useState([]);
 
     // useEffect(() => {
-    //   Axios.get(`http://105.103.39.102:8080/getmappingsum`).then((response) => {
+    //   Axios.get(`${API_URL}/getmappingsum`).then((response) => {
     //    setListabancosum(response.data)
     //    });
     //  }, [data])
     
     //   useEffect(() => {
-    //    Axios.get(`http://105.103.39.102:8080/getmapping`).then((response) => {
+    //    Axios.get(`${API_URL}/getmapping`).then((response) => {
     //     setListabanco(response.data)
     //     });
     //   }, [data])
@@ -73,14 +73,14 @@ if ((current.getMonth() + 1) < 10) {
     //     const array = data.map(item=>({INP_COMP_YMD:item.INP_COMP_YMD, MODEL_CODE:item.MODEL_CODE, BASIC_MODEL_CODE:item.BASIC_MODEL_CODE, PLANT_CODE:item.PLANT_CODE,
     //       LINE_NM:item.LINE_NM,PAOI_IN_CNT_BOT:item.PAOI_IN_CNT_BOT,PAOI_IN_CNT_TOP:item.PAOI_IN_CNT_TOP,MAOI_IN_CNT_BOT:item.MAOI_IN_CNT_BOT,MAOI_IN_CNT_TOP:item.MAOI_IN_CNT_TOP,
     //       SAOI_IN_CNT_BOT:item.SAOI_IN_CNT_BOT,SAOI_IN_CNT_TOP:item.SAOI_IN_CNT_TOP,FT_IN_CNT:item.FT_IN_CNT,FINAL_IN_CNT:item.FINAL_IN_CNT}))
-    //       Axios.delete('http://105.103.39.102:8080/deleteMapping').then( Axios.post('http://105.103.39.102:8080/mapping', array).then((response) => {
+    //       Axios.delete(`${API_URL}/deleteMapping`).then( Axios.post(`${API_URL}/mapping`, array).then((response) => {
     //         console.log(response.data)
             
     //       }))
 
     //     } 
     //     useEffect(() => {
-    //       Axios.get("http://105.103.39.102:8080/getModelo").then((response) => {
+    //       Axios.get(`${API_URL}/getModelo`).then((response) => {
     //         setLista(response.data)
     //         console.log('consultou mapping banco')
     //       })

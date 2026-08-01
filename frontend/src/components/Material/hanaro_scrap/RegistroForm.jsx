@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   User, Tag, QrCode, Layers, Factory, Hash, Navigation, Clock, MapPin, 
@@ -251,7 +252,7 @@ const RegistroForm = ({
                   onChange={e => handleFormChange('matricula', e.target.value.toUpperCase())}
                   onBlur={() => {
                     if (formData.matricula.trim()) {
-                      fetch(`http://105.103.39.102:8080/verifyMatricula/${formData.matricula}`)
+                      fetch(`${API_URL}/verifyMatricula/${formData.matricula}`)
                         .then(res => res.json())
                         .then(data => {
                           if (data && data.exists) {

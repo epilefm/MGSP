@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useState, useEffect } from "react";
 import { useTable, useSortBy, usePagination, useGlobalFilter } from 'react-table';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -30,7 +31,7 @@ export default function Tabela() {
   // useEffect(() => {
   //   const fetchData = async () => {
   //     try {
-  //       const response1 = await axios.get(`http://105.103.39.102:8080/splicingDefect?data=${horacorreta}`);
+  //       const response1 = await axios.get(`${API_URL}/splicingDefect?data=${horacorreta}`);
   //       setListCard(response1.data);
 
   const fileName = "Splicing data" // here enter filename for your excel file
@@ -39,13 +40,13 @@ export default function Tabela() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response1 = await axios.get(`http://105.103.39.102:8080/splicingDefect?data=${date}`);
+        const response1 = await axios.get(`${API_URL}/splicingDefect?data=${date}`);
         setListCard(response1.data);
         
-        const response2 = await axios.get(`http://105.103.39.102:8080/splicingDefectQTY?data=${date}`);
+        const response2 = await axios.get(`${API_URL}/splicingDefectQTY?data=${date}`);
         setListCard2(response2.data);
         
-        const response3 = await axios.get(`http://105.103.39.102:8080/SplicingDefectLineQTY?data=${date}`);
+        const response3 = await axios.get(`${API_URL}/SplicingDefectLineQTY?data=${date}`);
         setListCard3(response3.data);
       } catch (error) {
         console.error('Erro ao buscar dados', error);

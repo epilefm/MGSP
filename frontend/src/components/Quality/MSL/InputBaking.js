@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useEffect, useState } from "react";
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -27,7 +28,7 @@ export default function App() {
  
 
   const handleSubmit = () => {
-    Axios.post('http://105.103.39.102:8080/Baking',{
+    Axios.post(`${API_URL}/Baking`,{
       Processo:values.Processo,
       Part_Number:values.Part_Number,
       MSL:values.MSL,
@@ -56,13 +57,13 @@ const handleaddValues = (value) => {
 
 
   useEffect(() => {
-    Axios.get("http://105.103.39.102:8080/getBaking").then((response) => {
+    Axios.get(`${API_URL}/getBaking`).then((response) => {
       setLista(response.data);
     });
   }, []);
 
   useEffect(() => {
-    Axios.get("http://105.103.39.102:8080/getModelo").then((response) => {
+    Axios.get(`${API_URL}/getModelo`).then((response) => {
       setListModelo(response.data);
     });
   }, []);

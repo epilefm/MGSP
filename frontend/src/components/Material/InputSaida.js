@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import React, { useEffect, useState } from "react";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
@@ -162,7 +163,7 @@ export default function App() {
       Recebedor: item.Recebedor,
     }));
 
-    Axios.post("http://105.103.39.102:8080/registersaida", array)
+    Axios.post(`${API_URL}/registersaida`, array)
       .then((response) => {
         if (response.data.success) {
           alert(response.data.msg);
@@ -209,7 +210,7 @@ export default function App() {
   }, [date]);
 
   useEffect(() => {
-    Axios.get("http://105.103.39.102:8080/getModelo").then((response) => {
+    Axios.get(`${API_URL}/getModelo`).then((response) => {
       setLista2(response.data);
     });
   }, []);

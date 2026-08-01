@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { format } from 'date-fns';
 import axios from 'axios';
@@ -61,7 +62,7 @@ const KPITable = () => {
       }
       
       // Construir URL com parâmetros de data e turno
-      let url = `http://105.103.39.102:8080/LobMounter?data=${formattedDate}`;
+      let url = `${API_URL}/LobMounter?data=${formattedDate}`;
       if (selectedShift) {
         url += `&shift=${selectedShift}`;
       }

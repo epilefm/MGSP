@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import React, { useEffect, useState } from "react";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
@@ -132,7 +133,7 @@ export default function App() {
     }));
 
     axios
-      .post("http://105.103.39.102:8080/SplicingOffline", dataToSave)
+      .post(`${API_URL}/SplicingOffline`, dataToSave)
       .then((response) => {
         console.log("Data saved successfully", response.data);
         window.alert("Splicing - offline, salvo com sucesso!");
@@ -148,7 +149,7 @@ export default function App() {
   }
 
   useEffect(() => {
-    axios.get("http://105.103.39.102:8080/getModelo").then((response) => {
+    axios.get(`${API_URL}/getModelo`).then((response) => {
       const listHalb = response.data;
       listHalb.sort((a, b) => a.Basic_Model.localeCompare(b.Basic_Model));
       setListHalb(listHalb);

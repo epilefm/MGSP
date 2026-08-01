@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import { Container, Row, Col, Form, Button, Card, Badge, Alert } from "react-bootstrap";
@@ -29,7 +30,7 @@ export default function ReparoEnt2() {
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    Axios.get("http://105.103.39.102:8080/getModeloReparo")
+    Axios.get(`${API_URL}/getModeloReparo`)
       .then((response) => {
         setListModelo(response.data);
       })
@@ -120,7 +121,7 @@ export default function ReparoEnt2() {
       Data_Feedback: item.Data_Feedback
     }));
 
-    Axios.post('http://105.103.39.102:8080/ReparoEnt', itemsToSubmit)
+    Axios.post(`${API_URL}/ReparoEnt`, itemsToSubmit)
       .then((response) => {
         if (response.data.success) {
           setSuccessMessage(`Registrado com sucesso ${previewItems.length} placa(s)!`);

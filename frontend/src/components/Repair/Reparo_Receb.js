@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import React, { useEffect, useState } from "react";
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -73,7 +74,7 @@ export default function App() {
         CN_recebrep: item.CN_recebrep,
       }));
     
-      Axios.post('http://105.103.39.102:8080/ReparoReceb', array)
+      Axios.post(`${API_URL}/ReparoReceb`, array)
         .then((response) => {
           if (response.data.success) {
             alert('Input da CN ' + formData.CN_recebrep + ' salvo com sucesso no Recebimento do Reparo');
@@ -91,7 +92,7 @@ export default function App() {
 
 
   useEffect(() => {
-    Axios.get('http://105.103.39.102:8080/getReparoReceb')
+    Axios.get(`${API_URL}/getReparoReceb`)
       .then(response => {
         setLista(response.data);
       })

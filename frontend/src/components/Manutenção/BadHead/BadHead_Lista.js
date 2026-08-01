@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Table, notification, Pagination } from 'antd';
@@ -15,7 +16,7 @@ const BadHeadTable = () => {
     const [api, contextHolder] = notification.useNotification();
 
     useEffect(() => {
-        axios.get('http://105.103.112.18:8080/Bad_headComm')
+        axios.get(`${API_URL}/Bad_headComm`)
             .then(response => setData(response.data))
             .catch(error => console.error(error));
     }, []);

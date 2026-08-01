@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useState, useEffect, useRef } from 'react';
 import { BarChart3, Filter, ChevronDown, ChevronUp, PieChart as PieChartIcon, LineChart as LineChartIcon, AreaChart as AreaChartIcon, Target as RadarChartIcon, Minimize2, Maximize2, RefreshCw } from 'lucide-react';
 import { DatePicker, ConfigProvider } from 'antd';
@@ -192,7 +193,7 @@ const DashboardHanaro = () => {
     try {
       setLoading(true);
       
-      let url = 'http://105.103.39.102:8080/api/hanaro-dashboard-hoje';
+      let url = `${API_URL}/api/hanaro-dashboard-hoje`;
       const params = new URLSearchParams();
       
       const dataInicio = formatDate(dateRange[0]);
@@ -252,7 +253,7 @@ const DashboardHanaro = () => {
   const loadDashboardPorModelo = async () => {
     try {
       setLoadingModelo(true);
-      const url = buildFiltersUrl('http://105.103.39.102:8080/api/hanaro-dashboard-por-modelo');
+      const url = buildFiltersUrl(`${API_URL}/api/hanaro-dashboard-por-modelo`);
       const response = await fetch(url);
       const result = await response.json();
       if (result.success && result.data) {
@@ -276,7 +277,7 @@ const DashboardHanaro = () => {
   const loadDashboardPorOrigem = async () => {
     try {
       setLoadingOrigem(true);
-      const url = buildFiltersUrl('http://105.103.39.102:8080/api/hanaro-dashboard-por-origem');
+      const url = buildFiltersUrl(`${API_URL}/api/hanaro-dashboard-por-origem`);
       const response = await fetch(url);
       const result = await response.json();
       if (result.success && result.data) setOrigemData(result.data);
@@ -314,7 +315,7 @@ const DashboardHanaro = () => {
       
       // Carregar modelos disponíveis
       const modelosParams = buildBaseParams('modelo');
-      const modelosUrl = `http://105.103.39.102:8080/api/hanaro-modelos-registrados?${modelosParams}`;
+      const modelosUrl = `${API_URL}/api/hanaro-modelos-registrados?${modelosParams}`;
       const modelosResponse = await fetch(modelosUrl);
       const modelosResult = await modelosResponse.json();
       if (modelosResult.success && modelosResult.data) {
@@ -326,7 +327,7 @@ const DashboardHanaro = () => {
       
       // Carregar origens disponíveis
       const origensParams = buildBaseParams('origem');
-      const origensUrl = `http://105.103.39.102:8080/api/hanaro-origens-registradas?${origensParams}`;
+      const origensUrl = `${API_URL}/api/hanaro-origens-registradas?${origensParams}`;
       const origensResponse = await fetch(origensUrl);
       const origensResult = await origensResponse.json();
       if (origensResult.success && origensResult.data) {
@@ -338,7 +339,7 @@ const DashboardHanaro = () => {
       
       // Carregar equipamentos disponíveis
       const equipamentosParams = buildBaseParams('equipamento');
-      const equipamentosUrl = `http://105.103.39.102:8080/api/hanaro-equipamentos-registrados?${equipamentosParams}`;
+      const equipamentosUrl = `${API_URL}/api/hanaro-equipamentos-registrados?${equipamentosParams}`;
       const equipamentosResponse = await fetch(equipamentosUrl);
       const equipamentosResult = await equipamentosResponse.json();
       if (equipamentosResult.success && equipamentosResult.data) {
@@ -350,7 +351,7 @@ const DashboardHanaro = () => {
       
       // Carregar causas disponíveis
       const causasParams = buildBaseParams('causa');
-      const causasUrl = `http://105.103.39.102:8080/api/hanaro-causas-registradas?${causasParams}`;
+      const causasUrl = `${API_URL}/api/hanaro-causas-registradas?${causasParams}`;
       const causasResponse = await fetch(causasUrl);
       const causasResult = await causasResponse.json();
       if (causasResult.success && causasResult.data) {
@@ -362,7 +363,7 @@ const DashboardHanaro = () => {
       
       // Carregar linhas disponíveis
       const linhasParams = buildBaseParams('linha');
-      const linhasUrl = `http://105.103.39.102:8080/api/hanaro-linhas-registradas?${linhasParams}`;
+      const linhasUrl = `${API_URL}/api/hanaro-linhas-registradas?${linhasParams}`;
       const linhasResponse = await fetch(linhasUrl);
       const linhasResult = await linhasResponse.json();
       if (linhasResult.success && linhasResult.data) {
@@ -374,7 +375,7 @@ const DashboardHanaro = () => {
       
       // Carregar fases disponíveis
       const fasesParams = buildBaseParams('fase');
-      const fasesUrl = `http://105.103.39.102:8080/api/hanaro-fases-registradas?${fasesParams}`;
+      const fasesUrl = `${API_URL}/api/hanaro-fases-registradas?${fasesParams}`;
       const fasesResponse = await fetch(fasesUrl);
       const fasesResult = await fasesResponse.json();
       if (fasesResult.success && fasesResult.data) {
@@ -386,7 +387,7 @@ const DashboardHanaro = () => {
       
       // Carregar turnos disponíveis
       const turnosParams = buildBaseParams('turno');
-      const turnosUrl = `http://105.103.39.102:8080/api/hanaro-turnos-registrados?${turnosParams}`;
+      const turnosUrl = `${API_URL}/api/hanaro-turnos-registrados?${turnosParams}`;
       const turnosResponse = await fetch(turnosUrl);
       const turnosResult = await turnosResponse.json();
       if (turnosResult.success && turnosResult.data) {
@@ -398,7 +399,7 @@ const DashboardHanaro = () => {
       
       // Carregar responsáveis disponíveis
       const responsaveisParams = buildBaseParams('responsavel');
-      const responsaveisUrl = `http://105.103.39.102:8080/api/hanaro-responsaveis-registrados?${responsaveisParams}`;
+      const responsaveisUrl = `${API_URL}/api/hanaro-responsaveis-registrados?${responsaveisParams}`;
       const responsaveisResponse = await fetch(responsaveisUrl);
       const responsaveisResult = await responsaveisResponse.json();
       if (responsaveisResult.success && responsaveisResult.data) {
@@ -410,7 +411,7 @@ const DashboardHanaro = () => {
       
       // Carregar tipos de scrap disponíveis
       const tipoScrapParams = buildBaseParams('tipo_scrap');
-      const tipoScrapUrl = `http://105.103.39.102:8080/api/hanaro-tipo-scrap-registrados?${tipoScrapParams}`;
+      const tipoScrapUrl = `${API_URL}/api/hanaro-tipo-scrap-registrados?${tipoScrapParams}`;
       const tipoScrapResponse = await fetch(tipoScrapUrl);
       const tipoScrapResult = await tipoScrapResponse.json();
       if (tipoScrapResult.success && tipoScrapResult.data) {
@@ -433,7 +434,7 @@ const DashboardHanaro = () => {
   const loadDashboardPorEquipamento = async () => {
     try {
       setLoadingEquipamento(true);
-      const url = buildFiltersUrl('http://105.103.39.102:8080/api/hanaro-dashboard-por-equipamento');
+      const url = buildFiltersUrl(`${API_URL}/api/hanaro-dashboard-por-equipamento`);
       const response = await fetch(url);
       const result = await response.json();
       console.log('[DashboardHanaro] Equipamento:', result);
@@ -458,7 +459,7 @@ const DashboardHanaro = () => {
   const loadDashboardPorCausa = async () => {
     try {
       setLoadingCausa(true);
-      const url = buildFiltersUrl('http://105.103.39.102:8080/api/hanaro-dashboard-por-causa');
+      const url = buildFiltersUrl(`${API_URL}/api/hanaro-dashboard-por-causa`);
       const response = await fetch(url);
       const result = await response.json();
       console.log('[DashboardHanaro] Causa:', result);
@@ -483,7 +484,7 @@ const DashboardHanaro = () => {
   const loadDashboardPorLinha = async () => {
     try {
       setLoadingLinha(true);
-      const url = buildFiltersUrl('http://105.103.39.102:8080/api/hanaro-dashboard-por-linha');
+      const url = buildFiltersUrl(`${API_URL}/api/hanaro-dashboard-por-linha`);
       const response = await fetch(url);
       const result = await response.json();
       console.log('[DashboardHanaro] Linha:', result);
@@ -501,7 +502,7 @@ const DashboardHanaro = () => {
   const loadDashboardPorFase = async () => {
     try {
       setLoadingFase(true);
-      const url = buildFiltersUrl('http://105.103.39.102:8080/api/hanaro-dashboard-por-fase');
+      const url = buildFiltersUrl(`${API_URL}/api/hanaro-dashboard-por-fase`);
       const response = await fetch(url);
       const result = await response.json();
       console.log('[DashboardHanaro] Fase:', result);
@@ -519,7 +520,7 @@ const DashboardHanaro = () => {
   const loadDashboardPorTurno = async () => {
     try {
       setLoadingTurno(true);
-      const url = buildFiltersUrl('http://105.103.39.102:8080/api/hanaro-dashboard-por-turno');
+      const url = buildFiltersUrl(`${API_URL}/api/hanaro-dashboard-por-turno`);
       const response = await fetch(url);
       const result = await response.json();
       console.log('[DashboardHanaro] Turno:', result);
@@ -537,7 +538,7 @@ const DashboardHanaro = () => {
   const loadDashboardPorResponsavel = async () => {
     try {
       setLoadingResponsavel(true);
-      const url = buildFiltersUrl('http://105.103.39.102:8080/api/hanaro-dashboard-por-responsavel');
+      const url = buildFiltersUrl(`${API_URL}/api/hanaro-dashboard-por-responsavel`);
       const response = await fetch(url);
       const result = await response.json();
       console.log('[DashboardHanaro] Responsavel:', result);
@@ -555,7 +556,7 @@ const DashboardHanaro = () => {
   const loadDashboardPorTipoScrap = async () => {
     try {
       setLoadingTipoScrap(true);
-      const url = buildFiltersUrl('http://105.103.39.102:8080/api/hanaro-dashboard-por-tipo-scrap');
+      const url = buildFiltersUrl(`${API_URL}/api/hanaro-dashboard-por-tipo-scrap`);
       const response = await fetch(url);
       const result = await response.json();
       console.log('[DashboardHanaro] TipoScrap:', result);
@@ -677,7 +678,7 @@ const DashboardHanaro = () => {
   const loadDashboardPorPeriodo = async () => {
     try {
       setLoadingPeriodo(true);
-      const url = buildFiltersUrl('http://105.103.39.102:8080/api/hanaro-dashboard-por-periodo');
+      const url = buildFiltersUrl(`${API_URL}/api/hanaro-dashboard-por-periodo`);
       console.log('[DashboardHanaro] URL da requisição:', url);
       
       const response = await fetch(url);

@@ -1,9 +1,10 @@
+import { API_URL } from '../../../config/api';
 // Monit_Router_IA.js - Tela de Análise IA para Monitoramento de Router
 import { useState, useEffect, useRef } from 'react';
 import { Sparkles, RefreshCw, BarChart2, AlertTriangle, CheckCircle, Clock } from 'lucide-react';
 import axios from 'axios';
 
-const API_BASE = 'http://105.103.39.102:8080';
+const API_BASE = `${API_URL}`;
 
 /* ── Formatters ────────────────────────────────────────────────────────────── */
 const fmtNum = v => Number(v || 0).toLocaleString('pt-BR');

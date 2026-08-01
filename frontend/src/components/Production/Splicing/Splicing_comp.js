@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useEffect, useState } from "react";
 import { useTable, useSortBy, usePagination, useGlobalFilter } from 'react-table';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -23,7 +24,7 @@ export default function Tabela() {
   const fetchData = async () => {
   try {
     const response = await 
-    axios.get(`http://105.103.39.102:8080/SplicingComparison?data=${date}`);
+    axios.get(`${API_URL}/SplicingComparison?data=${date}`);
     setListCard(response.data);
   } catch (error) {
     console.error ('Erro ao buscar dados', error);

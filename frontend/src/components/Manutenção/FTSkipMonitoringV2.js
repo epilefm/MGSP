@@ -8,8 +8,9 @@ import {
   RefreshCw, Zap, MessageCircle, MessageSquare,
   User, Clock, BarChart3, TrendingUp, X, AlertCircle,
 } from 'lucide-react';
+import { API_URL } from '../../config/api';
 
-const API_BASE = 'http://105.103.39.102:8080';
+const API_BASE = `${API_URL}`;
 const COMMENT_KEY = 'ft_skip_comments_v1';
 
 const EMPLOYEES = {

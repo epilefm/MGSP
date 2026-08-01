@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import React, { useEffect, useState } from "react";
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -25,7 +26,7 @@ export default function App() {
 
   useEffect(() => {
     Axios
-      .get(`http://105.103.39.102:8080/getSubSaida?Data=${values.Data}`)
+      .get(`${API_URL}/getSubSaida?Data=${values.Data}`)
       .then((response) => {
         setData(response.data);
         setLoading(false);
@@ -36,7 +37,7 @@ export default function App() {
   }, []);
 
   const updateStatus = (codbarra, newStatus) => {
-    Axios.put(`http://105.103.39.102:8080/updateSub`, {
+    Axios.put(`${API_URL}/updateSub`, {
       responsavel: values.responsavel,
       status: newStatus,
       codbarra: codbarra

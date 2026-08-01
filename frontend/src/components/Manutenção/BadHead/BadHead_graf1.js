@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ApexCharts from 'apexcharts';
@@ -8,7 +9,7 @@ const App = () => {
 
   useEffect(() => {
     // Fetch data for the first chart
-    axios.get('http://105.103.112.18:8080/BadHead_graf1')
+    axios.get(`${API_URL}/BadHead_graf1`)
       .then(response => {
         setChartData1(response.data);
         renderChart1(response.data);
@@ -16,7 +17,7 @@ const App = () => {
       .catch(error => console.error(error));
 
     // Fetch data for the second chart
-    axios.get('http://105.103.112.18:8080/BadHead_graf2')
+    axios.get(`${API_URL}/BadHead_graf2`)
       .then(response => {
         setChartData2(response.data);
         renderChart2(response.data);

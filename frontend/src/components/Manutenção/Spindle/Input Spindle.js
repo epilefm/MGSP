@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useEffect, useState } from "react";
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -22,7 +23,7 @@ export default function App() {
 // dias conforme o filtro do gmes
 
   const handleSubmit = () => {
-    Axios.post('http://105.103.39.102:8080/spindle',{
+    Axios.post(`${API_URL}/spindle`,{
         id:values.id,
         data_manutencao:values.data_manutencao,
         pecas_trocadas:values.pecas_trocadas,
@@ -47,7 +48,7 @@ const handleaddValues = (value) => {
 
 useEffect(() => {
   Axios
-  .get("http://105.103.39.102:8080/getspindle")
+  .get(`${API_URL}/getspindle`)
   .then(response=>setLista(response.data))
 }, []);
 

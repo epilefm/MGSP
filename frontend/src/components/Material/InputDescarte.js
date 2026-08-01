@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import React, { useEffect, useState } from "react";
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -128,14 +129,14 @@ export default function FormControlInput() {
       const array = formData.itens.map(item=>({Line:item.Line, Shift:item.Shift,
         Reel_ID:item.Reel_ID,Barcode:item.Barcode,Halb:item.Halb,Basic_Model:item.Basic_Model,
         Part_Number:item.Part_Number,Qty_Discard:item.Qty_Discard,User:item.User,Registry_ID:item.Registry_ID}))
-        Axios.post('http://105.103.39.102:8080/descarte', array)
+        Axios.post(`${API_URL}/descarte`, array)
         .then((response)=>{
           window.location.reload(false)
         })
       }
 
       useEffect(() => {
-        Axios.get("http://105.103.39.102:8080/getModelo").then((response) => {
+        Axios.get(`${API_URL}/getModelo`).then((response) => {
           setLista(response.data);
         });
       }, []);

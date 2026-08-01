@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import React, { useEffect, useState } from "react";
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -143,7 +144,7 @@ export default function FormControlInput() {
       User:item.User,
       Registry_ID:item.Registry_ID}))
     
-      Axios.post('http://105.103.39.102:8080/registerdevolucao', array)
+      Axios.post(`${API_URL}/registerdevolucao`, array)
        .then(response => {
           console.log(response)
         }
@@ -160,7 +161,7 @@ export default function FormControlInput() {
 
 
     useEffect(() => {
-      Axios.get("http://105.103.39.102:8080/getModelo").then((response) => {
+      Axios.get(`${API_URL}/getModelo`).then((response) => {
         setLista2(response.data);
       });
     }, []);

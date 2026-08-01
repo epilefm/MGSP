@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import Box from '@mui/material/Box';
@@ -39,7 +40,7 @@ const App = () => {
 
     const getMagNoAndSlotFromDB = async () => {
         try {
-            const result = await axios.get('http://105.103.39.102:8080/getATRSlots');
+            const result = await axios.get(`${API_URL}/getATRSlots`);
             return result.data;  // Retorna os dados do banco de dados
         } catch (error) {
             console.error("Erro ao buscar dados do banco de dados", error);

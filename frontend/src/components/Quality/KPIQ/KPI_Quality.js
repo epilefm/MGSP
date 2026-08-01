@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -15,8 +16,8 @@ const KPIQuality = () => {
   const [ultimaAtualizacao, setUltimaAtualizacao] = useState(null);
   const [dataSelecionada, setDataSelecionada] = useState('');
   
-  const API_URL = 'http://105.103.112.18:8080/kpi_aoi_historico';
-  const API_URL_ATUAL = 'http://105.103.112.18:8080/kpi_aoii';
+  const API_URL = `${API_URL}/kpi_aoi_historico`;
+  const API_URL_ATUAL = `${API_URL}/kpi_aoii`;
 
   const buscarDadosAPI = async () => {
     try {

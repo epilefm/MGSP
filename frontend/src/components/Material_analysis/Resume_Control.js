@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import Table from 'react-bootstrap/Table';
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
@@ -92,7 +93,7 @@ export default function App() {
     
     Axios.all([
       
-      Axios.get(`http://105.103.39.102:8080/getProcesso?Line=${values.Line}&PO=${values.PO}&Halb=
+      Axios.get(`${API_URL}/getProcesso?Line=${values.Line}&PO=${values.PO}&Halb=
         ${values.Halb.substring(0,11)}&datei=${date[0].getFullYear()+''+mess+
           ''+diass}&datef=${date[1].getFullYear()+''+mesf+''+diasf}`),
 
@@ -102,14 +103,14 @@ export default function App() {
   }
 
   // useEffect(() => {
-  //   Axios.get("http://105.103.39.102:8080/getDescarte").then((response) => {
+  //   Axios.get(`${API_URL}/getDescarte`).then((response) => {
   //     setListCards(response.data);
   //   });
   // }, []);
   
 
   useEffect(() => {
-    Axios.get("http://105.103.39.102:8080/getModelo").then((response) => {
+    Axios.get(`${API_URL}/getModelo`).then((response) => {
       setListHalb(response.data);
     });
   }, []);

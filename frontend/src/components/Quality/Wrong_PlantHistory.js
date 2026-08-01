@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import React, { useEffect, useState } from "react";
 import { useTable, useSortBy, usePagination, useGlobalFilter } from 'react-table';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -15,7 +16,7 @@ export default function Tabela() {
   const fileName = "Version Data"; // here enter filename for your excel file
 
   useEffect(() => {
-    Axios.get('http://105.103.39.102:8080/getPlantHistory')
+    Axios.get(`${API_URL}/getPlantHistory`)
       .then(response => {
         setListCard(response.data);
       })

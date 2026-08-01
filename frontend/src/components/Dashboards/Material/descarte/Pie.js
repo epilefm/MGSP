@@ -1,3 +1,4 @@
+import { API_URL } from '../../../../config/api';
 import React, { useEffect, useRef, useState } from 'react';
 import ApexCharts from 'apexcharts';
 import axios from 'axios';
@@ -26,7 +27,7 @@ const PieChart = () => {
     const fetchsetDados = async () => {
       try {
         
-        const response = await axios.get('http://105.103.39.102:8080/getPie');
+        const response = await axios.get(`${API_URL}/getPie`);
         setDados(response.data);
       } catch (error) {
         console.error('Falha no carregamento dos dados de descarte:', error);

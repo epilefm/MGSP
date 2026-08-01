@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useState, useEffect } from 'react';
 import Chart from 'react-apexcharts';
 import './MFM.css';
@@ -14,7 +15,7 @@ const MFM = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://105.103.39.39:5000/smd-kitting-mx');
+      const response = await fetch(`${API_URL}/smd-kitting-mx`);
       if (!response.ok) {
         throw new Error('Falha ao buscar dados');
       }

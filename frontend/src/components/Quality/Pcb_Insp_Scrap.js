@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import React, { useEffect, useState } from "react";
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -107,7 +108,7 @@ export default function App() {
       Sup_Prod: item.Sup_Prod
     }))
 
-    Axios.post('http://105.103.39.102:8080/Scrap', array)
+    Axios.post(`${API_URL}/Scrap`, array)
       .then((response)=>{
         if(response.data.success){
           alert(response.data.msg)
@@ -125,7 +126,7 @@ export default function App() {
 
 
   useEffect(() => {
-    Axios.get('http://105.103.39.102:8080/getScrap')
+    Axios.get(`${API_URL}/getScrap`)
       .then(response => {
         setLista(response.data);
       })
@@ -191,7 +192,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    Axios.get("http://105.103.39.102:8080/getModeloReparo").then((response) => {
+    Axios.get(`${API_URL}/getModeloReparo`).then((response) => {
       setListHalb(response.data);
     });
   }, []);

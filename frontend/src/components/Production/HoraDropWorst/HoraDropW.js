@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import axios from 'axios';
 import * as XLSX from 'xlsx';
@@ -159,7 +160,7 @@ function WorstDropTable() {
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://105.103.39.102:8080/drop_worst/current?startDate=${startDate}&endDate=${endDate}&limit=${limit}`);
+      const response = await axios.get(`${API_URL}/drop_worst/current?startDate=${startDate}&endDate=${endDate}&limit=${limit}`);
       const mappedData = response.data.data.map(item => ({
         Line: item.Line,
         Model: item.Model ? item.Model.replace(/^BSM-/i, '') : '', // Remove prefixo 'BSM-'
@@ -186,7 +187,7 @@ function WorstDropTable() {
     setLoading(true);
     try {
       // Agora usa startDate e endDate para período
-      const response = await axios.get(`http://105.103.39.102:8080/drop_worst/por_hora?startDate=${startDate}&endDate=${endDate}`);
+      const response = await axios.get(`${API_URL}/drop_worst/por_hora?startDate=${startDate}&endDate=${endDate}`);
       // Remove prefixo 'BSM-' dos modelos e calcula total_errors somando todas as horas
       let mappedData = (response.data.data || []).map(item => {
         // Soma todas as colunas de hora (h00 a h23) para obter o total correto

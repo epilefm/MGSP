@@ -1,8 +1,9 @@
+import { API_URL } from '../../config/api';
 import React, { useState } from 'react';
 import { Container, Card, Button, Alert } from 'react-bootstrap';
 import { Box, Typography } from '@mui/material';
 
-const API_BASE_URL = 'http://105.103.39.102:8080';
+const API_BASE_URL = `${API_URL}`;
 
 export default function DescriptN() {
   const [selectedFile, setSelectedFile] = useState(null);

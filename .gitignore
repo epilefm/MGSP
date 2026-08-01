@@ -24,3 +24,6 @@ yarn-debug.log*
 yarn-error.log*
 npm-install.log
 build-test.log
+
+dev_test*.log
+build_test.log

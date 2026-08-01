@@ -1,8 +1,8 @@
+import { API_URL } from '../../../config/api';
 import React, { useState, useCallback } from 'react';
 import axios from 'axios';
 
 // API_URL aponta para o proprio servidor (mesma origem)
-const API_URL = 'http://105.103.39.102:8080/criptografia';
 
 function Tradutor() {
   const [file, setFile] = useState(null);
@@ -58,7 +58,7 @@ function Tradutor() {
 
     try {
       // Upload e descriptografia em uma única requisição
-      const response = await axios.post(`${API_URL}/decrypt-direct`, formData, {
+      const response = await axios.post(`${API_URL}/criptografia/decrypt-direct`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

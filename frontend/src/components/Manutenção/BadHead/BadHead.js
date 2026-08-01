@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { Table, Modal, Form, Input, Button } from 'antd';
@@ -23,11 +24,11 @@ const BadHeadTable = () => {
         setLoading(true);
         try {
             // Carrega dados principais
-            const mainResponse = await axios.get('http://105.103.112.18/BadHead');
+            const mainResponse = await axios.get(`${API_URL}/BadHead`);
             setData(mainResponse.data);
             
             // Carrega comentários
-            const commentsResponse = await axios.get('http://105.103.112.18/Bad_headComm');
+            const commentsResponse = await axios.get(`${API_URL}/Bad_headComm`);
             setAllComments(commentsResponse.data);
         } catch (error) {
             console.error('Erro ao carregar dados:', error);
@@ -70,7 +71,7 @@ const BadHeadTable = () => {
     const handleSubmit = async () => {
         try {
             // Salva novo comentário
-            await axios.post('http://105.103.112.18/Bad_headCom', {
+            await axios.post(`${API_URL}/Bad_headCom`, {
                 linha: currentRecord.Linha,
                 equipamento: currentRecord.Equipamento,
                 tbl: currentRecord.TBL,
@@ -83,11 +84,11 @@ const BadHeadTable = () => {
             });
             
             // Atualiza comentários
-            const response = await axios.get('http://105.103.112.18/Bad_headComm');
+            const response = await axios.get(`${API_URL}/Bad_headComm`);
             setAllComments(response.data);
             
             // Atualiza dados principais
-            const mainResponse = await axios.get('http://105.103.112.18/BadHead');
+            const mainResponse = await axios.get(`${API_URL}/BadHead`);
             setData(mainResponse.data);
             
             setIsModalVisible(false);
@@ -98,7 +99,7 @@ const BadHeadTable = () => {
 
     const saveComentario = async (record) => {
         try {
-            await axios.post('http://105.103.112.18/Bad_headCom', {
+            await axios.post(`${API_URL}/Bad_headCom`, {
                 linha: record.Linha,
                 equipamento: record.Equipamento,
                 tbl: record.TBL,
@@ -109,7 +110,7 @@ const BadHeadTable = () => {
                 tempo: record.Tempo,
                 observacao: comentario,
             });
-            setData(await axios.get('http://105.103.112.18/BadHead').then(res => res.data));
+            setData(await axios.get(`${API_URL}/BadHead`).then(res => res.data));
         } catch (error) {
             console.error('Erro ao salvar:', error);
         }

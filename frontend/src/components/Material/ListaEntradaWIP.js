@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import React, { useState, useEffect } from 'react';
 import { 
   Box, 
@@ -65,7 +66,7 @@ export default function ListaEntradaWIP() {
     setError('');
     
     try {
-      const response = await Axios.get('http://105.103.112.18:8080/getEntradawip');
+      const response = await Axios.get(`${API_URL}/getEntradawip`);
       setRegistros(response.data);
       setLoading(false);
     } catch (err) {
@@ -191,7 +192,7 @@ export default function ListaEntradaWIP() {
 
     try {
       // Enviar os IDs dos registros selecionados para o backend
-      const response = await Axios.post('http://105.103.112.18:8080/confirmExit', {
+      const response = await Axios.post(`${API_URL}/confirmExit`, {
         recordIds: selectedRecords
       });
 

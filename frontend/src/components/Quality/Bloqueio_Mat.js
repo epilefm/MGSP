@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import React, { useEffect, useState } from "react";
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -36,14 +37,14 @@ const [lista, setLista] = useState([]);
 
  //nao mexer
  useEffect(() => {
-  Axios.get("http://105.103.39.102:8080/getModelo").then((response) => {
+  Axios.get(`${API_URL}/getModelo`).then((response) => {
     const orderedData = response.data.sort((a, b) => a.Basic_Model.localeCompare(b.Basic_Model)); // Ordenando os dados em ordem alfabética com base na propriedade "Basic_Model"
     setListHalb(orderedData);
   });
 }, []);
 
 const handleSubmit = () => {
-  Axios.post('http://105.103.39.102:8080/BloqMat',{
+  Axios.post(`${API_URL}/BloqMat`,{
     Basic_Model: values.Basic_Model,
     Linha: values.Linha,
     Turno: values.Turno,
@@ -81,7 +82,7 @@ const handleReset = (event) => {
 };
 
 useEffect(() => {
-  Axios.get("http://105.103.39.102:8080/getBloqMat").then((response) => {
+  Axios.get(`${API_URL}/getBloqMat`).then((response) => {
     setLista(response.data);
   });
 }, []);

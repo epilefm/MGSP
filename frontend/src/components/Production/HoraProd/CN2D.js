@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useEffect, useMemo, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './HoraProd.css';
@@ -91,9 +92,9 @@ export default function GravacaoCNAllTurns() {
       try {
         // Fetch data for all three shifts
         const [response1T, response2T, response3T] = await Promise.all([
-          Axios.get(`http://105.103.112.18:8080/GravacaoCN?data=${date}`),
-          Axios.get(`http://105.103.112.18:8080/GravacaoCN2T?data=${date}`),
-          Axios.get(`http://105.103.112.18:8080/GravacaoCN3T?data=${date}`)
+          Axios.get(`${API_URL}/GravacaoCN?data=${date}`),
+          Axios.get(`${API_URL}/GravacaoCN2T?data=${date}`),
+          Axios.get(`${API_URL}/GravacaoCN3T?data=${date}`)
         ]);
         
         setListCard1T(response1T.data);
@@ -116,7 +117,7 @@ export default function GravacaoCNAllTurns() {
   // Check if a cell has a comment
   const hasComment = async (Maquina, modelo, horario) => {
     try {
-      const response = await Axios.get(`http://105.103.112.18:8080/gravacaoCN_comments`, {
+      const response = await Axios.get(`${API_URL}/gravacaoCN_comments`, {
         params: {
           data: date,
           Maquina,
@@ -259,7 +260,7 @@ export default function GravacaoCNAllTurns() {
     setCurrentCell({ Maquina, modelo, horario, shift });
     
     try {
-      const response = await Axios.get(`http://105.103.112.18:8080/gravacaoCN_comments`, {
+      const response = await Axios.get(`${API_URL}/gravacaoCN_comments`, {
         params: {
           data: date,
           Maquina,
@@ -340,7 +341,7 @@ export default function GravacaoCNAllTurns() {
     
     if (isMarked) {
       try {
-        const response = await Axios.get(`http://105.103.112.18:8080/gravacaoCN_comments`, {
+        const response = await Axios.get(`${API_URL}/gravacaoCN_comments`, {
           params: {
             data: date,
             Maquina,
@@ -367,7 +368,7 @@ export default function GravacaoCNAllTurns() {
     if (!currentCell) return;
     
     try {
-      await Axios.post(`http://105.103.112.18:8080/gravacaoCNUp_comments`, {
+      await Axios.post(`${API_URL}/gravacaoCNUp_comments`, {
         data: date,
         Maquina: currentCell.Maquina,
         modelo: currentCell.modelo,
@@ -945,7 +946,7 @@ export default function GravacaoCNAllTurns() {
                     onClick={async () => {
                       // Limpar o comentário no banco de dados
                       try {
-                        await Axios.post(`http://105.103.112.18:8080/gravacaoCNUp_comments`, {
+                        await Axios.post(`${API_URL}/gravacaoCNUp_comments`, {
                           data: date,
                           Maquina: currentCell.Maquina,
                           modelo: currentCell.modelo,

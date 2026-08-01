@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useState, useEffect, useMemo } from "react";
 import { useTable, useSortBy, useGlobalFilter } from 'react-table';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -21,7 +22,7 @@ function MotivoCell({ feeder, data, linha, equipamento, lado }) {
   useEffect(() => {
     const fetchMotivo = async () => {
       try {
-        const response = await axios.get(`http://105.103.39.102:8080/getNoSplicingFeederChecks?data=${data}`);
+        const response = await axios.get(`${API_URL}/getNoSplicingFeederChecks?data=${data}`);
         const checks = response.data.data;
         const check = checks.find(c => c.feeder === feeder);
         if (check) {
@@ -154,7 +155,7 @@ function CheckCell({ feeder, data }) {
   useEffect(() => {
     const fetchCheckStatus = async () => {
       try {
-        const response = await axios.get(`http://105.103.39.102:8080/getNoSplicingFeederChecks?data=${data}`);
+        const response = await axios.get(`${API_URL}/getNoSplicingFeederChecks?data=${data}`);
         const checks = response.data.data;
         const check = checks.find(c => c.feeder === feeder);
         if (check) {
@@ -198,7 +199,7 @@ function MotivoManager({ date, children }) {
 
     try {
       // Verificar se a matrícula existe
-      const response = await axios.get(`http://105.103.39.102:8080/verifyMatricula/${matricula}`);
+      const response = await axios.get(`${API_URL}/verifyMatricula/${matricula}`);
       if (!response.data.exists) {
         setError('Matrícula não encontrada ou incorreta');
         return;
@@ -206,7 +207,7 @@ function MotivoManager({ date, children }) {
 
       // Salvar cada motivo selecionado
       const promises = motivosSelecionados.map(item => {
-        return axios.post('http://105.103.39.102:8080/saveNoSplicingFeederCheckWithMotivo', {
+        return axios.post(`${API_URL}/saveNoSplicingFeederCheckWithMotivo`, {
           data: item.data,
           feeder: item.feeder,
           matricula: matricula,
@@ -345,7 +346,7 @@ export default function SplicingNoCheck({ inModal = false }) {
       setLoading(true);
       setError(null);
       try {
-        const response = await axios.get(`http://105.103.39.102:8080/SplicingNoCheck?data=${date}`);
+        const response = await axios.get(`${API_URL}/SplicingNoCheck?data=${date}`);
         setListCard(response.data);
         
         // Extrair linhas únicas para o filtro
@@ -385,7 +386,7 @@ export default function SplicingNoCheck({ inModal = false }) {
   useEffect(() => {
     const fetchCheckedItems = async () => {
       try {
-        const response = await axios.get(`http://105.103.39.102:8080/getNoSplicingFeederChecks?data=${date}`);
+        const response = await axios.get(`${API_URL}/getNoSplicingFeederChecks?data=${date}`);
         setCheckedItems(response.data.data);
       } catch (err) {
         console.error('Erro ao buscar itens checados:', err);
@@ -511,7 +512,7 @@ export default function SplicingNoCheck({ inModal = false }) {
   // Função para salvar indicadores no servidor
   const saveIndicatorsToServer = async (indicators) => {
     try {
-      const response = await axios.post('http://105.103.39.102:8080/splicing-nocheck-indicators', {
+      const response = await axios.post(`${API_URL}/splicing-nocheck-indicators`, {
         data: date,
         total_por_turno: indicators.turnoFiltered,
         worst_line: indicators.worstLine,

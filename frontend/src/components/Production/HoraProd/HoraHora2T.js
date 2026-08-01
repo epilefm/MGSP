@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useEffect, useMemo, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './HoraProd.css';
@@ -50,7 +51,7 @@ export default function Tabela() {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const response = await Axios.get(`http://105.103.39.102:8080/HoraProd2T?data=${date}`);
+        const response = await Axios.get(`${API_URL}/HoraProd2T?data=${date}`);
         setListCard(response.data);
       } catch (error) {
         console.error('Erro ao buscar dados no HoraProdução Mounter 2T:', error);
@@ -66,7 +67,7 @@ export default function Tabela() {
 // Check if a cell has a comment (função atualizada para verificar ambos os tipos de comentário)
   const hasComment = async (linha, modelo, horario) => {
     try {
-      const response = await Axios.get(`http://105.103.39.102:8080/horaProd_comments`, {
+      const response = await Axios.get(`${API_URL}/horaProd_comments`, {
         params: {
           data: date,
           linha,
@@ -140,7 +141,7 @@ export default function Tabela() {
     setCurrentCell({ linha, modelo, horario });
     
     try {
-      const response = await Axios.get(`http://105.103.39.102:8080/horaProd_comments`, {
+      const response = await Axios.get(`${API_URL}/horaProd_comments`, {
         params: {
           data: date,
           linha,
@@ -218,7 +219,7 @@ setCommentModalOpen(true);
   // Função para obter o nome do operador com base na matrícula (apenas nome e sobrenome)
   const getOperatorName = async (matricula) => {
     try {
-      const response = await Axios.get(`http://105.103.39.102:8080/pessoas`);
+      const response = await Axios.get(`${API_URL}/pessoas`);
       const operator = response.data.find(person => person.matricula === matricula);
       if (operator) {
         // Retornar apenas os 2 primeiros nomes
@@ -235,7 +236,7 @@ setCommentModalOpen(true);
   // Função para obter o nome do técnico com base na matrícula (apenas nome e sobrenome)
   const getTechnicianName = async (matricula) => {
     try {
-      const response = await Axios.get(`http://105.103.39.102:8080/pessoas`);
+      const response = await Axios.get(`${API_URL}/pessoas`);
       const technician = response.data.find(person => person.matricula === matricula);
       if (technician) {
         // Retornar apenas os 2 primeiros nomes
@@ -254,7 +255,7 @@ const handleCellClick = async (linha, modelo, horario) => {
   const cellKey = `${date}-${linha}-${modelo}-${horario}`;
   if (markedCells[cellKey]) {
     try {
-      const response = await Axios.get(`http://105.103.39.102:8080/horaProd_comments`, {
+      const response = await Axios.get(`${API_URL}/horaProd_comments`, {
         params: {
           data: date,
           linha,
@@ -333,7 +334,7 @@ const handleCellClick = async (linha, modelo, horario) => {
     }
 
     try {
-      const response = await Axios.get(`http://105.103.39.102:8080/pessoas`);
+      const response = await Axios.get(`${API_URL}/pessoas`);
       const technician = response.data.find(person => person.matricula === matricula);
       
       if (technician) {
@@ -379,7 +380,7 @@ const handleCellClick = async (linha, modelo, horario) => {
     }
 
     try {
-      const response = await Axios.get(`http://105.103.39.102:8080/pessoas`);
+      const response = await Axios.get(`${API_URL}/pessoas`);
       const operator = response.data.find(person => person.matricula === matricula);
       
       if (operator) {
@@ -447,7 +448,7 @@ const handleCellClick = async (linha, modelo, horario) => {
   try {
     if (activeTab === 'manutencao') {
       // Salvar comentário de manutenção
-      await Axios.post(`http://105.103.39.102:8080/horaProdUp_comments`, {
+      await Axios.post(`${API_URL}/horaProdUp_comments`, {
         data: date,
         linha: currentCell.linha,
         modelo: currentCell.modelo,
@@ -462,7 +463,7 @@ const handleCellClick = async (linha, modelo, horario) => {
       });
     } else {
       // Salvar comentário de produção (comportamento original)
-      await Axios.post(`http://105.103.39.102:8080/horaProdUp_comments`, {
+      await Axios.post(`${API_URL}/horaProdUp_comments`, {
         data: date,
         linha: currentCell.linha,
         modelo: currentCell.modelo,

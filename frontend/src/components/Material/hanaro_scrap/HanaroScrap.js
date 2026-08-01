@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Package, Wrench, Smartphone, Search, Eye, RotateCw,
@@ -439,7 +440,7 @@ const HanaroScrap = () => {
     setCnDuplicada(false);
     
     try {
-      const response = await fetch(`http://105.103.39.102:8080/api/hanaro-scrap/verificar-cn/${cn}`);
+      const response = await fetch(`${API_URL}/api/hanaro-scrap/verificar-cn/${cn}`);
       const result = await response.json();
       
       if (result.success && result.duplicada) {
@@ -475,7 +476,7 @@ const HanaroScrap = () => {
     // Verificar duplicada no backend
     setVerificandoCn(true);
     try {
-      const response = await fetch(`http://105.103.39.102:8080/api/hanaro-scrap/verificar-cn/${cnUpper}`);
+      const response = await fetch(`${API_URL}/api/hanaro-scrap/verificar-cn/${cnUpper}`);
       const result = await response.json();
       
       if (result.success && result.duplicada) {
@@ -728,7 +729,7 @@ const HanaroScrap = () => {
     
     setIaDadosLoading(true);
     try {
-      const response = await fetch('http://105.103.39.102:8080/api/hanaro_scrap_dados_ia?limite=500');
+      const response = await fetch(`${API_URL}/api/hanaro_scrap_dados_ia?limite=500`);
       const result = await response.json();
       
       if (result.success) {
@@ -1083,7 +1084,7 @@ ${JSON.stringify(historicoResumo, null, 2)}`;
           setErrorCusto(null);
           
           const response = await fetch(
-            `http://105.103.39.102:8080/api/custo-placa?modelo=${encodeURIComponent(formData.modeloId)}&tipoPlaca=${encodeURIComponent(formData.tipoPlaca)}`
+            `${API_URL}/api/custo-placa?modelo=${encodeURIComponent(formData.modeloId)}&tipoPlaca=${encodeURIComponent(formData.tipoPlaca)}`
           );
           
           if (response.ok) {
@@ -1134,7 +1135,7 @@ ${JSON.stringify(historicoResumo, null, 2)}`;
     // Atualizar nome do operador quando matrícula mudar
     if (field === 'matricula' && value.length >= 2) {
       // Buscar funcionário no banco de dados
-      fetch(`http://105.103.39.102:8080/verifyMatricula/${value}`)
+      fetch(`${API_URL}/verifyMatricula/${value}`)
         .then(res => res.json())
         .then(data => {
           if (data && data.exists) {
@@ -1177,7 +1178,7 @@ ${JSON.stringify(historicoResumo, null, 2)}`;
     // Carregar modelos da tabela de custo
     const loadModelosCusto = async () => {
       try {
-        const response = await fetch('http://105.103.39.102:8080/api/modelos-custo');
+        const response = await fetch(`${API_URL}/api/modelos-custo`);
         const data = await response.json();
         
         // Verificar se há dados
@@ -1219,7 +1220,7 @@ ${JSON.stringify(historicoResumo, null, 2)}`;
     // Carregar origens
     const loadOrigens = async () => {
       try {
-        const response = await fetch('http://105.103.39.102:8080/getOrigens');
+        const response = await fetch(`${API_URL}/getOrigens`);
         const data = await response.json();
         setOrigens(data);
       } catch (error) {
@@ -1230,7 +1231,7 @@ ${JSON.stringify(historicoResumo, null, 2)}`;
     // Carregar equipamentos
     const loadEquipamentos = async () => {
       try {
-        const response = await fetch('http://105.103.39.102:8080/getEquipamentos');
+        const response = await fetch(`${API_URL}/getEquipamentos`);
         const data = await response.json();
         setEquipamentos(data);
       } catch (error) {
@@ -1241,7 +1242,7 @@ ${JSON.stringify(historicoResumo, null, 2)}`;
     // Carregar causas
     const loadCausas = async () => {
       try {
-        const response = await fetch('http://105.103.39.102:8080/getCausas');
+        const response = await fetch(`${API_URL}/getCausas`);
         const data = await response.json();
         setCausas(data);
       } catch (error) {
@@ -1263,7 +1264,7 @@ ${JSON.stringify(historicoResumo, null, 2)}`;
     try {
       setAprovacaoLoading(true);
       // Forçar limite alto para retornar TODOS os pendentes (backend pode ter limite padrão)
-      const response = await fetch('http://105.103.39.102:8080/api/hanaro-scrap?status=Pendente&limit=9999');
+      const response = await fetch(`${API_URL}/api/hanaro-scrap?status=Pendente&limit=9999`);
       const result = await response.json();
       
       if (result.success && result.data) {
@@ -1304,7 +1305,7 @@ ${JSON.stringify(historicoResumo, null, 2)}`;
   const loadHistorico = async () => {
     try {
       setHistoricoLoading(true);
-      const response = await fetch('http://105.103.39.102:8080/api/hanaro-scrap?status=Aprovado&limit=100');
+      const response = await fetch(`${API_URL}/api/hanaro-scrap?status=Aprovado&limit=100`);
       const result = await response.json();
       
       if (result.success && result.data) {
@@ -1352,7 +1353,7 @@ ${JSON.stringify(historicoResumo, null, 2)}`;
       doisDiasAtras.setDate(doisDiasAtras.getDate() - 2);
       const dataInicio = doisDiasAtras.toISOString().split('T')[0];
       
-      const response = await fetch(`http://105.103.39.102:8080/api/hanaro-scrap?status=Rejeitado&dataInicio=${dataInicio}&limit=100`);
+      const response = await fetch(`${API_URL}/api/hanaro-scrap?status=Rejeitado&dataInicio=${dataInicio}&limit=100`);
       const result = await response.json();
       
       if (result.success && result.data) {
@@ -1586,7 +1587,7 @@ ${JSON.stringify(historicoResumo, null, 2)}`;
       };
       
       // Enviar para a API
-      const response = await fetch('http://105.103.39.102:8080/api/hanaro-scrap', {
+      const response = await fetch(`${API_URL}/api/hanaro-scrap`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -1642,7 +1643,7 @@ ${JSON.stringify(historicoResumo, null, 2)}`;
       const recordId = parseInt(record.id, 10);
       
       // Chamar API para atualizar status
-      const response = await fetch(`http://105.103.39.102:8080/api/hanaro-scrap/${recordId}/status`, {
+      const response = await fetch(`${API_URL}/api/hanaro-scrap/${recordId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -1684,7 +1685,7 @@ ${JSON.stringify(historicoResumo, null, 2)}`;
       const recordId = parseInt(record.id, 10);
       
       // Chamar API para atualizar status
-      const response = await fetch(`http://105.103.39.102:8080/api/hanaro-scrap/${recordId}/status`, {
+      const response = await fetch(`${API_URL}/api/hanaro-scrap/${recordId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -3281,7 +3282,7 @@ ${JSON.stringify(historicoResumo, null, 2)}`;
                             if (matricula.length === 8) {
                               setGestorLoading(true);
                               // Buscar no backend se a matrícula tem permissão de aprovação
-                              fetch(`http://105.103.39.102:8080/verificar-aprovador/${matricula}`)
+                              fetch(`${API_URL}/verificar-aprovador/${matricula}`)
                                 .then(response => response.json())
                                 .then(data => {
                                   setGestorLoading(false);

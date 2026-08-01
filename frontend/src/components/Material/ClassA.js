@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import { DataGrid, GridToolbar, GridToolbarDensitySelector } from '@mui/x-data-grid';
 import Axios from "axios";
 import { textAlign } from "@mui/system";
@@ -86,11 +87,11 @@ export default function Tabela() {
         };
         
         Axios.all([
-          Axios.get(`http://105.103.39.102:8080/getDescarteResumo?Line=${values.Line}&datei=${date.getFullYear()+''+mess+''+diass}&datef=${datef.getFullYear()+''+mesf+''+diasf}`),
-          Axios.get(`http://105.103.39.102:8080/getSaidaResumo?Line=${values.Line}&Halb=${values.Halb}&datei=${date.getFullYear()+''+mess+''+diass}&datef=${datef.getFullYear()+''+mesf+''+diasf}`),
-          Axios.get(`http://105.103.39.102:8080/getResumo?Line=${values.Line}&Halb=${values.Halb}&datei=${date.getFullYear()+''+mess+''+diass}&datef=${datef.getFullYear()+''+mesf+''+diasf}`),
-          Axios.get(`http://105.103.39.102:8080/getReturnResumo?Line=${values.Line}&Halb=${values.Halb}&datei=${date.getFullYear()+''+mess+''+diass}&datef=${datef.getFullYear()+''+mesf+''+diasf}`),
-          Axios.get(`http://105.103.39.102:8080/getClasseAResumo?Line=${values.Line}&datei=${date.getFullYear()+''+mess+''+diass}&datef=${datef.getFullYear()+''+mesf+''+diasf}`),
+          Axios.get(`${API_URL}/getDescarteResumo?Line=${values.Line}&datei=${date.getFullYear()+''+mess+''+diass}&datef=${datef.getFullYear()+''+mesf+''+diasf}`),
+          Axios.get(`${API_URL}/getSaidaResumo?Line=${values.Line}&Halb=${values.Halb}&datei=${date.getFullYear()+''+mess+''+diass}&datef=${datef.getFullYear()+''+mesf+''+diasf}`),
+          Axios.get(`${API_URL}/getResumo?Line=${values.Line}&Halb=${values.Halb}&datei=${date.getFullYear()+''+mess+''+diass}&datef=${datef.getFullYear()+''+mesf+''+diasf}`),
+          Axios.get(`${API_URL}/getReturnResumo?Line=${values.Line}&Halb=${values.Halb}&datei=${date.getFullYear()+''+mess+''+diass}&datef=${datef.getFullYear()+''+mesf+''+diasf}`),
+          Axios.get(`${API_URL}/getClasseAResumo?Line=${values.Line}&datei=${date.getFullYear()+''+mess+''+diass}&datef=${datef.getFullYear()+''+mesf+''+diasf}`),
         ])
     
         .then(Axios.spread((DescarteResumoRes, SaidaResumoRes, Entrares,RetornoResumoRes,ClasseAResumoRes) =>{
@@ -105,7 +106,7 @@ export default function Tabela() {
   
     useEffect(() => {
       Axios
-      .get("http://105.103.39.102:8080/getCardRast")
+      .get(`${API_URL}/getCardRast`)
       .then(response=>setListCard(response.data))
       setMostrarCalendario(false)
     }, []);

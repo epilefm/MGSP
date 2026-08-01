@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useEffect, useState } from "react";
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -50,7 +51,7 @@ export default function App() {
 
  //nao mexer
  useEffect(() => {
-  Axios.get("http://105.103.39.102:8080/getModelo").then((response) => {
+  Axios.get(`${API_URL}/getModelo`).then((response) => {
     const listHalb = response.data;
     listHalb.sort((a, b) => a.Basic_Model.localeCompare(b.Basic_Model)); // Ordenando em ordem alfabética
     setListHalb(listHalb);
@@ -70,7 +71,7 @@ export default function App() {
     formData.append('modelo', values.modelo);
     formData.append('arquivo', values.arquivo);
   
-    Axios.post('http://105.103.39.102:8080/profile', formData)
+    Axios.post(`${API_URL}/profile`, formData)
       .then(response => {
         console.log();
         alert('Salvou, ta top');
@@ -90,7 +91,7 @@ const handleaddValues = (value) => {
 //---------------------------------------------------------------------------------------------------
 const updateStatus = (Aprovador, Aprovador2, Status, Status2, id) => {
   const row = lista.find(i => i.id === id);
-  Axios.put(`http://105.103.39.102:8080/PendProfile`, {
+  Axios.put(`${API_URL}/PendProfile`, {
     Aprovador: Aprovador ?? row.Aprovador,
     Status: Status ?? row.Status,
     Aprovador2: Aprovador2 ?? row.Aprovador2,
@@ -129,7 +130,7 @@ function renderSaveButtonCell(params) {
 //------------------------------------------------------------------------------------------------------
 
 useEffect(() => {
-  Axios.get("http://105.103.39.102:8080/ListaProfile").then((response) => {
+  Axios.get(`${API_URL}/ListaProfile`).then((response) => {
     setLista(response.data);
   });
 }, []);

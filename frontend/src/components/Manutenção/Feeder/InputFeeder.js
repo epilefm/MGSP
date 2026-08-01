@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useEffect, useState } from "react";
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -22,7 +23,7 @@ export default function App() {
 // dias conforme o filtro do gmes
 
   const handleSubmit = () => {
-    Axios.post('http://105.103.39.102:8080/Feeder',{
+    Axios.post(`${API_URL}/Feeder`,{
         id:values.id,
         data:values.data,
         Turno:values.Turno,
@@ -48,7 +49,7 @@ const handleaddValues = (value) => {
 
 useEffect(() => {
   Axios
-  .get("http://105.103.39.102:8080/getFeeder")
+  .get(`${API_URL}/getFeeder`)
   .then(response=>setLista(response.data))
 }, []);
 

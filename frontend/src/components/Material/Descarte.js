@@ -13,7 +13,7 @@
 //   console.log(listCard);
   
 //   useEffect(() => {
-//     Axios.get("http://105.103.39.102:8080/getDescarte").then((response) => {
+//     Axios.get(`${API_URL}/getDescarte`).then((response) => {
 //       setListCard(response.data); 
 //     });
 //   }, []);

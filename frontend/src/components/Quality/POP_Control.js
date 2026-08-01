@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import React, { useState, useEffect } from 'react';
 import './POP_Control.css';
 import Header from '../Layout/MGSPHead/Header';
@@ -69,7 +70,7 @@ const POP_Control = () => {
   // Função para carregar opções de molhagem do banco de dados
   const fetchMolhagemOptions = async () => {
     try {
-      const response = await fetch('http://105.103.39.102:8080/pop_control_molhagem');
+      const response = await fetch(`${API_URL}/pop_control_molhagem`);
       if (response.ok) {
         const data = await response.json();
         // Converter para formato de string simples
@@ -85,7 +86,7 @@ const POP_Control = () => {
   // Função para carregar opções de medição jig do banco de dados
   const fetchMedicaoJigOptions = async () => {
     try {
-      const response = await fetch('http://105.103.39.102:8080/pop_control_jig');
+      const response = await fetch(`${API_URL}/pop_control_jig`);
       if (response.ok) {
         const data = await response.json();
         // Converter para formato de string simples e ordenar numericamente
@@ -108,7 +109,7 @@ const POP_Control = () => {
   // Função para buscar dados do operador
   const fetchOperador = async (matricula) => {
     try {
-      const response = await fetch(`http://105.103.39.102:8080/api/operador/${matricula}`);
+      const response = await fetch(`${API_URL}/api/operador/${matricula}`);
       if (response.ok) {
         const operador = await response.json();
         return operador;
@@ -294,7 +295,7 @@ const POP_Control = () => {
       setLinhas(linhasData);
       
       // Buscar modelos do banco de dados
-      const response = await fetch('http://105.103.39.102:8080/api/modelos');
+      const response = await fetch(`${API_URL}/api/modelos`);
       if (response.ok) {
         const modelosData = await response.json();
         setModelos(modelosData.map(item => item.modelo));
@@ -332,7 +333,7 @@ const POP_Control = () => {
     }
     
     try {
-      const response = await fetch('http://105.103.39.102:8080/api/pop-control', {
+      const response = await fetch(`${API_URL}/api/pop-control`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -374,7 +375,7 @@ const POP_Control = () => {
   // Função para buscar dados existentes
   const fetchExistingData = async () => {
     try {
-      const response = await fetch('http://105.103.39.102:8080/api/pop-control');
+      const response = await fetch(`${API_URL}/api/pop-control`);
       if (response.ok) {
         const data = await response.json();
         setData(data);
@@ -392,7 +393,7 @@ const POP_Control = () => {
     }
     
     try {
-      const response = await fetch(`http://105.103.39.102:8080/api/pop-control/${id}`, {
+      const response = await fetch(`${API_URL}/api/pop-control/${id}`, {
         method: 'DELETE'
       });
       
@@ -412,7 +413,7 @@ const POP_Control = () => {
   // Função para buscar dados filtrados por data
   const fetchFilteredData = async (date) => {
     try {
-      const response = await fetch(`http://105.103.39.102:8080/api/pop-control?data=${date}`);
+      const response = await fetch(`${API_URL}/api/pop-control?data=${date}`);
       if (response.ok) {
         const data = await response.json();
         setData(data);
@@ -425,7 +426,7 @@ const POP_Control = () => {
   // Função para buscar dados de controle
   const fetchControlData = async () => {
     try {
-      const response = await fetch('http://105.103.39.102:8080/api/popControl_controle');
+      const response = await fetch(`${API_URL}/api/popControl_controle`);
       if (response.ok) {
         const controlData = await response.json();
         setControlData(controlData);
@@ -442,7 +443,7 @@ const POP_Control = () => {
   // Função para buscar dados de controle filtrados por data
   const fetchFilteredControlData = async (date) => {
     try {
-      const response = await fetch(`http://105.103.39.102:8080/api/popControl_controle?data=${date}`);
+      const response = await fetch(`${API_URL}/api/popControl_controle?data=${date}`);
       if (response.ok) {
         const controlData = await response.json();
         setControlData(controlData);

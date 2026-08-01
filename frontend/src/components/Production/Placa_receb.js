@@ -26,7 +26,7 @@
 
 //   const handleSubmit = (event) => {
 //     event.preventDefault();
-//     Axios.post('http://105.103.39.102:8080/PlacaReceb', {
+//     Axios.post(`${API_URL}/PlacaReceb`, {
 //       id: values.id,
 //       Entrada: values.Entrada,
 //       Tecnico: values.Tecnico,
@@ -65,7 +65,7 @@
 
 //   useEffect(() => {
 //     Axios
-//     .get("http://105.103.39.102:8080/getPlacaReceb")
+//     .get(`${API_URL}/getPlacaReceb`)
 //     .then(response=>setLista(response.data))
 //   }, []);
 

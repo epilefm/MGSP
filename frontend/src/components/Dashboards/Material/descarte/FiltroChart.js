@@ -1,3 +1,4 @@
+import { API_URL } from '../../../../config/api';
 import Table from 'react-bootstrap/Table';
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
@@ -88,11 +89,11 @@ export default function App() {
     };
     
     Axios.all([
-      Axios.get(`http://105.103.39.102:8080/getDescarteResumo?Line=${values.Line}&datei=${date.getFullYear()+''+mess+''+diass}&datef=${datef.getFullYear()+''+mesf+''+diasf}`),
-      Axios.get(`http://105.103.39.102:8080/getSaidaResumo?Line=${values.Line}&Halb=${values.Halb.substring(0,11)}&datei=${date.getFullYear()+''+mess+''+diass}&datef=${datef.getFullYear()+''+mesf+''+diasf}`),
-      Axios.get(`http://105.103.39.102:8080/getEstoque?Line=${values.Line}&Halb=${values.Halb.substring(0,11)}&datei=${date.getFullYear()+''+mess+''+diass}&datef=${datef.getFullYear()+''+mesf+''+diasf}`),
-      Axios.get(`http://105.103.39.102:8080/getReturnResumo?Line=${values.Line}&Halb=${values.Halb.substring(0,11)}&datei=${date.getFullYear()+''+mess+''+diass}&datef=${datef.getFullYear()+''+mesf+''+diasf}`),
-      Axios.get(`http://105.103.39.102:8080/getClasseAResumo?Line=${values.Line}&Halb=${values.Halb.substring(0,11)}&datei=${date.getFullYear()+''+mess+''+diass}&datef=${datef.getFullYear()+''+mesf+''+diasf}`),
+      Axios.get(`${API_URL}/getDescarteResumo?Line=${values.Line}&datei=${date.getFullYear()+''+mess+''+diass}&datef=${datef.getFullYear()+''+mesf+''+diasf}`),
+      Axios.get(`${API_URL}/getSaidaResumo?Line=${values.Line}&Halb=${values.Halb.substring(0,11)}&datei=${date.getFullYear()+''+mess+''+diass}&datef=${datef.getFullYear()+''+mesf+''+diasf}`),
+      Axios.get(`${API_URL}/getEstoque?Line=${values.Line}&Halb=${values.Halb.substring(0,11)}&datei=${date.getFullYear()+''+mess+''+diass}&datef=${datef.getFullYear()+''+mesf+''+diasf}`),
+      Axios.get(`${API_URL}/getReturnResumo?Line=${values.Line}&Halb=${values.Halb.substring(0,11)}&datei=${date.getFullYear()+''+mess+''+diass}&datef=${datef.getFullYear()+''+mesf+''+diasf}`),
+      Axios.get(`${API_URL}/getClasseAResumo?Line=${values.Line}&Halb=${values.Halb.substring(0,11)}&datei=${date.getFullYear()+''+mess+''+diass}&datef=${datef.getFullYear()+''+mesf+''+diasf}`),
 
     ]).then(Axios.spread((DescarteResumoRes, SaidaResumoRes, Entrares,RetornoResumoRes,ClasseAResumoRes) =>{
       setListdescarte(DescarteResumoRes.data);
@@ -104,14 +105,14 @@ export default function App() {
   }
 
   useEffect(() => {
-    Axios.get("http://105.103.39.102:8080/getDescarte").then((response) => {
+    Axios.get(`${API_URL}/getDescarte`).then((response) => {
       setListCards(response.data);
     });
   }, []);
   
 
   useEffect(() => {
-    Axios.get("http://105.103.39.102:8080/getModelo").then((response) => {
+    Axios.get(`${API_URL}/getModelo`).then((response) => {
       setListHalb(response.data);
     });
   }, []);

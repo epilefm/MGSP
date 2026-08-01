@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useState, useEffect, useCallback } from 'react';
 import {
   LayoutGrid, Wrench, Smartphone, Search, Eye, RotateCw,
@@ -8,7 +9,7 @@ import {
 import * as XLSX from 'xlsx';
 import Header from '../../Layout/MGSPHead/Header';
 
-const API = 'http://105.103.39.102:8080/api';
+const API = `${API_URL}/api`;
 
 /* ─────────────────────────────────────────
    UTILS

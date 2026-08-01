@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import React, { useEffect, useState } from "react";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
@@ -82,7 +83,7 @@ export default function App() {
       Saida_Processo: item.Saida_Processo,
     }))
 
-    Axios.post("http://105.103.39.102:8080/ReparoSaida", array)
+    Axios.post(`${API_URL}/ReparoSaida`, array)
     .then((response) => {
       if (response.data.success) {
         alert('Input da CN ' + formData.CN_saida + ' salvo com sucesso na Saida do Reparo');
@@ -99,7 +100,7 @@ export default function App() {
 }; 
 
   useEffect(() => {
-    Axios.get("http://105.103.39.102:8080/getReparoSaida")
+    Axios.get(`${API_URL}/getReparoSaida`)
       .then((response) => {
         setLista(response.data);
       })

@@ -209,7 +209,7 @@ function limpaCampos() {
   //   })); alert( okCount + " CN's Salvas" );
   
   //   // Make a POST request to the database endpoint.
-  //   const response = await axios.post('http://105.103.39.102:8080/slip', {
+  //   const response = await axios.post(`${API_URL}/slip`, {
   //     dados : array
   //   });
   

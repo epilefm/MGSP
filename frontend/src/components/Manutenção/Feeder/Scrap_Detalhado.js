@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import Axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -11,7 +12,7 @@ export default function Tabela() {
 
 
     useEffect(() => {
-      Axios.get('http://105.103.39.102:8080/getReparoDetalhado')
+      Axios.get(`${API_URL}/getReparoDetalhado`)
         .then(response => {
           setListCard(response.data);
         })

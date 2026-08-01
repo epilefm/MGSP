@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './PM.css';
@@ -149,10 +150,10 @@ const [viewMode, setViewMode] = useState(() => {
   const fetchStats = async (year) => {
     try {
       if (viewMode === 'pm') {
-        const response = await axios.get(`http://105.103.39.102:8080/stats?year=${year}`);
+        const response = await axios.get(`${API_URL}/stats?year=${year}`);
         setStats(response.data);
       } else {
-        const response = await axios.get(`http://105.103.39.102:8080/tower-lamp-stats?year=${year}`);
+        const response = await axios.get(`${API_URL}/tower-lamp-stats?year=${year}`);
         setStats({
           completed_pms: response.data.completed_tower_lamps,
           total_pms: response.data.total_tower_lamps,
@@ -168,10 +169,10 @@ const [viewMode, setViewMode] = useState(() => {
 const fetchPMs = async (year) => {
     try {
       if (viewMode === 'pm') {
-        const response = await axios.get(`http://105.103.39.102:8080/pms?year=${year}`);
+        const response = await axios.get(`${API_URL}/pms?year=${year}`);
         setPms(response.data);
       } else {
-        const response = await axios.get(`http://105.103.39.102:8080/tower-lamps?year=${year}`);
+        const response = await axios.get(`${API_URL}/tower-lamps?year=${year}`);
         setTowerLamps(response.data);
       }
     } catch (error) {
@@ -411,7 +412,7 @@ const handleSavePM = async () => {
 
       if (pm?.id) {
         // Update existente
-        const response = await axios.put(`http://105.103.39.102:8080/${apiEndpoint}/${pm.id}`, { 
+        const response = await axios.put(`${API_URL}/${apiEndpoint}/${pm.id}`, { 
           justification, 
           is_delayed,
           is_scheduled,
@@ -421,7 +422,7 @@ const handleSavePM = async () => {
         console.log(`${viewMode === 'pm' ? 'PM' : 'Tower Lamp'} atualizada:`, response.data);
       } else {
         // Criar nova entrada
-        const response = await axios.post(`http://105.103.39.102:8080/${apiEndpoint}`, { 
+        const response = await axios.post(`${API_URL}/${apiEndpoint}`, { 
           production_line: line, 
           month, 
           year: selectedYear, 
@@ -459,7 +460,7 @@ const handleDeletePM = async () => {
       // Determinar a rota baseada no modo selecionado
       const apiEndpoint = viewMode === 'pm' ? 'pms' : 'tower-lamps';
       
-      await axios.delete(`http://105.103.39.102:8080/${apiEndpoint}/${pm.id}`);
+      await axios.delete(`${API_URL}/${apiEndpoint}/${pm.id}`);
       alert(`${viewMode === 'pm' ? 'PM' : 'Tower Lamp'} deletada com sucesso!`);
       fetchPMs(selectedYear);
       setShowModal(false);
@@ -486,7 +487,7 @@ const handleDeletePM = async () => {
       const scheduledWeek = getWeekNumber(dateObj);
 
 // Criar novo agendamento
-      await axios.post('http://105.103.39.102:8080/schedule', { 
+      await axios.post(`${API_URL}/schedule`, { 
         production_line: line, 
         month, 
         year: selectedYear, 
@@ -555,7 +556,7 @@ const handleDeletePM = async () => {
   
   const fetchAvailableYears = async () => {
     try {
-      const response = await axios.get('http://105.103.39.102:8080/available-years');
+      const response = await axios.get(`${API_URL}/available-years`);
       setAvailableYears(response.data.years);
       // Se o ano selecionado não estiver na lista, definir para o ano atual
       if (!response.data.years.includes(selectedYear)) {

@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Table, Modal } from 'antd';
@@ -53,7 +54,7 @@ const TestDataTable = () => {
   const fileName = "ESD Data";
 
   useEffect(() => {
-    axios.get(`http://105.103.112.18:8080/getLabel`)
+    axios.get(`${API_URL}/getLabel`)
       .then(response => setTestData(response.data))
       .catch(error => console.error("Erro ao recuperar dados da API:", error));
   }, []);
@@ -141,13 +142,13 @@ const TestDataTable = () => {
   };
 
   const fetchMagData = (po) => {
-    axios.get(`http://105.103.112.18:8080/getMagNo?po=${po}`)
+    axios.get(`${API_URL}/getMagNo?po=${po}`)
       .then(response => setMagData(response.data))
       .catch(error => console.error("Erro ao recuperar dados da API:", error));
   };
 
   const fetchLabelData = (magNo) => {
-    axios.get(`http://105.103.112.18:8080/getLabelModal?MAG_NO=${magNo}`)
+    axios.get(`${API_URL}/getLabelModal?MAG_NO=${magNo}`)
       .then(response => {
         setLabelData(response.data[0]);
         setLabelModalVisible(true);

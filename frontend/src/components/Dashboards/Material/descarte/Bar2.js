@@ -1,3 +1,4 @@
+import { API_URL } from '../../../../config/api';
 import React, { Component } from "react";
 import Chart from "react-apexcharts";
 import Axios from "axios";
@@ -92,7 +93,7 @@ const Teste = () => {
     // Fetch or update your chart data here
     const fetchData = async () => {
       try {
-        const response = await Axios.get('http://105.103.39.102:8080/getDiscardChart');
+        const response = await Axios.get(`${API_URL}/getDiscardChart`);
         const data = response.data;
         console.log(data);
 

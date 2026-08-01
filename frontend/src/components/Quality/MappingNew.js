@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import React, { useEffect, useState } from "react";
 import { useTable, useSortBy, usePagination, useGlobalFilter } from 'react-table';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -12,7 +13,7 @@ export default function Tabela() {
   const [listCard, setListCard] = useState([]);
 
   useEffect(() => {
-    Axios.get('http://105.103.39.102:8080/get2DMapping')
+    Axios.get(`${API_URL}/get2DMapping`)
       .then(response => {
         setListCard(response.data);
       })

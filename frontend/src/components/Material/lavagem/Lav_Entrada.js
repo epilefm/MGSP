@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useEffect, useState } from "react";
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -99,7 +100,7 @@ export default function App() {
       Data_Feedback: item.Data_Feedback
     }))
 
-    Axios.post('http://105.103.39.102:8080/ReparoEnt', array)
+    Axios.post(`${API_URL}/ReparoEnt`, array)
     .then(response => {
       console.log(array);
       alert('Mensagem enviada com sucesso!');
@@ -114,7 +115,7 @@ export default function App() {
 };
 
   useEffect(() => {
-    Axios.get('http://105.103.39.102:8080/getReparo')
+    Axios.get(`${API_URL}/getReparo`)
       .then(response => {
         setLista(response.data);
       })
@@ -180,7 +181,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    Axios.get("http://105.103.39.102:8080/getModeloReparo").then((response) => {
+    Axios.get(`${API_URL}/getModeloReparo`).then((response) => {
       setListHalb(response.data);
     });
   }, []);

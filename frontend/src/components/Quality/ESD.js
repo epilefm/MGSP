@@ -15,7 +15,7 @@
 //   useEffect(() => {
 //     const fetchData = async () => {
 //       try {
-//         const response = await axios.get('http://105.103.39.102/ESD');
+//         const response = await axios.get(`${API_URL}/ESD`);
 //         const shifts = response.data.map((item) => item.Shift);
 //         const quantities = response.data.map((item) => item.Quantity);
 // 

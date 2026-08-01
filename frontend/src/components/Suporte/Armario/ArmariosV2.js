@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useState, useEffect } from 'react';
 import Header from '../../Layout/MGSPHead/Header';
 import './ArmariosV2.css';
@@ -37,7 +38,7 @@ const ArmariosV2 = () => {
       // Função para carregar armários
       const loadArmarios = async () => {
         try {
-          const response = await fetch('http://105.103.39.102:8080/armarios');
+          const response = await fetch(`${API_URL}/armarios`);
           const data = await response.json();
           setArmarios(data);
         } catch (error) {
@@ -48,7 +49,7 @@ const ArmariosV2 = () => {
   // Função para carregar pessoas
   const loadPessoas = async () => {
     try {
-      const response = await fetch('http://105.103.39.102:8080/pessoas');
+      const response = await fetch(`${API_URL}/pessoas`);
       const data = await response.json();
       setPessoas(data);
     } catch (error) {
@@ -133,7 +134,7 @@ const ArmariosV2 = () => {
   // Função para salvar armário
   const saveArmario = async () => {
     try {
-      const url = `http://105.103.39.102:8080/armario/${formData.numero_armario}`;
+      const url = `${API_URL}/armario/${formData.numero_armario}`;
       
       const response = await fetch(url, {
         method: 'POST',
@@ -162,7 +163,7 @@ const ArmariosV2 = () => {
   const liberarArmario = async (numero_armario) => {
     if (window.confirm('Tem certeza que deseja liberar este armário?')) {
       try {
-        const response = await fetch(`http://105.103.39.102:8080/armario/${numero_armario}`, {
+        const response = await fetch(`${API_URL}/armario/${numero_armario}`, {
           method: 'DELETE'
         });
 

@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import Axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -15,7 +16,7 @@ export default function Tabela() {
   const [filterLine, setFilterLine] = useState("");
 
   useEffect(() => {
-    Axios.get("http://105.103.39.102:8080/getCards")
+    Axios.get(`${API_URL}/getCards`)
       .then(response => {
         setAllCards(response.data);
         setFilteredCards(response.data);  // Inicialmente, mostrar todos os dados

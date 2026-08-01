@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import React, { useEffect, useState } from "react";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
@@ -79,7 +80,7 @@ export default function App() {
       qty: item.qty,
     }))
 
-    Axios.post("http://105.103.39.102:8080/Spare", array)
+    Axios.post(`${API_URL}/Spare`, array)
     .then((response) => {
       if (response.data.success) {
         alert(formData.spare + 'registrou a saida do' + formData.codMaterial + 'no spare parts') ;
@@ -95,7 +96,7 @@ export default function App() {
 }; 
 
   useEffect(() => {
-    Axios.get("http://105.103.39.102:8080/getSpare")
+    Axios.get(`${API_URL}/getSpare`)
       .then((response) => {
         setLista(response.data);
       })

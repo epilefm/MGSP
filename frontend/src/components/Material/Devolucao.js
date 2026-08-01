@@ -12,7 +12,7 @@
   
 //     useEffect(() => {
 //       Axios
-//       .get("http://105.103.39.102:8080/getdevolucao")
+//       .get(`${API_URL}/getdevolucao`)
 //       .then(response=>setListCard(response.data))
 //     }, []);
 

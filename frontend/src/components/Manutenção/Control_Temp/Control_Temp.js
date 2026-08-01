@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Card, CardContent, Typography, Box, Grid, CircularProgress, RadioGroup, Radio, FormControlLabel, FormLabel } from '@mui/material';
@@ -26,7 +27,7 @@ const App = () => {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get('http://105.103.39.102:8080/Temperatura');
+      const response = await axios.get(`${API_URL}/Temperatura`);
       setData(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -38,7 +39,7 @@ const App = () => {
   const fetchNewData = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get('http://105.103.39.102:8080/TempAmbiente');
+      const response = await axios.get(`${API_URL}/TempAmbiente`);
       setNewData(response.data);
     } catch (error) {
       console.error('Error fetching new data:', error);

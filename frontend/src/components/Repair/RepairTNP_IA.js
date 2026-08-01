@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 // Repair TNP IA - Assistente de consulta de histórico de reparos
 import { useState, useEffect, useRef, useCallback } from 'react';
 import {
@@ -9,7 +10,7 @@ import axios from 'axios';
 import './RepairTNP_IA.css';
 
 const api = axios.create({
-  baseURL: 'http://105.103.39.102:8080',
+  baseURL: `${API_URL}`,
 });
 
 const SUGESTOES = [

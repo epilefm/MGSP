@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import React, { useEffect, useState } from "react";
 import { useTable, useSortBy, usePagination, useGlobalFilter } from 'react-table';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -18,7 +19,7 @@ export default function Tabela() {
         const handleCNClick = (Barcode) => {
           console.log("clicked Barcode:", Barcode);
           // Fetch process data
-          Axios.get(`http://105.103.39.102:8080/getModalOffSplicing?Barcode=${Barcode}`)
+          Axios.get(`${API_URL}/getModalOffSplicing?Barcode=${Barcode}`)
              .then(response => {
               setModalData({ process: response.data});
               setShowModal(true)
@@ -32,7 +33,7 @@ export default function Tabela() {
        
 
         useEffect(() => {
-          Axios.get('http://105.103.39.102:8080/getSplicingOffline')
+          Axios.get(`${API_URL}/getSplicingOffline`)
             .then(response => {
               setListCard(response.data);
             })

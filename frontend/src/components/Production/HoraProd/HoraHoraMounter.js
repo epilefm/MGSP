@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './HoraProd.css';
@@ -131,7 +132,7 @@ export default function HoraHoraUnificada() {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const response = await Axios.get(`http://105.103.39.102:8080/${config.endpoint}?data=${date}`);
+        const response = await Axios.get(`${API_URL}/${config.endpoint}?data=${date}`);
         setListCard(response.data);
       } catch (error) {
         console.error(`Erro ao buscar dados no HoraProdução Mounter ${turno}:`, error);
@@ -145,7 +146,7 @@ export default function HoraHoraUnificada() {
   // Check if a cell has a comment
   const hasComment = async (linha, modelo, horario) => {
     try {
-      const response = await Axios.get(`http://105.103.39.102:8080/horaProd_comments`, {
+      const response = await Axios.get(`${API_URL}/horaProd_comments`, {
         params: { data: date, linha, modelo, horario }
       });
       return response.data ? {
@@ -161,7 +162,7 @@ export default function HoraHoraUnificada() {
 
   const getOperatorName = async (matricula) => {
     try {
-      const response = await Axios.get(`http://105.103.39.102:8080/pessoas`);
+      const response = await Axios.get(`${API_URL}/pessoas`);
       const operator = response.data.find(person => person.matricula === matricula);
       if (operator) {
         const names = operator.funcionarios.split(' ');
@@ -176,7 +177,7 @@ export default function HoraHoraUnificada() {
 
   const getTechnicianName = async (matricula) => {
     try {
-      const response = await Axios.get(`http://105.103.39.102:8080/pessoas`);
+      const response = await Axios.get(`${API_URL}/pessoas`);
       const technician = response.data.find(person => person.matricula === matricula);
       if (technician) {
         const names = technician.funcionarios.split(' ');
@@ -227,7 +228,7 @@ export default function HoraHoraUnificada() {
       return;
     }
     try {
-      const response = await Axios.get(`http://105.103.39.102:8080/pessoas`);
+      const response = await Axios.get(`${API_URL}/pessoas`);
       const technician = response.data.find(person => person.matricula === matricula);
       if (technician) {
         if (technician.job_class && technician.job_class.toLowerCase() === 'production') {
@@ -255,7 +256,7 @@ export default function HoraHoraUnificada() {
       return;
     }
     try {
-      const response = await Axios.get(`http://105.103.39.102:8080/pessoas`);
+      const response = await Axios.get(`${API_URL}/pessoas`);
       const operator = response.data.find(person => person.matricula === matricula);
       if (operator) {
         if (operator.job_class && operator.job_class.toLowerCase() === 'production') {
@@ -305,7 +306,7 @@ export default function HoraHoraUnificada() {
     setCurrentCell({ linha, modelo, horario });
 
     try {
-      const response = await Axios.get(`http://105.103.39.102:8080/horaProd_comments`, {
+      const response = await Axios.get(`${API_URL}/horaProd_comments`, {
         params: { data: date, linha, modelo, horario }
       });
 
@@ -369,7 +370,7 @@ export default function HoraHoraUnificada() {
     const cellKey = `${date}-${linha}-${modelo}-${horario}`;
     if (markedCells[cellKey]) {
       try {
-        const response = await Axios.get(`http://105.103.39.102:8080/horaProd_comments`, {
+        const response = await Axios.get(`${API_URL}/horaProd_comments`, {
           params: { data: date, linha, modelo, horario }
         });
 
@@ -428,7 +429,7 @@ export default function HoraHoraUnificada() {
     if (!window.confirm(confirmMessage)) return;
 
     try {
-      await Axios.post(`http://105.103.39.102:8080/horaProdUp_comments`, {
+      await Axios.post(`${API_URL}/horaProdUp_comments`, {
         data: date,
         linha: currentCell.linha,
         modelo: currentCell.modelo,
@@ -523,7 +524,7 @@ export default function HoraHoraUnificada() {
 
     try {
       if (activeTab === 'manutencao') {
-        await Axios.post(`http://105.103.39.102:8080/horaProdUp_comments`, {
+        await Axios.post(`${API_URL}/horaProdUp_comments`, {
           data: date,
           linha: currentCell.linha,
           modelo: currentCell.modelo,
@@ -537,7 +538,7 @@ export default function HoraHoraUnificada() {
           tipo_comentario: 'manutencao'
         });
       } else {
-        await Axios.post(`http://105.103.39.102:8080/horaProdUp_comments`, {
+        await Axios.post(`${API_URL}/horaProdUp_comments`, {
           data: date,
           linha: currentCell.linha,
           modelo: currentCell.modelo,
@@ -617,7 +618,7 @@ export default function HoraHoraUnificada() {
   useEffect(() => {
     const interval = setInterval(async () => {
       try {
-        const response = await Axios.get(`http://105.103.39.102:8080/${config.endpoint}?data=${date}`);
+        const response = await Axios.get(`${API_URL}/${config.endpoint}?data=${date}`);
         const newData = response.data;
         // Usa ref para comparar sem recriar o interval
         if (JSON.stringify(newData) !== JSON.stringify(listCardRef.current)) {

@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import Axios from "axios";
 import { textAlign } from "@mui/system";
@@ -31,7 +32,7 @@ export default function Tabela() {
   
     useEffect(() => {
       Axios
-      .get("http://105.103.39.102:8080/getCardRast")
+      .get(`${API_URL}/getCardRast`)
       .then(response=>setListCard(response.data))
     }, []);
 

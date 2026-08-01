@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useEffect, useState } from "react";
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -82,7 +83,7 @@ export default function App() {
 
     }))
 
-    Axios.post('http://105.103.39.102:8080/RegisterOfflineSaida', array)
+    Axios.post(`${API_URL}/RegisterOfflineSaida`, array)
     .then((response) => {
       if (response.data.success) {
         alert('Input da CN ' + formData.CN_saidaOff + ' salvo com sucesso na Saida do Offline');
@@ -99,7 +100,7 @@ export default function App() {
 }; 
 
   useEffect(() => {
-    Axios.get('http://105.103.39.102:8080/getOfflineSaida')
+    Axios.get(`${API_URL}/getOfflineSaida`)
       .then(response => {
         setLista(response.data);
       })

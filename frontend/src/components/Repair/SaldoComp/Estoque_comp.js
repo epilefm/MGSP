@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useState, useEffect, useRef } from 'react';
 import { Button, Form, Row, Col, ListGroup } from 'react-bootstrap';
 import Axios from 'axios';
@@ -37,9 +38,9 @@ const AutocompleteComponent = ({ value, onChange, onSelect, name, required, plac
 
   const getApiConfig = (searchValue) => {
     if (searchType === 'colaborador') {
-      return { url: 'http://105.103.39.102:8080/searchPessoas', params: { searchTerm: searchValue } };
+      return { url: `${API_URL}/searchPessoas`, params: { searchTerm: searchValue } };
     }
-    return { url: 'http://105.103.39.102:8080/searchComponentCodes', params: { searchTerm: searchValue } };
+    return { url: `${API_URL}/searchComponentCodes`, params: { searchTerm: searchValue } };
   };
 
   useEffect(() => {
@@ -170,7 +171,7 @@ function EstoqueComp() {
       const descriptions = {};
       for (const code of uniqueCodes) {
         try {
-          const response = await Axios.get('http://105.103.39.102:8080/searchComponentCodes', { params: { searchTerm: code } });
+          const response = await Axios.get(`${API_URL}/searchComponentCodes`, { params: { searchTerm: code } });
           if (response.data && response.data.length > 0) {
             const exactMatch = response.data.find(item => item.material === code);
             descriptions[code] = exactMatch ? exactMatch.mat_name || '-' : '-';
@@ -183,13 +184,13 @@ function EstoqueComp() {
 
   const fetchLogs = () => {
     setLoading(true);
-    Axios.get('http://105.103.39.102:8080/getReparoComponentesLogs')
+    Axios.get(`${API_URL}/getReparoComponentesLogs`)
       .then((response) => { setLogs(response.data); setFilteredLogs(response.data); setLoading(false); })
       .catch(error => { console.error("Erro ao buscar logs:", error); setLoading(false); });
   };
 
   const fetchEstoque = () => {
-    Axios.get('http://105.103.39.102:8080/getReparoCompEstoque')
+    Axios.get(`${API_URL}/getReparoCompEstoque`)
       .then((response) => { setEstoque(response.data); fetchComponentDescriptions(response.data.map(item => item.cod_comp)); })
       .catch(error => { console.error("Erro ao buscar dados do estoque:", error); });
   };
@@ -239,7 +240,7 @@ function EstoqueComp() {
     if (!selectedColaborador) { message.warning('Selecione um colaborador!'); return; }
     if (selectedComponent.codigo && selectedComponent.valorComponente) {
       const quantidade = selectedComponent.quantidade && selectedComponent.quantidade > 0 ? parseInt(selectedComponent.quantidade) : 1;
-      Axios.post('http://105.103.39.102:8080/ReparoDiminuiEstoque', { cod_comp: selectedComponent.codigo, qty: quantidade, colaborador: selectedColaborador || '', matricula: colaboradorDetails ? colaboradorDetails.matricula : '' })
+      Axios.post(`${API_URL}/ReparoDiminuiEstoque`, { cod_comp: selectedComponent.codigo, qty: quantidade, colaborador: selectedColaborador || '', matricula: colaboradorDetails ? colaboradorDetails.matricula : '' })
         .then((response) => {
           if (response.data.success) { message.success('SCRAP registrado com sucesso!'); fetchEstoque(); fetchLogs(); setSelectedComponent({ codigo: '', quantidade: 1, valorComponente: '', descricao: '', quantidadeEstoque: '' }); }
           else { message.error('Quantidade de descarte maior que a disponivel no estoque!'); }
@@ -252,7 +253,7 @@ function EstoqueComp() {
 
   const handleSubmitEntrada = () => {
     if (itensEntrada.length === 0) { message.warning('Adicione pelo menos um item!'); return; }
-    Axios.post('http://105.103.39.102:8080/ReparoEntradaComponentes', itensEntrada.map(item => ({ codigo: item.codigo, quantidade: item.quantidade, valor_componente: item.valorComponente, descricao: item.descricao, data: item.data, colaborador: item.colaborador || '', matricula: item.matricula || '' })))
+    Axios.post(`${API_URL}/ReparoEntradaComponentes`, itensEntrada.map(item => ({ codigo: item.codigo, quantidade: item.quantidade, valor_componente: item.valorComponente, descricao: item.descricao, data: item.data, colaborador: item.colaborador || '', matricula: item.matricula || '' })))
       .then((response) => { if (response.data.success) { message.success('Entrada registrada com sucesso!'); setItensEntrada([]); fetchEstoque(); fetchLogs(); } else { message.error('Erro ao registrar Entrada!'); } })
       .catch(error => { console.error("Erro ao enviar dados de Entrada:", error); message.error('Erro ao processar Entrada!'); });
   };

@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import Table from 'react-bootstrap/Table';
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
@@ -22,7 +23,7 @@ export default function App() {
  
 
   useEffect(() => {
-    Axios.get("http://105.103.39.102:8080/getSlip").then((response) => {
+    Axios.get(`${API_URL}/getSlip`).then((response) => {
       setLista(response.data);
     });
   }, []);

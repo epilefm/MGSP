@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import React, { useEffect, useState } from "react";
 import { Modal, Button } from 'react-bootstrap';
 import Axios from "axios";
@@ -16,7 +17,7 @@ export default function Tabela() {
   const [modalData, setModalData] = useState(null);
 
   const handleStatusClick = (status, row) => {
-    Axios.get(`http://105.103.39.102:8080/getModalRepInventario`, {
+    Axios.get(`${API_URL}/getModalRepInventario`, {
       params: {
         modelo: row.Modelo,
         linha: row.Linha,
@@ -33,7 +34,7 @@ export default function Tabela() {
   };
 
   useEffect(() => {
-    Axios.get('http://105.103.39.102:8080/getReparoInventarioTotal')
+    Axios.get(`${API_URL}/getReparoInventarioTotal`)
       .then(response => {
         setListCard(response.data);
       })

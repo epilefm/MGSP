@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useEffect, useState } from "react";
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -23,7 +24,7 @@ export default function App() {
 
   useEffect(() => {
     Axios
-      .get(`http://105.103.39.102:8080/getScrapReceb?Data=${values.Data}`)
+      .get(`${API_URL}/getScrapReceb?Data=${values.Data}`)
       .then((response) => {
         setData(response.data);
         setLoading(false);
@@ -41,7 +42,7 @@ export default function App() {
   const [user2, setUser2] = useState("");
 
   const handleUpdate = (CN, STATUS) => {
-    Axios.put("http://105.103.39.102:8080/updatescrap", {
+    Axios.put(`${API_URL}/updatescrap`, {
       cn : CN,
       status : STATUS,
       user1 : user1,

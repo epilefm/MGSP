@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import { DataGrid, GridToolbar, GridToolbarQuickFilter } from '@mui/x-data-grid';
 import { Box, Grid } from '@mui/material';
 import NavbarComp from '../Layout/NavbarComp';
@@ -46,7 +47,7 @@ function Production() {
 
 useEffect(() => {
   let period = [curDate];
-  Axios.get(`http://105.103.39.102:808080/getprod`).then(response => {
+  Axios.get(`${API_URL}/getprod`).then(response => {
     // 2. Extrai as informações relevantes da resposta
     console.log(response);
     setproducao(response.data);
@@ -58,7 +59,7 @@ useEffect(() => {
 
 function handleSalvar() {
   
-  Axios.delete(`http://105.103.39.102:808080/deleteprod`);
+  Axios.delete(`${API_URL}/deleteprod`);
   const array = dados.map(item=>
     ({
       MASTER_LINE:item.MASTER_LINE,
@@ -71,7 +72,7 @@ function handleSalvar() {
       FST_ACRS_DT:item.FST_ACRS_DT,
       FNL_ACRS_DT:item.FNL_ACRS_DT}))
 
-    const response = Axios.post('http://105.103.39.102:808080/registerprod', array)
+    const response = Axios.post(`${API_URL}/registerprod`, array)
     .then(response => {
       console.log('Dados salvos com sucesso!', response);
     })

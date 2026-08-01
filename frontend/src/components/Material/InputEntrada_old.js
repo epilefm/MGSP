@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import React, { useEffect, useState } from "react";
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -151,7 +152,7 @@ const contagem =(count)=> {
     }))
     console.log(array)
     
-      await Axios.post('http://105.103.39.102:8080/register', array)
+      await Axios.post(`${API_URL}/register`, array)
         .then(response => {
           console.log(array);
           alert('Input de entrada de material salvo com sucesso!');
@@ -189,12 +190,12 @@ const contagem =(count)=> {
   
     useEffect(() => {
       Axios
-      .get("http://105.103.39.102:8080/getCards")
+      .get(`${API_URL}/getCards`)
       .then(response=>setListCard(response.data))
     }, []);
     
     useEffect(() => {
-      Axios.get("http://105.103.39.102:8080/getModelo").then((response) => {
+      Axios.get(`${API_URL}/getModelo`).then((response) => {
         setLista2(response.data);
       });
     }, []);

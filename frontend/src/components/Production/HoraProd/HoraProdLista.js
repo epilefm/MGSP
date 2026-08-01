@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import * as XLSX from "xlsx";
@@ -16,7 +17,7 @@ const HoraProdLista = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://105.103.39.102:8080/HoraProd_Lista?date=${date}`);
+                const response = await axios.get(`${API_URL}/HoraProd_Lista?date=${date}`);
                 setData(response.data);
                 const uniqueLinhas = [...new Set(response.data.map(item => item.linha))];
                 const sortedLinhas = uniqueLinhas.sort((a, b) => a.localeCompare(b));

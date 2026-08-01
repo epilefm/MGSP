@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useEffect, useMemo, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../HoraProd/HoraProd.css';
@@ -62,7 +63,7 @@ export default function HoraPlanResult() {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const response = await Axios.get(`http://105.103.39.102:8080/planVsResultHourly?data=${date}`);
+        const response = await Axios.get(`${API_URL}/planVsResultHourly?data=${date}`);
         setListCard(response.data);
         setListCardAllTurnos(response.data);
       } catch (error) {

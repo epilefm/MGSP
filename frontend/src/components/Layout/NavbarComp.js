@@ -27,7 +27,7 @@ function NavbarComp() {
         <Container fluid>
           {/* Logo/Brand */}
           <Navbar.Brand 
-             href="http://105.103.112.18:3000" 
+             href="/"
             style={{
               border: '0.1rem solid',
               borderColor: '#007bff',

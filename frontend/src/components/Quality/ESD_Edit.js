@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
@@ -36,7 +37,7 @@ const CrudTable = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://105.103.112.18:8080/ESD_Edit');
+      const response = await axios.get(`${API_URL}/ESD_Edit`);
       if (response.data.success) {
         setData(response.data.data);
       }
@@ -53,7 +54,7 @@ const CrudTable = () => {
 
   const handleCreate = async () => {
     try {
-      const response = await axios.post('http://105.103.112.18:8080/ESD_Edit', newItem);
+      const response = await axios.post(`${API_URL}/ESD_Edit`, newItem);
       if (response.data.success) {
         showSnackbar('Registro criado com sucesso!');
         setOpenDialog(false);
@@ -67,7 +68,7 @@ const CrudTable = () => {
 
   const handleUpdate = async () => {
     try {
-      const response = await axios.put(`http://105.103.112.18:8080/ESD_Edit/${editingItem.id}`, editingItem);
+      const response = await axios.put(`${API_URL}/ESD_Edit/${editingItem.id}`, editingItem);
       if (response.data.success) {
         showSnackbar('Registro atualizado com sucesso!');
         setOpenDialog(false);
@@ -81,7 +82,7 @@ const CrudTable = () => {
 
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`http://105.103.112.18:8080/ESD_Edit/${itemToDelete}`);
+      const response = await axios.delete(`${API_URL}/ESD_Edit/${itemToDelete}`);
       if (response.data.success) {
         showSnackbar('Registro excluído com sucesso!');
         setConfirmationOpen(false);

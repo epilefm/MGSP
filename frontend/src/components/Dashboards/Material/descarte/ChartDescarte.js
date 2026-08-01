@@ -10,7 +10,7 @@ const  App =()=> {
   //     const Part = [];
   //     const Qty = [];
 
-      // axios.get("http://105.103.39.102:8080/getDescarte").then(response =>{
+      // axios.get(`${API_URL}/getDescarte`).then(response =>{
       //     console.log("response", response)
       //     response.data.data.map(item => {
       //       console.log("item", item)

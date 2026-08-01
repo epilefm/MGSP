@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import React, { useState, useEffect, useRef, useImperativeHandle, useMemo } from 'react';
 import Axios from 'axios';
 import {
@@ -20,9 +21,6 @@ import {
 } from 'recharts';
 
 const { Title } = Typography;
-
-const API_URL = 'http://105.103.39.102:8080';
-
 
 
 // Componente de Autocomplete reutilizável com Ant Design

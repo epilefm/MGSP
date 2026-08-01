@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 // ReparoModal.js
 import React, { useEffect, useState } from "react";
 import { Modal, Button } from 'react-bootstrap';
@@ -10,7 +11,7 @@ const ReparoModal = ({ show, handleClose, modalData }) => {
   const [lista3, setLista3] = useState([]);
 
   useEffect(() => {
-    Axios.get('http://105.103.39.102:8080/getModalOffSplicing')
+    Axios.get(`${API_URL}/getModalOffSplicing`)
       .then(response => {
         setLista2(response.data);
       })

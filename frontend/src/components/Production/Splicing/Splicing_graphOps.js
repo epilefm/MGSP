@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Chart from "react-apexcharts";
@@ -9,7 +10,7 @@ export default function Grafico({value, filteredData, turno}) {
     const fetchData = async () => {
       try {
         const maiorResponse = await
-      axios.get (`http://105.103.39.102:8080/SplicingOpssMaior?data=${value}`);
+      axios.get (`${API_URL}/SplicingOpssMaior?data=${value}`);
 
       setMaiorChartData(maiorResponse.data);
       } catch (error) {

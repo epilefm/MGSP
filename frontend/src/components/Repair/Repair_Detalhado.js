@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import React, { useEffect, useState } from "react";
 import { useTable, useSortBy, usePagination, useGlobalFilter } from 'react-table';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -24,12 +25,12 @@ export default function Tabela() {
           
           // Fetch both process and auxiliary data in parallel for better performance
           Promise.all([
-            Axios.get(`http://105.103.39.102:8080/getModalReparoDetalhado?cnProcess=${cnProcess}`)
+            Axios.get(`${API_URL}/getModalReparoDetalhado?cnProcess=${cnProcess}`)
               .catch(error => {
                 console.error('Error fetching process data:', error);
                 return { data: [] };
               }),
-            Axios.get(`http://105.103.39.102:8080/getModalAuxiliarDetalhado?cnAuxiliar=${cnAuxiliar}`)
+            Axios.get(`${API_URL}/getModalAuxiliarDetalhado?cnAuxiliar=${cnAuxiliar}`)
               .catch(error => {
                 console.error('Error fetching auxiliary data:', error);
                 return { data: [] };
@@ -52,7 +53,7 @@ export default function Tabela() {
 
         useEffect(() => {
           setLoading(true);
-          Axios.get('http://105.103.39.102:8080/getReparoDetalhado')
+          Axios.get(`${API_URL}/getReparoDetalhado`)
             .then(response => {
               setListCard(response.data);
               setLoading(false);

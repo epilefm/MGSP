@@ -1,3 +1,4 @@
+import { API_URL } from '../../config/api';
 import React, { useEffect, useState } from "react";
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
@@ -26,7 +27,7 @@ export default function App() {
  
 
   const handleSubmit = () => {
-    Axios.post('http://105.103.39.102:8080/inv',{
+    Axios.post(`${API_URL}/inv`,{
         Data:values.Data,
         Basic_Model:values.Basic_Model,
         Codigo:values.Codigo,
@@ -56,13 +57,13 @@ const handleaddValues = (value) => {
 
 
   useEffect(() => {
-    Axios.get("http://105.103.39.102:8080/getinventario").then((response) => {
+    Axios.get(`${API_URL}/getinventario`).then((response) => {
       setLista(response.data);
     });
   }, []);
 
   useEffect(() => {
-    Axios.get("http://105.103.39.102:8080/getModelo").then((response) => {
+    Axios.get(`${API_URL}/getModelo`).then((response) => {
       setListModelo(response.data);
     });
   }, []);

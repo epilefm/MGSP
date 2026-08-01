@@ -1,3 +1,4 @@
+import { API_URL } from '../../../config/api';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -8,7 +9,7 @@ import {
 import toast from 'react-hot-toast';
 import axios from 'axios';
 
-const API_BASE = 'http://105.103.39.102:8080';
+const API_BASE = `${API_URL}`;
 
 /* ── Constants ────────────────────────────────────────────────────────────── */
 const HOURS = Array.from({ length: 24 }, (_, i) => i);
