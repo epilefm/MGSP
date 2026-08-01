@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "react-bootstrap";
-import jpIMG from "../../jp.svg";
 import { useAuth } from "../../auth/AuthContext";
-import "../../styles.css";
+import AuthLayout from "./AuthLayout";
+import AuthField from "./AuthField";
+import AuthFooterLinks from "./AuthFooterLinks";
 
 export default function ForgotPasswordPage() {
   const [matricula, setMatricula] = useState("");
@@ -28,48 +28,40 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div variant="dark">
-      <style>{"body { background-color: white; }"}</style>
-      <div className="container-login">
-        <div className="wrap-login">
-          <img src={jpIMG} alt="Logo" />
+    <AuthLayout title="Esqueci minha senha" subtitle="Um administrador vai redefinir pra você">
+      <form onSubmit={handleSubmit}>
+        <p className="text-[12.5px] text-slate-400 leading-relaxed mb-5">
+          Informe sua matrícula. Um administrador vai ser avisado e vai
+          redefinir sua senha e entrar em contato com você.
+        </p>
 
-          <form className="login-form" onSubmit={handleSubmit}>
-            <div className="text-center" style={{ color: "#666", fontSize: 14, marginBottom: 16 }}>
-              Informe sua matrícula. Um administrador vai ser avisado e vai
-              redefinir sua senha e entrar em contato com você.
-            </div>
+        <AuthField label="Matrícula" value={matricula} onChange={(e) => setMatricula(e.target.value)} autoFocus required />
 
-            <div className="wrap-input">
-              <input
-                className={matricula !== "" ? "has-val input" : "input"}
-                type="text"
-                value={matricula}
-                onChange={(e) => setMatricula(e.target.value)}
-              />
-              <span className="focus-input" data-placeholder="Matrícula"></span>
-            </div>
+        {erro && (
+          <div className="bg-red-50 text-red-700 text-[13px] px-3 py-2.5 rounded-lg mb-4">
+            {erro}
+          </div>
+        )}
+        {mensagem && (
+          <div className="bg-green-50 text-green-700 text-[13px] px-3 py-2.5 rounded-lg mb-4">
+            {mensagem}
+          </div>
+        )}
 
-            {erro && <div className="text-center" style={{ color: "#c62828", marginBottom: 10 }}>{erro}</div>}
-            {mensagem && <div className="text-center" style={{ color: "#2e7d32", marginBottom: 10 }}>{mensagem}</div>}
+        <button
+          type="submit"
+          disabled={carregando}
+          className="w-full mt-2 flex items-center justify-center gap-2 rounded-lg bg-[#1428A0] hover:bg-[#0f1f7a] disabled:opacity-60 text-white font-semibold text-[15px] px-5 py-3 transition-colors"
+        >
+          {carregando ? "Enviando..." : "Solicitar redefinição"}
+        </button>
 
-            <div className="container-login-form-btn">
-              <Button
-                type="submit"
-                className="login-form-btn"
-                disabled={carregando}
-                style={{ fontSize: "larger", width: "100%" }}
-              >
-                {carregando ? "Enviando..." : "Solicitar redefinição"}
-              </Button>
-            </div>
-
-            <div className="text-center" style={{ marginTop: 12 }}>
-              <Link className="txt2" to="/Login">Voltar para o login</Link>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+        <AuthFooterLinks>
+          <Link to="/Login" className="text-[#1428A0] hover:underline">
+            Voltar para o login
+          </Link>
+        </AuthFooterLinks>
+      </form>
+    </AuthLayout>
   );
 }

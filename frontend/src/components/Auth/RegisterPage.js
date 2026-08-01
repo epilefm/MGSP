@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from "react-bootstrap";
-import jpIMG from "../../jp.svg";
 import { useAuth } from "../../auth/AuthContext";
-import "../../styles.css";
+import AuthLayout from "./AuthLayout";
+import AuthField from "./AuthField";
+import AuthFooterLinks from "./AuthFooterLinks";
 
 export default function RegisterPage() {
   const [nome, setNome] = useState("");
@@ -32,69 +32,51 @@ export default function RegisterPage() {
   };
 
   return (
-    <div variant="dark">
-      <style>{"body { background-color: white; }"}</style>
-      <div className="container-login">
-        <div className="wrap-login">
-          <img src={jpIMG} alt="Logo" />
+    <AuthLayout title="Criar conta" subtitle="Leva menos de um minuto">
+      <form onSubmit={handleSubmit}>
+        <AuthField label="Nome completo" value={nome} onChange={(e) => setNome(e.target.value)} autoFocus required />
+        <AuthField label="Matrícula" value={matricula} onChange={(e) => setMatricula(e.target.value)} required />
+        <AuthField
+          label="Senha"
+          type="password"
+          value={senha}
+          onChange={(e) => setSenha(e.target.value)}
+          required
+        />
 
-          <form className="login-form" onSubmit={handleSubmit}>
-            <div className="wrap-input">
-              <input
-                className={nome !== "" ? "has-val input" : "input"}
-                type="text"
-                value={nome}
-                onChange={(e) => setNome(e.target.value)}
-              />
-              <span className="focus-input" data-placeholder="Nome completo"></span>
-            </div>
+        {erro && (
+          <div className="bg-red-50 text-red-700 text-[13px] px-3 py-2.5 rounded-lg mb-4">
+            {erro}
+          </div>
+        )}
+        {sucesso && (
+          <div className="bg-green-50 text-green-700 text-[13px] px-3 py-2.5 rounded-lg mb-4">
+            {sucesso}
+          </div>
+        )}
 
-            <div className="wrap-input">
-              <input
-                className={matricula !== "" ? "has-val input" : "input"}
-                type="text"
-                value={matricula}
-                onChange={(e) => setMatricula(e.target.value)}
-              />
-              <span className="focus-input" data-placeholder="Matrícula"></span>
-            </div>
+        <p className="text-[12.5px] text-slate-400 leading-relaxed mb-5">
+          Sua conta é criada na hora, mas as telas só ficam disponíveis
+          depois que um administrador liberar o acesso.
+        </p>
 
-            <div className="wrap-input">
-              <input
-                className={senha !== "" ? "has-val input" : "input"}
-                type="password"
-                value={senha}
-                onChange={(e) => setSenha(e.target.value)}
-              />
-              <span className="focus-input" data-placeholder="Senha"></span>
-            </div>
+        <button
+          type="submit"
+          disabled={carregando}
+          className="w-full mt-2 flex items-center justify-center gap-2 rounded-lg bg-[#1428A0] hover:bg-[#0f1f7a] disabled:opacity-60 text-white font-semibold text-[15px] px-5 py-3 transition-colors"
+        >
+          {carregando ? "Criando..." : "Criar conta"}
+        </button>
 
-            {erro && <div className="text-center" style={{ color: "#c62828", marginBottom: 10 }}>{erro}</div>}
-            {sucesso && <div className="text-center" style={{ color: "#2e7d32", marginBottom: 10 }}>{sucesso}</div>}
-
-            <div className="text-center" style={{ color: "#666", fontSize: 13, marginBottom: 14 }}>
-              Sua conta é criada na hora, mas as telas só ficam disponíveis
-              depois que um administrador liberar o acesso.
-            </div>
-
-            <div className="container-login-form-btn">
-              <Button
-                type="submit"
-                className="login-form-btn"
-                disabled={carregando}
-                style={{ fontSize: "larger", width: "100%" }}
-              >
-                {carregando ? "Criando..." : "Criar conta"}
-              </Button>
-            </div>
-
-            <div className="text-center" style={{ marginTop: 12 }}>
-              <span className="txt1">Já tem conta? </span>
-              <Link className="txt2" to="/Login">Entrar</Link>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+        <AuthFooterLinks>
+          <span className="text-slate-400">
+            Já tem conta?{" "}
+            <Link to="/Login" className="text-[#1428A0] font-semibold hover:underline">
+              Entrar
+            </Link>
+          </span>
+        </AuthFooterLinks>
+      </form>
+    </AuthLayout>
   );
 }

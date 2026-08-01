@@ -27,4 +27,6 @@ build-test.log
 
 dev_test*.log
 build_test.log
+run.log
+run.pid
 .claude/scheduled_tasks.lock

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Button } from "react-bootstrap";
-import jpIMG from "../../jp.svg";
 import { useAuth } from "../../auth/AuthContext";
-import "../../styles.css";
+import AuthLayout from "./AuthLayout";
+import AuthField from "./AuthField";
+import AuthFooterLinks from "./AuthFooterLinks";
 
 export default function LoginPage() {
   const [matricula, setMatricula] = useState("");
@@ -30,60 +30,49 @@ export default function LoginPage() {
   };
 
   return (
-    <div variant="dark">
-      <style>{"body { background-color: white; }"}</style>
-      <div className="container-login">
-        <div className="wrap-login">
-          <img src={jpIMG} alt="Logo" />
+    <AuthLayout title="Bem-vindo de volta" subtitle="Entre com sua matrícula para continuar">
+      <form onSubmit={handleSubmit}>
+        <AuthField
+          label="Matrícula"
+          value={matricula}
+          onChange={(e) => setMatricula(e.target.value)}
+          autoFocus
+          required
+        />
+        <AuthField
+          label="Senha"
+          type="password"
+          value={senha}
+          onChange={(e) => setSenha(e.target.value)}
+          required
+        />
 
-          <form className="login-form" onSubmit={handleSubmit}>
-            <div className="wrap-input">
-              <input
-                className={matricula !== "" ? "has-val input" : "input"}
-                type="text"
-                value={matricula}
-                onChange={(e) => setMatricula(e.target.value)}
-              />
-              <span className="focus-input" data-placeholder="Matrícula"></span>
-            </div>
+        {erro && (
+          <div className="bg-red-50 text-red-700 text-[13px] px-3 py-2.5 rounded-lg mb-4">
+            {erro}
+          </div>
+        )}
 
-            <div className="wrap-input">
-              <input
-                className={senha !== "" ? "has-val input" : "input"}
-                type="password"
-                value={senha}
-                onChange={(e) => setSenha(e.target.value)}
-              />
-              <span className="focus-input" data-placeholder="Senha"></span>
-            </div>
+        <button
+          type="submit"
+          disabled={carregando}
+          className="w-full mt-2 flex items-center justify-center gap-2 rounded-lg bg-[#1428A0] hover:bg-[#0f1f7a] disabled:opacity-60 text-white font-semibold text-[15px] px-5 py-3 transition-colors"
+        >
+          {carregando ? "Entrando..." : "Entrar"}
+        </button>
 
-            {erro && (
-              <div className="text-center" style={{ color: "#c62828", marginBottom: 10 }}>
-                {erro}
-              </div>
-            )}
-
-            <div className="container-login-form-btn">
-              <Button
-                type="submit"
-                className="login-form-btn"
-                disabled={carregando}
-                style={{ fontSize: "larger", width: "100%" }}
-              >
-                {carregando ? "Entrando..." : "Entrar"}
-              </Button>
-            </div>
-
-            <div className="text-center" style={{ marginTop: 12 }}>
-              <span className="txt1">Não tem conta? </span>
-              <Link className="txt2" to="/Registrar">Criar conta</Link>
-            </div>
-            <div className="text-center" style={{ marginTop: 6 }}>
-              <Link className="txt2" to="/EsqueciSenha">Esqueci minha senha</Link>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+        <AuthFooterLinks>
+          <Link to="/EsqueciSenha" className="text-[#1428A0] hover:underline">
+            Esqueci minha senha
+          </Link>
+          <span className="text-slate-400">
+            Não tem conta?{" "}
+            <Link to="/Registrar" className="text-[#1428A0] font-semibold hover:underline">
+              Criar conta
+            </Link>
+          </span>
+        </AuthFooterLinks>
+      </form>
+    </AuthLayout>
   );
 }
