@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/f.miguel/PycharmProjects/pythonProject2/**)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\f.miguel\\PycharmProjects\\pythonProject2"
+    ]
+  }
+}

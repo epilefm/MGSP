@@ -1,0 +1,372 @@
+/* Container principal */
+.dashboard-container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.dashboard-content {
+  padding: 16px;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* Header com gradiente */
+.header-section {
+  background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+  color: white;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Painel de filtros */
+.filter-panel {
+  margin-bottom: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-radius: 6px;
+}
+
+.filter-header:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.filters-collapse {
+  margin-top: 0;
+  background: transparent;
+  border: none;
+}
+
+.filters-collapse .ant-collapse-content {
+  background: transparent;
+  border: none;
+}
+
+.filters-collapse .ant-collapse-header {
+  padding: 0 !important;
+  display: none !important;
+}
+
+.filters-collapse .ant-collapse-item {
+  border: none !important;
+}
+
+.filters-collapse .ant-collapse > .ant-collapse-item > .ant-collapse-header {
+  display: none !important;
+}
+
+/* Labels dos formulários */
+.form-label {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+/* Cards de estatísticas */
+.stat-card {
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+  height: 80px;
+  overflow: hidden;
+}
+
+.stat-card .ant-card-body {
+  padding: 8px !important;
+  height: 100%;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 2px 4px;
+  gap: 2px;
+}
+
+.stat-label {
+  font-size: 10px !important;
+  color: #666;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.stat-value {
+  margin: 0 !important;
+  line-height: 1.1;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.stat-subvalue {
+  font-size: 9px !important;
+  color: #999;
+  margin-top: 0;
+  line-height: 1.1;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Container da tabela */
+.table-container {
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.table-container .ant-table {
+  font-size: 12px;
+}
+
+.table-container .ant-table-thead > tr > th {
+  background: #1890ff;
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  font-size: 10px;
+  padding: 8px 6px;
+  border-bottom: 2px solid #096dd9;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center !important;
+}
+
+.table-container .ant-table-thead > tr > th:last-child {
+  border-right: none;
+}
+
+.table-container .ant-table-tbody > tr > td {
+  padding: 6px 8px;
+  font-size: 12px;
+  border-bottom: 1px solid #f0f0f0;
+  text-align: center !important;
+}
+
+.table-container .ant-table-tbody > tr:hover {
+  background-color: rgba(24, 144, 255, 0.04);
+}
+
+/* Linhas da tabela Home */
+.home-row td {
+  font-size: 13px !important;
+  padding: 8px 6px !important;
+}
+
+/* Linhas da tabela Por Hora */
+.hour-row td {
+  font-size: 11px !important;
+  padding: 4px 4px !important;
+}
+
+/* Paginação */
+.pagination-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+  padding: 8px 0;
+}
+
+.pagination-container .ant-pagination {
+  font-size: 12px;
+}
+
+/* Card de total geral */
+.total-card {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.2) 0%, rgba(46, 125, 50, 0.1) 100%);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  padding: 12px;
+}
+
+/* Loading */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  min-height: 300px;
+}
+
+/* Tabs */
+.ant-tabs-nav {
+  margin-bottom: 0 !important;
+}
+
+.ant-tabs-tab {
+  font-size: 12px !important;
+  padding: 8px 16px !important;
+}
+
+/* Select múltiplo */
+.ant-select-multiple .ant-select-selection-item {
+  font-size: 11px !important;
+  padding: 2px 6px !important;
+}
+
+/* Inputs */
+.ant-input-affix-wrapper,
+.ant-select-selector,
+.ant-picker-input > input {
+  font-size: 12px !important;
+}
+
+/* Botões */
+.ant-btn-sm {
+  font-size: 12px !important;
+  padding: 4px 11px !important;
+}
+
+/* Collapse */
+.ant-collapse-borderless {
+  background: transparent;
+}
+
+.ant-collapse-content-box {
+  padding: 12px 0 0 0 !important;
+}
+
+/* Scrollbar customizada */
+.ant-table-body::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.ant-table-body::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+
+.ant-table-body::-webkit-scrollbar-thumb {
+  background: rgba(24, 144, 255, 0.4);
+  border-radius: 4px;
+}
+
+.ant-table-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(24, 144, 255, 0.6);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .dashboard-content {
+    padding: 8px;
+  }
+  
+  .header-section {
+    padding: 8px 12px;
+  }
+  
+  .header-section h4 {
+    font-size: 14px !important;
+  }
+  
+  .stat-card {
+    height: auto;
+    min-height: 60px;
+  }
+  
+  .stat-label {
+    font-size: 10px !important;
+  }
+  
+  .stat-value {
+    font-size: 16px !important;
+  }
+}
+
+/* Animações suaves */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dashboard-content > * {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Cores das classes */
+.classe-a {
+  color: #d32f2f !important;
+  font-weight: 600;
+}
+
+.classe-b {
+  color: #ed6c02 !important;
+  font-weight: 600;
+}
+
+.classe-c {
+  color: #0288d1 !important;
+  font-weight: 600;
+}
+
+/* Ajustes para o RangePicker - corrigir fundo preto */
+.ant-picker-panel thead th {
+  background-color: #f5f5f5 !important;
+  color: #333333 !important;
+}
+
+.ant-picker-content th {
+  background-color: #f5f5f5 !important;
+  color: #333333 !important;
+}
+
+.ant-picker-cell-in-view {
+  color: #333333 !important;
+  background-color: #ffffff !important;
+}
+
+.ant-picker-cell-selected .ant-picker-cell-inner {
+  color: #fff !important;
+}
+
+.ant-picker-cell:hover:not(.ant-picker-cell-selected) .ant-picker-cell-inner {
+  background-color: rgba(24, 144, 255, 0.1) !important;
+}
+
+/* Header do calendar */
+.ant-picker-calendar-header {
+  background-color: #ffffff !important;
+  color: #333333 !important;
+}
+
+/* Dias da semana */
+.ant-picker-panel .ant-picker-content thead tr th {
+  color: #333333 !important;
+  font-weight: 600;
+}

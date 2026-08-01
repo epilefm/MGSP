@@ -1,0 +1,222 @@
+/* .resina {
+    border-collapse: collapse;
+    width: 100%;
+    border-radius: 0.25rem;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+    margin: 0 0 2rem;
+  }
+  
+  .resina,th,td {
+    padding: 0.75rem;
+    text-align: left;
+    vertical-align: middle;
+  }
+  
+  th {
+    font-weight: 600;
+    color: rgb(0, 87, 58);
+    background-color: red;
+  }
+  
+  td {
+    font-size: 0.875rem;
+  }
+  
+  .resina-responsive {
+    overflow-x: auto;
+  }
+  
+  .resina-bordered td,
+  .resina-bordered th {
+    border: 1px solid #aad5ff;
+  }
+  
+  .resina-hover td:hover,
+  .table-hover th:hover {
+    background-color: #e4e4e4;
+  } */
+
+  /* .resina{
+    border-collapse: collapse;
+    width: 20%;
+    border-radius: 0.25rem;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+    margin: 0 0 2rem;
+  }
+
+  th {
+    font-weight: 600;
+    color: rgb(255, 255, 255);
+    background-color: rgb(0, 31, 133);
+  }
+
+  .resina, td:hover,
+  .resina, th:hover {
+    background-color: #e4e4e4;
+  } */
+
+/* Estilos para o componente POP_Control */
+.pop-control-container {
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.pop-control-container .title {
+  color: #333;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.form-section {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.form-section h3 {
+  color: #495057;
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.pop-form {
+  width: 100%;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -10px 15px -10px;
+}
+
+.form-group {
+  flex: 1 0 21%;
+  margin: 0 10px 15px 10px;
+  min-width: 200px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #495057;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+.form-group .status-field {
+  background-color: #e9ecef;
+  cursor: not-allowed;
+}
+
+.submit-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+
+.table-section {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.table-section h3 {
+  color: #495057;
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.pop-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.pop-table th,
+.pop-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.pop-table th {
+  background-color: #e9ecef;
+  font-weight: 600;
+  color: #495057;
+}
+
+.pop-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.pop-table .status-ok {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.pop-table .status-ng {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+.pop-table .no-data {
+  text-align: center;
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .form-group {
+    flex: 1 0 100%;
+    min-width: 100%;
+  }
+  
+  .form-row {
+    margin-bottom: 10px;
+  }
+  
+  .pop-table {
+    font-size: 14px;
+  }
+  
+  .pop-table th,
+  .pop-table td {
+    padding: 8px 10px;
+  }
+}

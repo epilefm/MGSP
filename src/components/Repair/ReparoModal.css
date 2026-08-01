@@ -1,0 +1,44 @@
+/* ReparoModal.css */
+
+/* Estilo para a tabela dentro do modal */
+.reparo-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px; /* Ajuste conforme necessário */
+}
+
+.reparo-table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+.reparo-table:hover {
+background-color: #cacaca;
+}
+
+.reparo-table td {
+  border: 1px solid #f0f0f0;
+  padding: 8px;
+  text-align: center;
+  color:rgb(0, 0, 0)
+}
+
+.reparo-table th {
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+.modalRep .modal-content {
+  width: 95%;
+  margin: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@media (min-width: 576px) {
+  .modalRep .modal-dialog {
+    max-width: 100%;
+  }
+}

@@ -1,0 +1,396 @@
+:root {
+  --table-header: #2563eb;
+  --table-header-foreground: #ffffff;
+  --table-group: #3b82f6;
+  --table-group-foreground: #ffffff;
+  --auto-field: #f1f5f9;
+  --editable-field: #ffffff;
+  --border: #cbd5e1;
+  --background: #f1f5f9;
+  --foreground: #0f172a;
+  --primary: #2563eb;
+  --secondary: #64748b;
+  --success: #10b981;
+  --outline: #94a3b8;
+}
+
+.kpi-container {
+  padding: 20px;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.kpi-header {
+  text-align: center;
+  margin-bottom: 20px;
+  padding: 20px 0;
+}
+
+.kpi-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.kpi-subtitle {
+  font-size: 1.2rem;
+  color: var(--secondary);
+  font-weight: normal;
+}
+
+.filter-and-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 10px 0;
+  gap: 20px;
+}
+
+.date-filter {
+  display: flex;
+  align-items: center;
+  max-width: 300px;
+}
+
+.date-filter label {
+  margin-right: 10px;
+  font-weight: 500;
+}
+
+.date-input {
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  height: 32px;
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+}
+
+.btn-outline:hover {
+  background-color: var(--primary);
+  color: white;
+}
+
+.btn-primary {
+  background-color: var(--success);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #059669;
+}
+
+.table-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+}
+
+.btn-outline:hover {
+  background-color: var(--primary);
+  color: white;
+}
+
+.btn-primary {
+  background-color: var(--success);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #059669;
+}
+
+.table-container {
+  overflow-x: auto;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+
+.kpi-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  border: 1px solid var(--border);
+  table-layout: fixed; /* Força larguras uniformes */
+}
+
+.kpi-table th,
+.kpi-table td {
+  border: 1px solid var(--border);
+  text-align: center;
+  vertical-align: middle;
+  padding: 0;
+}
+
+.group-header th {
+  background-color: var(--table-group);
+  color: var(--table-group-foreground);
+  padding: 8px 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.column-header th {
+  background-color: var(--table-header);
+  color: var(--table-header-foreground);
+  padding: 8px 4px;
+  font-size: 11px;
+  font-weight: 600;
+  min-width: 80px; /* Largura padrão para TODAS as sub-colunas */
+  max-width: 80px;
+  width: 80px;
+}
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/* Coluna Line */
+.column-header th:nth-child(1) {
+  min-width: 80px;
+  max-width: 100px;
+  width: 100px;
+}
+
+/* Coluna Model */
+.column-header th:nth-child(2) {
+  min-width: 125px;
+  max-width: 150px;
+  width: 150px;
+}
+
+/* Array */
+.column-header th:nth-child(3) {
+  min-width: 50px;
+  max-width: 75px;
+  width: 75px;
+}
+/* ------------------------- */
+/* Printer Bot e Top → 2 */
+.column-header th:nth-child(4) {
+  min-width: 125px;
+  max-width: 150px;
+  width: 150px;
+}
+
+/* PAOI  */
+.column-header th:nth-child(5) {
+  min-width: 50px;
+  max-width: 75px;
+  width: 75px;
+}
+
+/* NPM  */
+.column-header th:nth-child(6) {
+  min-width: 200px;
+  max-width: 825px;
+  width: 825px;
+}
+
+/* MAOI  */
+.column-header th:nth-child(7) {
+  min-width: 50px;
+  max-width: 75px;
+  width: 75px;
+}
+
+/* SCM1  */
+.column-header th:nth-child(8) {
+  min-width: 50px;
+  max-width: 75px;
+  width: 75px;
+}
+
+/* SCM2  */
+.column-header th:nth-child(9) {
+  min-width: 50px;
+  max-width: 75px;
+  width: 75px;
+}
+
+/* SAOI  */
+.column-header th:nth-child(10) {
+  min-width: 50px;
+  max-width: 75px;
+  width: 75px;
+}
+
+/* FT */
+.column-header th:nth-child(11) {
+  min-width: 200px;
+  max-width: 300px;
+  width: 300px;
+}
+
+/* SED4000 */
+.column-header th:nth-child(12) {
+  min-width: 100px;
+  max-width: 150px;
+  width: 150px;
+}
+
+/* SED4000 */
+.column-header th:nth-child(13) {
+  min-width: 100px;
+  max-width: 75px;
+  width: 75px;
+}
+
+/* SED4000 */
+.column-header th:nth-child(14) {
+  min-width: 100px;
+  max-width: 75px;
+  width: 75px;
+}
+
+/* Router */
+.column-header th:nth-child(15) {
+  min-width: 100px;
+  max-width: 225px;
+  width: 225px;
+}
+
+/* Neck */
+.column-header th:nth-child(16) {
+  min-width: 100px;
+  max-width: 75px;
+  width: 75px;
+}
+
+/* Qty Blank */
+.column-header th:nth-child(17) {
+  min-width: 100px;
+  max-width: 75px;
+  width: 75px;
+}
+
+/* Planned Target */
+.column-header th:nth-child(18) {
+  min-width: 100px;
+  max-width: 75px;
+  width: 75px;
+}
+
+/* Remark */
+.column-header th:nth-child(19) {
+  min-width: 100px;
+  max-width: 280px;
+  width: 280px;
+}
+
+/* ---------------------------------------------------------------------- */
+.automatic-cell {
+  background-color: var(--auto-field);
+  padding: 2px 4px;
+  font-size: 11px;
+  font-weight: 500;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4b5563; /* Texto mais escuro para melhor contraste */
+  border: 1px solid #e5e7eb; /* Borda sutil para destacar os campos */
+  border-radius: 2px; /* Bordas arredondadas leves */
+}
+
+.editable-cell {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  text-align: center;
+  font-size: 11px;
+  padding: 1px;
+  background-color: var(--editable-field);
+}
+
+.editable-cell:focus {
+  box-shadow: 0 0 0 1px var(--primary);
+}
+
+/* Highlight max NPM value */
+.editable-cell.max-npm {
+  background-color: #ffeb3b;
+  color: #000;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .kpi-container {
+    padding: 10px;
+  }
+  
+  .action-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .action-buttons {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+/* Estilos para paginação */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  gap: 15px;
+}
+
+.pagination-btn {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.pagination-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination-info {
+  font-size: 14px;
+  color: #333;
+}

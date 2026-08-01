@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\f.miguel\\\\Downloads\\\\AI Crew\\\\agent\" -Force 2>$null | Select-Object Name; if \\(-not \\(Test-Path \"C:\\\\Users\\\\f.miguel\\\\Downloads\\\\AI Crew\\\\agent\"\\)\\) { Write-Host \"Pasta não existe\" })",
+      "Bash(python -m py_compile tradutor_nasca.py)",
+      "Bash(rm \"C:\\\\Users\\\\f.miguel\\\\PycharmProjects\\\\pythonProject2\\\\tradutor_nasca.py\" && echo \"✓ Arquivo deletado\")",
+      "Bash(python -m py_compile tradutor_google_v2.py)",
+      "PowerShell(python -m pip install googletrans-py --quiet 2>&1)",
+      "Bash(ipconfig)",
+      "Bash(git init *)",
+      "Bash(git add *)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\f.miguel\\PycharmProjects\\pythonProject2"
+    ]
+  }
+}

@@ -1,0 +1,184 @@
+.mgsp-header {
+    background: #0b2cd2;
+    
+}
+.mgsp-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 6px;
+    user-select: none;
+}
+.mgsp-tabs {
+    display:flex;
+    align-items:center;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.mgsp-tabs-link {
+    padding: 12px 18px;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: .1s ease;
+}
+.mgsp-tabs-link:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.mgsp-tabs-link[aria-disabled='true'] {
+    cursor: default;
+}
+
+.mgsp-tabs-link.active {
+    background: white;
+    color: black;
+}
+
+.mgsp-links-container {
+    transition: all 0.3s ease;
+}
+
+.mgsp-links {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-bottom: 1px solid #9d9fa0a6;
+}
+
+.mgsp-links-group {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #9d9fa0a6;
+}
+
+.mgsp-links-category {
+    text-align: center;
+    color: #9d9fa0;
+    width: 100%;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 4px 12px;
+    background: #9d9fa018;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mgsp-links-list {
+    display: flex;
+    align-items: start;
+    gap: 4px;
+}
+
+.mgsp-links-list a {
+    height: 100%;
+    min-height: 110px;
+    transition: .1s ease;
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    gap: 10px;
+    width: fit-content;
+}
+
+.mgsp-links-list a .icon {
+    width: 48px;
+    height: 48px;
+    display: block;
+    position: relative;
+}
+
+.mgsp-links-list a .icon img {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.mgsp-links-list a .title {
+    font-size: 14px;
+    max-width: 100px;
+    text-align: center;
+    overflow: hidden;
+    display: -webkit-box; 
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+.mgsp-links-list a:hover {
+    background: rgba(0,0,0,0.1)
+}
+
+.mgsp-links-list a.locked {
+    pointer-events: none;
+    cursor: default;
+    position: relative;
+}
+
+.mgsp-links-list a.locked:hover {
+    background: transparent;
+}
+
+.mgsp-links-list a.locked .icon::after {
+    content: "⏳";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    z-index: 2;
+}
+.mgsp-help-links {
+    display: flex;
+    list-style: none;
+    padding-bottom: 6px;
+}
+
+.mgsp-help-links .login {
+    color: white;
+    font-size: 12px;
+    padding: 6px;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.mgsp-help-links .login span {
+    background: white;
+    border: 1px solid #9d9fa0a6;
+    color: black;
+    padding: 2px 10px; 
+}
+
+.mgsp-help-links .login {
+    user-select: none;
+}
+
+.mgsp-help-links .lang {
+    color: white;
+    font-size: 12px;
+    padding: 6px;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.mgsp-help-links .lang select {
+    background: white;
+    border: 1px solid #9d9fa0a6;
+    color: black;
+    padding: 2px 10px; 
+}

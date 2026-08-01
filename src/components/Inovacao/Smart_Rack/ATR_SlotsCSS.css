@@ -1,0 +1,104 @@
+.DivSlot {
+  height: 92vh;
+}
+
+.slot-container {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #3d3d3d;
+  border: solid 2px white;
+  margin: 1px;
+  border-radius: 10px;
+  justify-content: space-around; /* Adjusts the spacing between boxes */
+}
+
+/* Add styles for individual boxes if needed */
+.box {
+  width: 150px;
+  height: 200px;
+  margin: 5px;
+  background-color: white;
+  border: solid 2px black;
+  border-radius: 10px;
+}
+
+.boxSlot {
+  margin: 3px;
+  transition: transform 5.62s ease-in-out;
+  height: calc(82vh / 12);
+  width: calc(96.5% / 7);
+  background-color: rgb(225, 225, 225);
+
+  display: flex;
+  flex-direction: column;
+
+  border: solid thin;
+  border-radius: 4px;
+  border-color: rgba(255, 255, 255, 0.618);
+  text-align: justify;
+  font-size: 11px;
+}
+
+.boxSlot:hover {
+  background: rgb(225, 255, 136);
+  color: #000;
+  font-weight: bolder;
+}
+
+.boxSlot.filled {
+  background-color: #27a027;
+}
+
+.TypographySlot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  text-align: center;
+  color: aliceblue;
+}
+
+.boxSlotStock,
+.boxSlotEmpty,
+.boxSlotTotal {
+  width: 225px;
+  height: 25px;
+  justify-content: center;
+  background-color: rgb(85, 255, 127);
+  border: solid thin;
+  border-color: transparent;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 15;
+  margin: 5px;
+}
+
+.boxSlotTotal {
+  font-weight: bold;
+}
+
+.boxModelSlot {
+  width: 225px;
+  height: 25px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border-color: rgb(255, 0, 0);
+}
+
+@media only screen and (max-width: 1768px) {
+  .col-md-4,
+  .col-md-12 {
+    flex: 1 100%;
+  }
+
+  .box {
+    width: calc(50% - 10px);
+    height: 200px; /* Fixed height */
+  }
+
+  .TypographySlot {
+    font-size: 10px; /* Adjust font size for smaller screens */
+  }
+
+}

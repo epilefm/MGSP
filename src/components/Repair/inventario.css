@@ -1,0 +1,16 @@
+.Rinventario{
+  border-collapse: collapse;
+  width: 100%;
+  border-radius: 0.5rem;
+  margin: 0 0 2rem;
+  color:rgb(255, 255, 255);
+  /* background-color: rgb(9, 114, 133); */
+  font-weight: 700;
+  border: solid 1px rgba(248, 248, 248, 0.548);
+  box-shadow: 0 2px 2px -2px rgba(214, 95, 95, 0.2)
+}
+
+tbody.RInventario-body tr:last-of-type { background: rgb(226, 224, 224) !important }
+tbody.RInventario-body tr td {
+  background-color: initial !important;
+}

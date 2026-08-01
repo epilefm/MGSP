@@ -1,0 +1,613 @@
+/* Estilos da Tabela */
+.hora-prod-table {
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+
+.hora-prod-table th,
+.hora-prod-table td {
+  padding: 6px 5px;
+  text-align: center;
+  font-size: 14px;
+  border: 0.5px solid #e0e0e0;
+  position: relative;
+}
+
+.hora-prod-table th {
+  background-color: #405cc4;
+  color: white;
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.hora-prod-table .head-of-head {
+  height: 10px;
+  text-align: center;
+  background-color: #e9e7e7;
+  position: sticky;
+  top: 18px;
+  z-index: 10;
+}
+
+.hora-prod-table .head-of-head th {
+  color: white;
+  font-weight: bold;
+  padding: 8px 5px;
+}
+
+/* Estilos para tabela unificada - remover bordas do cabeçalho */
+.hora-prod-table.unificada-table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.hora-prod-table.unificada-table thead tr:first-child th,
+.hora-prod-table.unificada-table thead tr:first-child td,
+.hora-prod-table.unificada-table thead tr:first-child .MuiTableCell-root,
+.hora-prod-table.unificada-table thead tr:first-child .MuiTableCell-head {
+  border: none !important;
+  border-bottom: none !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-color: transparent !important;
+  border-width: 0 !important;
+}
+
+.hora-prod-table.unificada-table thead tr:first-child + tr th,
+.hora-prod-table.unificada-table thead tr:first-child + tr td,
+.hora-prod-table.unificada-table thead tr:first-child + tr .MuiTableCell-root,
+.hora-prod-table.unificada-table thead tr:first-child + tr .MuiTableCell-head {
+  border-top: none !important;
+  border-top-color: transparent !important;
+  border-top-width: 0 !important;
+}
+
+.hora-prod-table.unificada-table .head-of-head th,
+.hora-prod-table.unificada-table .head-of-head td {
+  border-top: none !important;
+  border-top-color: transparent !important;
+  border-top-width: 0 !important;
+}
+
+.hora-prod-table .target-column {
+  background-color: #F1EFEC;
+  color: rgb(61, 61, 61);
+  border: 0.5px solid rgba(255,255,255,0.7);
+  font-weight: bold;
+}
+
+/* Cores das células condicionais */
+.hora-prod-table .cell-red {
+  background-color: #dbeef3;
+  color: rgb(255, 0, 0);
+  font-size: 15px;
+  border: 0.5px solid rgba(255,255,255,0.7);
+}
+
+.hora-prod-table .cell-yellow {
+  background-color: #dbeef3;
+  font-size: 15px;
+  color: rgb(168, 125, 7);
+  border: 0.5px solid rgba(255,255,255,0.7);
+}
+
+.hora-prod-table .cell-green {
+  background-color: #dbeef3;
+  font-size: 15px;
+  color: rgb(5, 148, 0);
+  border: 0.5px solid rgba(255,255,255,0.7);
+}
+
+.hora-prod-table .cell-gray {
+  background-color: white;
+  font-size: 15px;
+  color: rgb(0, 0, 0);
+  border: 0.5px solid #e8e8e8;
+}
+
+/* Estilo para a última linha (Total) */
+.hora-prod-table .last-row {
+  background-color: rgb(71, 108, 149);
+  color: white !important;
+  font-weight: bold;
+}
+
+.hora-prod-table .last-row td {
+  background-color: inherit !important;
+  color: inherit !important;
+}
+
+/* //-------------------------------------------------------------------------------- */
+
+/* Estilo para coluna ativa (horário atual) */
+.active-hour-column {
+  border-bottom: 3px solid #27548A !important;
+  background-color: white !important;
+}
+
+/* Contador de Linhas */
+.line-counter {
+  display: flex;
+  width: 200px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 8px;
+  margin-top: -35px;
+  margin-left: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.counter-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* //-------------------------------------------------------------------------------- */
+
+/* Estilos do Modal de Comentário */
+.comment-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  backdrop-filter: blur(2px);
+}
+
+.comment-modal {
+  background-color: white;
+  border-radius: 8px;
+  width: 500px;
+  max-width: 90%;
+  max-height: 90vh;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  background-color: #2d0ceb;
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: transform 0.2s;
+}
+
+.close-button:hover {
+  transform: scale(1.2);
+}
+
+/* //-------------------------------------------------------------------------------- */
+
+.modal-body {
+  padding: 20px;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+/* Estilos das abas */
+.tabs {
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.tab-button {
+  padding: 10px 20px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.tab-button.active {
+  color: #2d0ceb;
+  border-bottom: 2px solid #2d0ceb;
+}
+
+.tab-button:hover:not(.active) {
+  color: #333;
+  background-color: #f5f5f5;
+}
+
+.cell-info {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.cell-info p {
+  margin: 5px 0;
+  font-size: 14px;
+  display: flex;
+}
+
+.cell-info p strong {
+  display: inline-block;
+  width: 70px;
+}
+
+.comment-textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  resize: vertical;
+  min-height: 120px;
+  font-family: inherit;
+  font-size: 14px;
+  margin-bottom: 15px;
+  transition: border 0.3s;
+}
+
+.comment-textarea:focus {
+  border-color: #2d0ceb;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(45, 12, 235, 0.2);
+}
+
+/* Estilos para a aba de manutenção */
+.maintenance-tab .form-group {
+  margin-bottom: 15px;
+}
+
+.maintenance-tab label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #333;
+}
+
+.maintenance-tab .form-control {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border 0.3s;
+}
+
+.maintenance-tab .form-control:focus {
+  border-color: #2d0ceb;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(45, 12, 235, 0.2);
+}
+
+.maintenance-tab .form-control.is-valid {
+  border-color: #28a745;
+  box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.25);
+}
+
+.maintenance-tab .form-control.is-invalid {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25);
+}
+
+.valid-feedback {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 85%;
+  color: #28a745;
+}
+
+.invalid-feedback {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 85%;
+  color: #dc3545;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.save-button, .clear-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.save-button {
+  background-color: #2d0ceb;
+  color: white;
+}
+
+.save-button:hover {
+  background-color: #1a08a8;
+}
+
+.clear-button {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.clear-button:hover {
+  background-color: #ddd;
+}
+
+/* Estilos para células marcadas */
+.marked-cell {
+  border-width: 0.5px !important;
+  border-color: rgba(255,255,255,0.7) !important;
+  animation: pulse-mark 0.5s ease;
+}
+
+@keyframes pulse-mark {
+  0% { transform: scale(0.75); }
+  50% { transform: scale(0.87); }
+  100% { transform: scale(1); }
+}
+
+.marker-icon {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  padding: 2px;
+}
+
+.marker-icon svg {
+  filter: drop-shadow(0 0 2px rgba(75, 4, 4, 0.575));
+}
+
+/* Estilos para tooltip */
+[data-tooltip] {
+  position: relative;
+  cursor: pointer;
+}
+
+[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 100;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .hora-prod-table th,
+  .hora-prod-table td {
+    padding: 6px 4px;
+    font-size: 12px;
+  }
+  
+  .line-counter {
+    width: 160px;
+    margin-left: 10px;
+  }
+  
+  .counter-title {
+    font-size: 14px;
+  }
+}
+
+/* Estilos para loading */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.loading-spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top: 4px solid #2d0ceb;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.sticky-subheader {
+  position: sticky;
+  top: 48px; /* Altura do primeiro cabeçalho */
+  z-index: 10;
+}
+
+/* ------------------------------------- */
+ 
+
+/* //------------------**-++-+++-+-+-+-+--++--+/-*/
+.HoraProdListaDinamica-table-container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px;
+}
+
+.HoraProdListaDinamica-table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow-x: auto;
+  display: block;
+  margin-top: 20px;
+}
+
+.HoraProdListaDinamica-table th,
+.HoraProdListaDinamica-table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.HoraProdListaDinamica-table th {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
+.HoraProdListaDinamica-table tr:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+.HoraProdListaDinamica-table-container input[type="date"],
+.HoraProdListaDinamica-table-container select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 2px solid #007bff;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.HoraProdListaDinamica-table-container select option:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.HoraProdListaDinamica-table-container .ant-table-pagination {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.HoraProdListaDinamica-table-container .ant-table-pagination .ant-pagination-item-active {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.HoraProdListaDinamica-table-container .ant-table-pagination .ant-pagination-item:hover {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.HoraProdListaDinamica-table-container .ant-table-pagination .ant-pagination-item-link:hover {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.HoraProdListaDinamica-table-container .ant-table-pagination .ant-pagination-prev:hover,
+.HoraProdListaDinamica-table-container .ant-table-pagination .ant-pagination-next:hover {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.HoraProdListaDinamica-table-container .ant-table-pagination .ant-pagination-jump-prev:hover,
+.HoraProdListaDinamica-table-container .ant-table-pagination .ant-pagination-jump-next:hover {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+/* Estilos para a coluna de rendimento */
+.rendimento-default {
+  background-color: #EAEFEF;
+  color: #183B4E;
+  font-weight: bold;
+}
+
+.rendimento-medium {
+  background-color: #F5F0CD;
+  color: #183B4E;
+  font-weight: bold;
+}
+
+.rendimento-good {
+  background-color: #8DECB4;
+  color: #006644;
+  font-weight: bold;
+}
+
+/* Estilo para a coluna Total */
+.total-column {
+  background-color: rgb(71, 108, 149);
+  color: white;
+  font-weight: bold;
+  width: 20px;
+  min-width: 20px;
+  max-width: 20px;
+}
+
+/* Estilo para a coluna TTL Acc (%) */
+.hora-prod-table .rendimento-default,
+.hora-prod-table .rendimento-medium,
+.hora-prod-table .rendimento-good {
+  font-size: 13px;
+}
+
+/* Estilo para a última coluna (TTL Acc) */
+.hora-prod-table th:last-child,
+.hora-prod-table td:last-child {
+  width: 55px;
+  min-width: 55px;
+  max-width: 65px;
+  font-size: 14px;
+}

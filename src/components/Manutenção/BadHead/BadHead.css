@@ -1,0 +1,131 @@
+/* BadHead.css */
+
+.total-box {
+  display: inline-flex;
+  padding: 4px 8px;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  color: rgb(0, 0, 0); /* Cor do texto */
+  border-radius: 4px; /* Bordas arredondadas */
+  position: absolute;
+  right: 20px; /* Posicionar no canto direito */
+  top: 20px; /* Posicionar na parte superior */
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos específicos para a tabela de BadHeads */
+.badhead-table-container {
+  position: relative; /* Para posicionar o total-box absolutamente */
+  max-width: 85%; /* Diminuir o tamanho da tabela */
+  margin: 0 auto; /* Centralizar a tabela */
+  overflow-x: auto;
+}
+
+.badhead-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  background-color: #f9f9f9; /* Cor de fundo da tabela */
+}
+
+
+.badhead-table thead .Linha {
+  background-color:'red';
+}
+
+ .badhead-table tbody tr td  {
+  line-height: 0.1cqmin;
+}
+
+.badhead-table tbody tr:hover {
+  background-color: #e6e6e6; /* Cor de fundo ao passar o mouse */
+}
+
+/* Estilos específicos para a coluna de Status */
+.status-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 10px;
+  margin-bottom: -10px;
+  margin-Top: -10px;
+  color:'green'
+
+}
+
+.status-cell .ocorrido {
+  color: rgb(0, 0, 0); 
+  background-color: #ffea2d; 
+  border-radius: 4px;
+  /* border: solid 1px black; */
+  padding: 8px 12px; 
+  font-weight: bold; 
+  width: 75%;
+}
+
+.status-cell .set {
+  color: white; /* Cor do texto para 'Set' */
+  background-color: #ff4d4f; /* Cor de fundo para 'Set' */
+  border-radius: 4px; /* Bordas arredondadas */
+  padding: 8px 12px; /* Aumentar a largura do box do 'Set' */
+  font-weight: bold;
+  width: 75%;
+}
+
+/* BadHead.css */
+
+/* Estilos específicos para o box de alarme */
+.alarm-box {
+  display: inline-block;
+  padding: 8px 1px;
+  width:75%;
+  background-color: #ff0004; /* Cor de fundo do box de alarme */
+  color: white; /* Cor do texto */
+  border-radius: 4px; /* Bordas arredondadas */
+  margin-left: 0px; /* Espaçamento à esquerda */
+  position: relative; /* Para posicionar o pseudo-elemento */
+  font-weight: bold;
+  animation: blinkAlarm 3s infinite; /* Adicionar animação de piscar */
+}
+
+/* Definir a animação de piscar para o total-box */
+@keyframes blink {
+  to {
+    background-color: transparent;
+  }
+}
+
+/* Definir a animação de piscar para o alarm-box */
+@keyframes blinkAlarm {
+  to {
+    background-color:  transparent;
+    color: red;
+  }
+}
+
+/* 
+//------------------------Grafico----------------------------- */
+.bar-not-100 {
+  background-color: #ff0000 !important;
+}
+
+/* BadHead.css */
+.ObservacaoBadHead {
+  white-space: normal;
+  word-break: break-word;
+  max-width: 300px;
+  overflow-wrap: break-word;
+}
+
+/* Adicione estas classes */
+/* .has-comment {
+  border: 2px solid #46ff18 !important;
+} */
+
+.status-cell .ant-btn.has-comment::after {
+  content: '✓';
+  margin-left: 5px;
+  color: #15ff00;
+  font-weight: bold;
+}

@@ -1,0 +1,624 @@
+@import url('https://fonts.googleapis.com/css2?family=Knewave&family=Nunito:wght@400;600;700&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  font-family: Nunito, sans-serif;
+}
+
+.container-login {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  padding: 0px;
+  background-color: #ffffff;
+  border-color: #000000;
+}
+
+.wrap-login {
+  width: 390px;
+  background-color: #3f3f3f;
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 77px 55px 33px 55px;
+  box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.2);
+}
+
+.login-form {
+  width: 100%;
+  margin-top: 10;
+}
+
+.login-form-title {
+  font-family: Nunito, sans-serif;
+  display: block;
+  font-size: 20px;
+  color: rgb(243, 253, 253);
+  line-height: 1.2;
+  text-align: center;
+  margin-top: 10;
+}
+
+.login-form-title img {
+  width: 190px;
+}
+
+.wrap-input {
+  width: 100%;
+  position: relative;
+  border-bottom: 2px solid #adadad;
+  margin-bottom: 37px;
+}
+
+.input {
+  font-size: 15px;
+  color: #fff;
+  line-height: 1.2;
+  border: none;
+  display: block;
+  width: 100%;
+  height: 45px;
+  background-color: transparent;
+  padding: 0 5px;
+  font-family: Arial, Helvetica, Arial, Helvetica, sans-serif;
+}
+
+.focus-input {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  color: #adadad;
+  font-family: Nunito, sans-serif;
+}
+
+.focus-input::before {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+  background: #d6d6d6;
+  background: -webkit-linear-gradient(to left, #003494, #21cbff);
+  background: -o-linear-gradient(to left, #003494, #25c0f0);
+  background: -moz-linear-gradient(to left,  #003494, #1ad4f5);
+  background: linear-gradient(to left, #003494, #24c9df);
+}
+
+.focus-input::after {
+  font-family: Nunito, sans-serif;
+  font-size: 15px;
+  color: #999999;
+  line-height: 1.2;
+  content: attr(data-placeholder);
+  display: block;
+  width: 100%;
+  position: absolute;
+  top: 16px;
+  left: 0px;
+  padding-left: 5px;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+.input:focus {
+  outline: 0;
+}
+
+.input:focus+.focus-input::after {
+  top: -15px;
+}
+
+.input:focus+.focus-input::before {
+  width: 100%;
+}
+
+.has-val+.focus-input::after {
+  top: -15px;
+}
+
+.has-val+.focus-input::before {
+  width: 100%;
+}
+
+.container-login-form-btn {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-bottom: 13px;
+}
+
+.login-form-btn {
+  border: #ffffff;
+  border-radius: 10px;
+  color: #fff;
+  line-height: 1.2;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 50px;
+  background: #1f6bf8;
+  background: linear-gradient(to left, #088cc9);
+}
+
+.login-form-btn:hover {
+  cursor: pointer;
+}
+
+.text-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.txt1 {
+  font-size: 14px;
+  color: #adadad;
+  line-height: 1.5;
+  padding-right: 5px;
+}
+
+.txt2 {
+  font-size: 14px;
+  color: #6a7dfe;
+  line-height: 1.5;
+  text-decoration: none;
+}
+/* --------------------------------------tabela------------------------------------------ */
+
+
+.container {
+  font-size: 14px;
+  color: #ffffff;
+  background-color: #e4e3e3;
+  opacity: inherit;
+  line-height: 2;
+  font-size: medium;
+  }
+
+.tabelass{
+  background-color:#ffffff;
+  width: 100%;
+  font-family: sans-serif;
+}
+
+.h2{
+  font-family: 'Roboto', sans-serif;
+  color: #181313;
+  text-align: center;
+  
+}
+
+.devInp{
+  font-family: 'Roboto', sans-serif;
+  color: #181313;
+  line-height: 4rem;
+}
+.devInp2{
+  font-family: 'Roboto', sans-serif;
+  color: #181313;
+  line-height: 2rem;
+}
+
+.headerr{
+  font-weight: bolder;
+  color: rgb(0, 0, 0);
+  font-size: medium;
+  word-break: break-word;
+}
+
+.MUIheader{
+  font-weight: bolder;
+  color: rgb(255, 255, 255);
+  font-size: large;
+  word-break: break-word;
+  background-color: #004ad3;
+}
+
+.MUIhAction{
+  font-weight: bolder;
+  color: rgb(255, 255, 255);
+  font-size: large;
+  word-break: break-word;
+  background-color: #279c10;
+}
+
+.EntranceInput1{
+  background-color: #ebebeb;
+  position: absolute;
+  width: 300px;
+  border-radius: 10px;
+  padding-inline: 15px;
+  line-height: 35px;
+}
+
+.lista2{
+  position: absolute;
+  min-height: 700px;
+  background-color: #fefeff;
+  margin-Top: 1%;
+}
+
+.tabelass2{
+  background-color:#ffffff;
+  width: 100%;
+  font-family: sans-serif;
+  font-size: 16px;
+}
+
+.containerMat{
+margin-left:100rem;
+}
+
+/* Css da Tabela Baking - Quality */
+
+.editable-cell {
+  position: relative;
+}
+
+.editable-cell-value-wrap {
+  padding: 0px 5px;
+  cursor: pointer;
+}
+
+.editable-row:hover .editable-cell-value-wrap {
+  padding: 1px 1px;
+  border: 1px solid #ee3636;
+  border-radius: 5px;
+}
+.boxFiltro{
+  border: 1px solid #3f1eff;
+
+}
+
+/* ---------------------------------------------Calendar----------------------------------------- */
+.react-calendar {
+  width: 350px;
+  max-width: 100%;
+  background: white;
+  border: 1px solid #a0a096;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.125em;
+  border-radius: 10px;
+}
+.react-calendar--doubleView {
+  width: 500px;
+}
+.react-calendar--doubleView .react-calendar__viewContainer {
+  display: flex;
+  margin: -0.5em;
+}
+.react-calendar--doubleView .react-calendar__viewContainer > * {
+  width: 50%;
+  margin: 0.5em;
+}
+.react-calendar,
+.react-calendar *,
+.react-calendar *:before,
+.react-calendar *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.react-calendar button {
+  margin: 0;
+  border: 0;
+  outline: none;
+}
+.react-calendar button:enabled:hover {
+  cursor: pointer;
+}
+.react-calendar__navigation {
+  height: 20px;
+  margin-bottom: 1em;
+  margin-Top:5px;
+}
+.react-calendar__navigation button {
+  min-width: 44px;
+  background: none;
+}
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+  background-color: #e6e6e6;
+}
+.react-calendar__navigation button[enabled] {
+  background-color: #000000;
+}
+.react-calendar__month-view__weekdays {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 0.75em;
+}
+.react-calendar__month-view__weekdays__weekday {
+  padding: 0.5em;
+}
+.react-calendar__month-view__weekNumbers {
+  font-weight: bold;
+}
+.react-calendar__month-view__weekNumbers .react-calendar__tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75em;
+  padding: calc(0.75em / 0.75) calc(0.5em / 0.75);
+}
+.react-calendar__month-view__days__day--weekend {
+  color: #d10000;
+}
+.react-calendar__month-view__days__day--neighboringMonth {
+  color: #757575;
+}
+.react-calendar__year-view .react-calendar__tile,
+.react-calendar__decade-view .react-calendar__tile,
+.react-calendar__century-view .react-calendar__tile {
+  padding: 2em 0.5em;
+}
+.react-calendar__tile {
+  max-width: 100%;
+  text-align: center;
+  padding: 0.75em 0.5em;
+  background: none;
+}
+.react-calendar__tile:disabled {
+  background-color: #f0f0f0;
+}
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  background-color: #e6e6e6;
+}
+.react-calendar__tile--now {
+  background: #ffff76;
+}
+.react-calendar__tile--now:enabled:hover,
+.react-calendar__tile--now:enabled:focus {
+  background: #ffffa9;
+}
+.react-calendar__tile--hasActive {
+  background: #76baff;
+}
+.react-calendar__tile--hasActive:enabled:hover,
+.react-calendar__tile--hasActive:enabled:focus {
+  background: #a9d4ff;
+}
+.react-calendar__tile--active {
+  background: #006edc;
+  color: white;
+}
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  background: #1087ff;
+}
+.react-calendar--selectRange .react-calendar__tile--hover {
+  background-color: #e6e6e6;
+}
+
+ /* ---------------------------- */
+
+ .MuiCardMedia-img{
+  max-width: fit-content;
+  max-height: fit-content;
+  margin-left: 25%; 
+  margin-top: 5px;
+}
+
+/*----------------------------------------*/
+/*--Tabelas */
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  border-radius: 0.25rem;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+  margin: 0 0 2rem;
+}
+
+thead {
+  background-color: #000000;
+}
+
+th,
+td {
+  padding: 0.75rem;
+  text-align: center;
+  vertical-align: middle;
+}
+
+th {
+  font-weight: 600;
+}
+
+td {
+  font-size: 0.875rem;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: #ff0000;
+}
+
+.table-bordered td,
+.table-bordered th {
+  border: 1px solid #14589c;
+}
+
+.table-hover td:hover,
+.table-hover th:hover {
+  background-color: #f5f5f5;
+}
+
+/*----------------------------------------*/
+/*----------------------------------------*/
+
+
+.table-container{
+  margin-top: 10px;
+  color:#000000;
+  text-align: center;
+}
+
+.table head{
+  color:#6a7dfe ;
+}
+
+.table th,
+.table td {
+  padding:'10px';
+  border-bottom: solid #ddd;
+  /* background-color: #ffffff; */
+  
+}
+
+.table th {
+  border-bottom: solid 2px #352f5a;
+  text-align: center;
+  font-size: 18px;
+  
+}
+
+.table th span {
+  font-size: 14px;
+}
+
+.table-hover td:hover,
+.table-hover th:hover {
+  background-color: #3a548d;
+}
+
+/* ------------------------ */
+.modalButton { 
+  background-color: #ffffff00; 
+  width: 100%;
+  border: none;
+
+}
+
+.modalButton:hover { 
+  background-color: #0400ff; 
+  color: #ffffff;
+}
+
+.modalButtonOffSplicing { 
+  background-color: #ffffff00; 
+  width: 100%;
+  border: none;
+  color: #0026ff;
+  text-decoration: underline;
+
+}
+
+.modalButtonOffSplicing:hover { 
+  background-color: #48f138; 
+  color: #0026ff;
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(255, 0, 0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.boxCard {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* Sombra */
+    transition: 0.3s; /* Efeito de transição */
+    border-radius: 5px; /* Arredondamento das bordas */
+    background-color: #ffffffaf; /* Cor de fundo branca */
+    margin: 10px; /* Margem interna entre os cards */
+    width:100%; 
+    font-size: 100%;
+    color:rgb(0, 0, 0);
+    flex-direction: row;
+  }
+  .boxChildd {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* Sombra */
+    transition: 0.3s; /* Efeito de transição */
+    border-radius: 5px; /* Arredondamento das bordas */
+    background-color: #d8d8d885; /* Cor de fundo branca */
+    width:45%;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    font-size: 12px;
+    color: #000000;
+  }
+
+/* //----------------------------------------------------------------------------- */
+
+
+/* Header */
+.header-class {
+  background-color: #fff;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 8px 16px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+}
+
+.header-class:hover {
+  background: #f5f5f5;
+}
+
+/* Primeiro e último cabeçalho de coluna */
+.header-class:first-of-type {
+  border-left: none;
+}
+
+.header-class:last-of-type {
+  border-right: none;
+}

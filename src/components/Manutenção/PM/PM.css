@@ -1,0 +1,753 @@
+/* Estilos gerais para o sistema de PM Preventiva - Design Semântico Moderno */
+.pm-preventiva-system {
+  padding: 16px;
+  background-color: #ffffff;
+  min-height: 100vh;
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+}
+
+@media (min-width: 768px) {
+  .pm-preventiva-system {
+    padding: 32px;
+  }
+}
+
+.pm-preventiva-container {
+  max-width: max-content;
+  margin: 0 auto;
+}
+
+/* Cabeçalho */
+.pm-preventiva-header {
+  margin-bottom: 24px;
+}
+
+.pm-preventiva-title {
+  font-size: 30px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 8px 0;
+}
+
+.pm-preventiva-subtitle {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* Barra de Ferramentas e Indicadores */
+.pm-preventiva-toolbar-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.pm-preventiva-toolbar {
+  display: flex;
+  gap: 12px;
+}
+
+.pm-preventiva-toolbar button {
+  padding: 4px 8px; /* Reduzido ainda mais */
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  height: 32px; /* Altura menor para tornar mais discreto */
+  margin-top: 65px;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  background: #ffffff;
+  color: #1e293b;
+}
+
+.pm-preventiva-toolbar button:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.pm-preventiva-toolbar .unlock-btn {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+.pm-preventiva-toolbar .unlock-btn:hover {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+.pm-preventiva-toolbar .export-btn {
+  background: #ffffff;
+  color: #1e293b;
+  border: 1px solid #e2e8f0;
+}
+
+.pm-preventiva-toolbar .export-btn:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.pm-preventiva-toolbar .toggle-view-btn {
+  background: #8b5cf6; /* Roxo para diferenciar */
+  color: white;
+  border-color: #8b5cf6;
+}
+
+.pm-preventiva-toolbar .toggle-view-btn:hover {
+  background: #7c3aed;
+  border-color: #7c3aed;
+}
+
+/* Cards de Indicadores */
+.pm-preventiva-stats-container {
+  display: flex;
+  gap: 16px;
+}
+
+.pm-preventiva-stat-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 20px 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 180px;
+  transition: all 0.3s ease;
+}
+
+.pm-preventiva-stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.pm-preventiva-stat-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.pm-preventiva-stat-card:nth-child(1) .pm-preventiva-stat-icon {
+  color: #10b981;
+}
+
+.pm-preventiva-stat-card:nth-child(2) .pm-preventiva-stat-icon {
+  color: #3b82f6;
+}
+
+.pm-preventiva-stat-card:nth-child(3) .pm-preventiva-stat-icon {
+  color: #ef4444;
+}
+
+.pm-preventiva-stat-content {
+  flex: 1;
+}
+
+.pm-preventiva-stat-title {
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.pm-preventiva-stat-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.pm-preventiva-stat-card:nth-child(3) .pm-preventiva-stat-value {
+  color: #ef4444;
+}
+
+/* Tabela Principal */
+.pm-preventiva-table-container {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.pm-preventiva-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* 🔹 força largura uniforme nas colunas */
+  font-size: 13.5px;
+}
+
+.pm-preventiva-table tbody tr:hover {
+  background: linear-gradient(90deg, #f1f5f9 0%, #e0f2fe 100%);
+  transition: all 0.3s ease;
+}
+
+.pm-preventiva-table th,
+.pm-preventiva-table td {
+  padding: 8px;
+  border: 1px solid #d1d5db;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.pm-preventiva-table .line-column {
+  width: 120px;
+}
+
+.pm-preventiva-table .month-column {
+  width: 65px;
+}
+
+.pm-preventiva-table .total-column {
+  width: 90px;
+}
+
+.pm-preventiva-table .meta-column {
+  width: 80px;
+}
+
+.pm-preventiva-cell {
+  cursor: pointer;
+  height: 42px;
+  text-align: center; /* centraliza horizontalmente */
+  vertical-align: middle; /* centraliza verticalmente */
+  transition: background 0.2s;
+}
+
+.pm-preventiva-cell.completed {
+  background-color: #bbf7d0;
+}
+
+.pm-preventiva-cell.delayed {
+  background-color: #fecaca;
+}
+
+.pm-preventiva-cell.scheduled {
+  background-color: #fef08a; /* Amarelo suave */
+}
+
+.pm-preventiva-cell.empty {
+  background-color: #ffffff;
+}
+
+.pm-preventiva-cell:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+.pm-preventiva-cell .notification-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  color: #10b981;
+}
+
+.pm-preventiva-cell .alert-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  color: #ef4444;
+}
+
+/* Badge de Porcentagem */
+.pm-preventiva-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.pm-preventiva-badge,
+.pm-preventiva-footer-badge {
+  transition: all 0.3s ease;
+}
+
+.pm-preventiva-badge.high {
+  background-color: #10b981;
+  animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.pm-preventiva-badge.medium {
+  background-color: #f59e0b;
+  color: #000000;
+}
+
+.pm-preventiva-badge.low {
+  background-color: #ef4444;
+  color: #ffffff;
+}
+
+/* Rodapé da Tabela */
+.pm-preventiva-table .footer-row {
+  background-color: #f1f5f9;
+  font-weight: 600;
+}
+
+.pm-preventiva-table .footer-row td {
+  color: #1e293b;
+  font-size: 14px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.pm-preventiva-table .footer-row .footer-cell {
+  padding: 12px 8px;
+  text-align: center;
+}
+
+.pm-preventiva-table .footer-row .footer-label {
+  text-align: left;
+  padding-left: 16px;
+}
+
+/* Footer Badge */
+.pm-preventiva-footer-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.pm-preventiva-footer-badge.high {
+  background-color: #10b981;
+  color: #ffffff;
+}
+
+.pm-preventiva-footer-badge.medium {
+  background-color: #f59e0b;
+  color: #000000;
+}
+
+.pm-preventiva-footer-badge.low {
+  background-color: #ef4444;
+  color: #ffffff;
+}
+
+/* Modais */
+.pm-preventiva-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.pm-preventiva-modal {
+  background: #ffffff;
+  border-radius: 8px;
+  width: 95%;
+  max-width: 850px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  animation: slideIn 0.2s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.pm-preventiva-modal-header {
+  padding: 18px 24px;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.pm-preventiva-modal-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+}
+
+.pm-preventiva-modal-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #64748b;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.pm-preventiva-modal-close:hover {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
+.pm-preventiva-modal-body {
+  padding: 24px;
+}
+
+.pm-preventiva-modal-footer {
+  padding: 18px 24px;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  background: #f8fafc;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+/* Botões dos Modais */
+.pm-preventiva-modal-footer button {
+  padding: 6px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  background: #ffffff;
+  color: #1e293b;
+}
+
+.pm-preventiva-modal-footer button:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.pm-preventiva-modal-footer .save-btn {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+.pm-preventiva-modal-footer .save-btn:hover {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+.pm-preventiva-modal-footer .delete-btn {
+  background: #ef4444;
+  color: white;
+  border-color: #ef4444;
+}
+
+.pm-preventiva-modal-footer .delete-btn:hover {
+  background: #dc2626;
+  border-color: #dc2626;
+}
+
+.pm-preventiva-modal-footer .cancel-btn {
+  background: #64748b;
+  color: white;
+  border-color: #64748b;
+}
+
+.pm-preventiva-modal-footer .cancel-btn:hover {
+  background: #475569;
+  border-color: #475569;
+}
+
+/* Formulários */
+.pm-preventiva-form-group {
+  margin-bottom: 20px;
+}
+
+.pm-preventiva-form-label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #1e293b;
+  font-size: 14px;
+}
+
+.pm-preventiva-form-input,
+.pm-preventiva-form-textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.pm-preventiva-form-input:focus,
+.pm-preventiva-form-textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.pm-preventiva-form-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.pm-preventiva-form-textarea-read {
+  min-height: 120px;
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background-color: #f8fafc;
+  font-size: 14px;
+  white-space: pre-wrap;
+  overflow-y: auto;
+}
+
+.pm-preventiva-form-helper {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #64748b;
+  font-style: italic;
+}
+
+/* Checkboxes e Equipamentos */
+.pm-preventiva-checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.pm-preventiva-equipment-section {
+  margin-bottom: 24px;
+  padding: 20px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.pm-preventiva-equipment-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #1e293b;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.pm-preventiva-equipment-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.pm-preventiva-equipment-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.pm-preventiva-equipment-item:hover {
+  background: #f1f5f9;
+}
+
+.pm-preventiva-equipment-item-view {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+/* Password modal */
+.pm-preventiva-password-modal input {
+  width: 100%;
+  padding: 12px;
+  margin: 12px 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 15px;
+  transition: all 0.2s ease;
+}
+
+.pm-preventiva-password-modal input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .pm-preventiva-toolbar-container {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .pm-preventiva-toolbar,
+  .pm-preventiva-stats-container {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .pm-preventiva-title {
+    font-size: 24px;
+  }
+  
+  .pm-preventiva-table th,
+  .pm-preventiva-table td {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  
+  .pm-preventiva-cell {
+    height: 40px;
+  }
+  
+  .pm-preventiva-equipment-items {
+    grid-template-columns: 1fr;
+  }
+  
+  .pm-preventiva-stat-card {
+    min-width: 120px;
+    padding: 16px 12px;
+  }
+  
+  .pm-preventiva-stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    transition: all 0.2s ease;
+  }
+
+  .pm-preventiva-stat-value {
+    font-size: 18px;
+  }
+  
+  .pm-preventiva-stat-title {
+    font-size: 13px;
+  }
+}
+
+.pm-preventiva-cell.locked {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Seletor de Ano - Estilo Aprimorado */
+.year-selector {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #ffffff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+  margin-top: 65px;
+}
+
+.year-selector:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-color: #cbd5e1;
+}
+
+.year-selector-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 14px;
+}
+
+.year-selector-icon {
+  width: 20px;
+  height: 20px;
+  color: #3b82f6;
+}
+
+.year-selector-dropdown {
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background-color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3e%3cpath d='M7 7l3-3 3 3m0 6l-3 3-3-3' stroke='%239fa6b2' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+  -webkit-print-color-adjust: exact;
+  color-adjust: exact;
+}
+
+.year-selector-dropdown:hover {
+  border-color: #9ca3af;
+}
+
+.year-selector-dropdown:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.year-option {
+  padding: 8px 12px;
+  font-size: 14px;
+}

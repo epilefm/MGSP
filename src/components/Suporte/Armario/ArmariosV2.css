@@ -1,0 +1,440 @@
+/* Estilos para Armários V2 */
+
+.armarios-v2-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.armarios-v2-header {
+  margin-bottom: 30px;
+}
+
+.armarios-v2-header h1 {
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.armarios-v2-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  background: #f5f5f5;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.search-box input {
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 300px;
+  font-size: 14px;
+}
+
+.view-toggle button {
+  padding: 10px 20px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.view-toggle button.active {
+  background: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.btn-primary {
+  padding: 10px 20px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.btn-primary:hover {
+  background: #218838;
+}
+
+/* Grade de Armários */
+.armarios-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 10px;
+}
+
+.armario-bloco {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  background: #f8f9fa;
+  min-width: 350px;
+}
+
+.armario-bloco h3 {
+
+  margin: 0 0 15px 0;
+  color: #333;
+  text-align: center;
+}
+
+.armario-bloco-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.armario-row {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.armario-card {
+  width: 75px;
+  height: 90px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  padding: 3px;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.armario-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.armario-card.livre {
+  background: #d4edda;
+  border: 2px solid #28a745;
+}
+
+.armario-card.ocupado {
+  background: #f8d7da;
+  border: 2px solid #dc3545;
+}
+
+.armario-numero {
+  font-weight: bold;
+  font-size: 12px;
+  margin-bottom: 3px;
+}
+
+.armario-numero-input {
+  width: 60px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 2px;
+}
+
+.armario-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
+
+.armario-nome {
+  font-size: 10px;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.armario-matricula {
+  font-size: 11px;
+  color: #666;
+  margin: 2px 0;
+}
+
+.armario-turno {
+  font-size: 10px;
+  color: #888;
+}
+
+.armario-livre {
+  font-size: 12px;
+  color: #28a745;
+  font-weight: bold;
+}
+
+/* Lista de Armários - Formato de Tabela */
+.armarios-list-container {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.armarios-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.armarios-table th,
+.armarios-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.armarios-table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #555;
+  position: sticky;
+  top: 0;
+}
+
+.armarios-table tr:hover {
+  background-color: #f8f9fa;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-badge.livre {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-badge.ocupado {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.table-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-table-edit,
+.btn-table-liberar {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s;
+}
+
+.btn-table-edit {
+  background: #007bff;
+  color: white;
+}
+
+.btn-table-edit:hover {
+  background: #0056b3;
+}
+
+.btn-table-liberar {
+  background: #dc3545;
+  color: white;
+}
+
+.btn-table-liberar:hover {
+  background: #c82333;
+}
+
+.table-empty {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+.table-empty h3 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.btn-secondary {
+  padding: 10px 20px;
+  background: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.btn-secondary:hover {
+  background: #5a6268;
+}
+
+.btn-danger {
+  padding: 10px 20px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.btn-danger:hover {
+  background: #c82333;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-header h2 {
+  margin: 0;
+  color: #ffffff;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #999;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #555;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.form-group input:disabled {
+  background: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 20px;
+  border-top: 1px solid #eee;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .armarios-v2-container {
+    padding: 10px;
+  }
+  
+  .armarios-v2-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .search-box input {
+    width: 100%;
+  }
+  
+  .armario-card {
+    width: 80px;
+    height: 100px;
+  }
+  
+  .armario-row {
+    justify-content: center;
+  }
+  
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .modal-content {
+    width: 95%;
+    margin: 10px;
+  }
+}

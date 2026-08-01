@@ -1,0 +1,855 @@
+/* Estilos para EntMaterial 2.0 - Design Moderno e Profissional */
+
+/* Variáveis CSS para consistência */
+:root {
+  --entmaterial2-primary: #2563eb;
+  --entmaterial2-primary-dark: #1d4ed8;
+  --entmaterial2-secondary: #64748b;
+  --entmaterial2-success: #10b981;
+  --entmaterial2-success-dark: #059669;
+  --entmaterial2-warning: #f59e0b;
+  --entmaterial2-error: #ef4444;
+  --entmaterial2-background: #f8fafc;
+  --entmaterial2-surface: #ffffff;
+  --entmaterial2-surface-hover: #f1f5f9;
+  --entmaterial2-border: #e2e8f0;
+  --entmaterial2-text-primary: #0f172a;
+  --entmaterial2-text-secondary: #64748b;
+  --entmaterial2-text-disabled: #94a3b8;
+  --entmaterial2-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --entmaterial2-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --entmaterial2-radius: 12px;
+  --entmaterial2-radius-sm: 8px;
+  --entmaterial2-radius-xs: 6px;
+  --entmaterial2-transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Container Principal */
+.entmaterial2-container {
+  padding: 24px;
+  background: var(--entmaterial2-background);
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Header Moderno */
+.entmaterial2-header {
+  background: var(--entmaterial2-surface);
+  border-radius: var(--entmaterial2-radius);
+  box-shadow: var(--entmaterial2-shadow);
+  border: 1px solid var(--entmaterial2-border);
+  margin-bottom: 24px;
+  padding: 24px;
+}
+
+.entmaterial2-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.entmaterial2-title-section {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  flex: 1;
+  min-width: 300px;
+}
+
+.entmaterial2-header-icon {
+  font-size: 2.5rem !important;
+  color: var(--entmaterial2-primary);
+  background: rgba(37, 99, 235, 0.1);
+  border-radius: var(--entmaterial2-radius-sm);
+  padding: 12px;
+}
+
+.entmaterial2-title {
+  color: var(--entmaterial2-text-primary);
+  font-weight: 700;
+  font-size: 2rem;
+  margin: 0 0 4px 0;
+  letter-spacing: -0.5px;
+}
+
+.entmaterial2-subtitle {
+  color: var(--entmaterial2-text-secondary);
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 0;
+}
+
+.entmaterial2-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.entmaterial2-search-field {
+  min-width: 200px;
+}
+
+.entmaterial2-date-field {
+  margin-right: 16px;
+  width: 180px;
+  background: white;
+}
+
+.entmaterial2-date-field .MuiOutlinedInput-root {
+  border-radius: var(--entmaterial2-radius-xs);
+  background: var(--entmaterial2-surface);
+  border: 1px solid var(--entmaterial2-border);
+}
+
+.entmaterial2-date-field .MuiOutlinedInput-input {
+  padding: 10px 14px;
+  font-size: 0.9rem;
+}
+
+.entmaterial2-date-field .MuiInputLabel-root {
+  font-size: 0.9rem;
+  color: var(--entmaterial2-text-secondary);
+  font-weight: 500;
+}
+
+.entmaterial2-date-field .MuiInputLabel-root.Mui-focused {
+  color: var(--entmaterial2-primary);
+}
+
+.entmaterial2-search-field .MuiOutlinedInput-root {
+  border-radius: var(--entmaterial2-radius-xs);
+  background: var(--entmaterial2-surface);
+  border: 1px solid var(--entmaterial2-border);
+}
+
+.entmaterial2-search-field .MuiOutlinedInput-input {
+  padding: 10px 14px;
+  font-size: 0.9rem;
+}
+
+.entmaterial2-search-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--entmaterial2-text-secondary);
+}
+
+.entmaterial2-refresh-btn {
+  background: var(--entmaterial2-primary);
+  color: white;
+  border: 1px solid var(--entmaterial2-primary);
+  padding: 10px 20px;
+  border-radius: var(--entmaterial2-radius-xs);
+  font-weight: 600;
+  transition: var(--entmaterial2-transition);
+  text-transform: none;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+  height: fit-content;
+}
+
+.entmaterial2-refresh-btn:hover {
+  background: var(--entmaterial2-primary-dark);
+  border-color: var(--entmaterial2-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+}
+
+.entmaterial2-refresh-btn:disabled {
+  background: var(--entmaterial2-border);
+  border-color: var(--entmaterial2-border);
+  color: var(--entmaterial2-text-disabled);
+  transform: none;
+  box-shadow: none;
+}
+
+/* Alertas */
+.entmaterial2-alert {
+  border-radius: var(--entmaterial2-radius-sm);
+  margin-bottom: 24px;
+  box-shadow: var(--entmaterial2-shadow);
+}
+
+/* Loading Overlay */
+.entmaterial2-loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.entmaterial2-loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  background: var(--entmaterial2-surface);
+  padding: 32px;
+  border-radius: var(--entmaterial2-radius);
+  box-shadow: var(--entmaterial2-shadow-lg);
+}
+
+.entmaterial2-spinner {
+  color: var(--entmaterial2-primary) !important;
+}
+
+/* Card da Tabela */
+.entmaterial2-table-card {
+  border-radius: var(--entmaterial2-radius);
+  box-shadow: var(--entmaterial2-shadow);
+  border: 1px solid var(--entmaterial2-border);
+  overflow: hidden;
+}
+
+.entmaterial2-table-content {
+  padding: 0 !important;
+}
+
+.entmaterial2-table-header {
+  padding: 24px 24px 16px 24px;
+  background: var(--entmaterial2-surface);
+  border-bottom: 1px solid var(--entmaterial2-border);
+}
+
+.entmaterial2-table-title {
+  color: var(--entmaterial2-text-primary);
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin: 0 0 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.entmaterial2-table-icon {
+  color: var(--entmaterial2-primary);
+}
+
+.entmaterial2-table-subtitle {
+  color: var(--entmaterial2-text-secondary);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* Tabela */
+.entmaterial2-table-container {
+  border-radius: 0 0 var(--entmaterial2-radius) var(--entmaterial2-radius);
+  overflow-x: auto;
+}
+
+.entmaterial2-table {
+  min-width: 1000px;
+}
+
+/* Header da Tabela */
+.entmaterial2-table-header-row {
+  background: var(--entmaterial2-surface);
+}
+
+.entmaterial2-header-cell {
+  background: var(--entmaterial2-surface) !important;
+  color: var(--entmaterial2-text-secondary);
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  border: none;
+  padding: 16px 12px;
+  cursor: default;
+  border-bottom: 2px solid var(--entmaterial2-border);
+}
+
+.entmaterial2-header-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.entmaterial2-header-icon {
+  color: var(--entmaterial2-primary);
+  display: flex;
+  align-items: center;
+}
+
+.entmaterial2-header-text {
+  white-space: nowrap;
+}
+
+/* Linhas da Tabela */
+.entmaterial2-table-row {
+  transition: var(--entmaterial2-transition);
+  cursor: pointer;
+  background: var(--entmaterial2-surface);
+  border-bottom: 1px solid var(--entmaterial2-border);
+}
+
+.entmaterial2-table-row:hover {
+  background: var(--entmaterial2-surface-hover);
+}
+
+.entmaterial2-table-row.entmaterial2-row-expanded {
+  background: var(--entmaterial2-surface-hover);
+}
+
+.entmaterial2-expand-cell {
+  width: 60px;
+  padding: 12px 8px !important;
+  border-right: 1px solid var(--entmaterial2-border);
+}
+
+.entmaterial2-expand-btn {
+  transition: var(--entmaterial2-transition);
+  background: rgba(37, 99, 235, 0.1);
+  border-radius: 50%;
+  color: var(--entmaterial2-primary);
+  width: 32px;
+  height: 32px;
+}
+
+.entmaterial2-expand-btn:hover {
+  background: var(--entmaterial2-primary);
+  color: white;
+  transform: rotate(180deg);
+}
+
+.entmaterial2-arrow-icon {
+  font-size: 1.2rem !important;
+}
+
+.entmaterial2-data-cell {
+  padding: 16px 12px !important;
+  border: none;
+  font-size: 0.95rem;
+  color: var(--entmaterial2-text-primary);
+  font-weight: 500;
+  border-bottom: 1px solid var(--entmaterial2-border);
+}
+
+/* Chips */
+.entmaterial2-chip {
+  font-weight: 600;
+  font-size: 0.8rem;
+  height: 24px;
+  border-radius: var(--entmaterial2-radius-xs);
+}
+
+.entmaterial2-chip-p81j {
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--entmaterial2-primary);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+}
+
+.entmaterial2-chip-p81l {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--entmaterial2-success);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.entmaterial2-chip-p81m {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--entmaterial2-warning);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.entmaterial2-chip-p81n {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--entmaterial2-error);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+/* Célula de Quantidade */
+.entmaterial2-quantity-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  color: var(--entmaterial2-primary);
+}
+
+.entmaterial2-quantity-icon {
+  font-size: 1rem !important;
+  color: var(--entmaterial2-primary);
+}
+
+/* Linha Expandida */
+.entmaterial2-expanded-row {
+  background: var(--entmaterial2-surface-hover) !important;
+}
+
+.entmaterial2-collapse {
+  padding: 0 16px 16px 16px;
+}
+
+/* Card de Input */
+.entmaterial2-input-card {
+  border-radius: var(--entmaterial2-radius);
+  box-shadow: var(--entmaterial2-shadow);
+  border: 1px solid var(--entmaterial2-border);
+  background: var(--entmaterial2-surface);
+  margin-top: 16px;
+}
+
+.entmaterial2-input-content {
+  padding: 16px !important;
+}
+
+.entmaterial2-input-header {
+  margin-bottom: 12px;
+}
+
+.entmaterial2-input-title {
+  color: var(--entmaterial2-text-primary);
+  font-weight: 700;
+  font-size: 1.3rem;
+  margin: 0 0 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.entmaterial2-input-title-icon {
+  color: var(--entmaterial2-primary);
+}
+
+.entmaterial2-input-subtitle {
+  color: var(--entmaterial2-text-secondary);
+  font-size: 0.95rem;
+  margin: 0;
+  font-weight: 400;
+}
+
+.entmaterial2-divider {
+  margin: 20px 0 !important;
+  border-color: var(--entmaterial2-border) !important;
+}
+
+/* Grid de Inputs */
+.entmaterial2-input-grid {
+  margin: 0 !important;
+}
+
+/* Cards de Produto */
+.entmaterial2-product-card {
+  border-radius: var(--entmaterial2-radius-sm);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--entmaterial2-border);
+  background: var(--entmaterial2-surface);
+  margin-bottom: 6px;
+  transition: var(--entmaterial2-transition);
+  padding: 6px !important;
+}
+
+.entmaterial2-product-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+.entmaterial2-product-content {
+  padding: 6px !important;
+}
+
+.entmaterial2-product-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.entmaterial2-product-title {
+  color: var(--entmaterial2-text-primary);
+  font-weight: 600;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.entmaterial2-product-icon {
+  color: var(--entmaterial2-primary);
+}
+
+.entmaterial2-remove-btn {
+  color: var(--entmaterial2-error);
+  background: rgba(239, 68, 68, 0.1);
+  transition: var(--entmaterial2-transition);
+}
+
+.entmaterial2-remove-btn:hover {
+  background: var(--entmaterial2-error);
+  color: white;
+}
+
+/* Campos de Input Modernos */
+.entmaterial2-input-wrapper {
+  margin-bottom: 8px;
+}
+
+.entmaterial2-input-label-container {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.entmaterial2-input-icon {
+  color: var(--entmaterial2-primary);
+}
+
+.entmaterial2-input-label {
+  color: var(--entmaterial2-text-secondary);
+  font-weight: 500;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2px;
+}
+
+.entmaterial2-required {
+  color: var(--entmaterial2-error);
+}
+
+.entmaterial2-textfield .MuiOutlinedInput-root {
+  border-radius: var(--entmaterial2-radius-xs);
+  transition: var(--entmaterial2-transition);
+  border: 1px solid var(--entmaterial2-border);
+  background: var(--entmaterial2-surface);
+}
+
+.entmaterial2-textfield .MuiOutlinedInput-root:hover {
+  border-color: var(--entmaterial2-primary);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
+.entmaterial2-textfield .MuiOutlinedInput-root.Mui-focused {
+  border-color: var(--entmaterial2-primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+.entmaterial2-textfield-error .MuiOutlinedInput-root {
+  border-color: var(--entmaterial2-error) !important;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1) !important;
+}
+
+.entmaterial2-textfield-success .MuiOutlinedInput-root {
+  border-color: var(--entmaterial2-success) !important;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1) !important;
+}
+
+.entmaterial2-textfield .MuiInputLabel-root {
+  color: var(--entmaterial2-text-secondary);
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+.entmaterial2-textfield .MuiInputLabel-root.Mui-focused {
+  color: var(--entmaterial2-primary);
+}
+
+.entmaterial2-textfield .MuiOutlinedInput-input {
+  padding: 8px 10px;
+  font-size: 0.85rem;
+  color: var(--entmaterial2-text-primary);
+  background: transparent;
+}
+
+/* Helper Text */
+.entmaterial2-helper-text {
+  margin-top: 4px !important;
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+}
+
+.entmaterial2-helper-text-error {
+  color: var(--entmaterial2-error) !important;
+}
+
+.entmaterial2-helper-text-success {
+  color: var(--entmaterial2-success) !important;
+}
+
+/* Campos discretos (Part Number e Quantity) */
+.entmaterial2-discreet-field .MuiOutlinedInput-root {
+  background: var(--entmaterial2-surface-hover);
+}
+
+.entmaterial2-discreet-field .MuiOutlinedInput-input {
+  padding: 6px 8px;
+  font-size: 0.8rem;
+}
+
+.entmaterial2-discreet-field .MuiInputLabel-root {
+  font-size: 0.7rem;
+}
+
+/* Linha de Ações */
+.entmaterial2-actions-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 16px 8px 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--entmaterial2-border);
+}
+
+.entmaterial2-add-btn {
+  background: transparent;
+  color: var(--entmaterial2-primary);
+  border: 1px solid var(--entmaterial2-primary);
+  padding: 12px 20px;
+  border-radius: var(--entmaterial2-radius-xs);
+  font-weight: 600;
+  transition: var(--entmaterial2-transition);
+  text-transform: none;
+  font-size: 0.9rem;
+  box-shadow: none;
+}
+
+.entmaterial2-add-btn:hover {
+  background: rgba(37, 99, 235, 0.1);
+  border-color: var(--entmaterial2-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.1);
+}
+
+.entmaterial2-save-btn {
+  background: var(--entmaterial2-success);
+  color: white;
+  border: 1px solid var(--entmaterial2-success);
+  padding: 12px 28px;
+  border-radius: var(--entmaterial2-radius-xs);
+  font-weight: 700;
+  transition: var(--entmaterial2-transition);
+  text-transform: none;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+  min-width: 200px;
+}
+
+.entmaterial2-save-btn:hover {
+  background: var(--entmaterial2-success-dark);
+  border-color: var(--entmaterial2-success-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+}
+
+.entmaterial2-save-btn:disabled {
+  background: var(--entmaterial2-border);
+  border-color: var(--entmaterial2-border);
+  color: var(--entmaterial2-text-disabled);
+  transform: none;
+  box-shadow: none;
+}
+
+/* Botão Flutuante */
+.entmaterial2-fab {
+  position: fixed !important;
+  bottom: 32px;
+  right: 32px;
+  background: var(--entmaterial2-primary) !important;
+  color: white !important;
+  box-shadow: var(--entmaterial2-shadow-lg) !important;
+  transition: var(--entmaterial2-transition) !important;
+}
+
+.entmaterial2-fab:hover {
+  background: var(--entmaterial2-primary-dark) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3) !important;
+}
+
+.entmaterial2-spin {
+  animation: entmaterial2-spin 1s linear infinite;
+}
+
+@keyframes entmaterial2-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Animações */
+@keyframes entmaterial2-fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.entmaterial2-table-row {
+  animation: entmaterial2-fadeIn 0.3s ease-out;
+}
+
+/* Responsividade */
+@media (max-width: 1200px) {
+  .entmaterial2-container {
+    padding: 16px;
+  }
+  
+  .entmaterial2-header {
+    padding: 20px;
+  }
+  
+  .entmaterial2-header-content {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+  }
+  
+  .entmaterial2-title-section {
+    min-width: auto;
+  }
+  
+  .entmaterial2-actions {
+    justify-content: flex-end;
+  }
+  
+  .entmaterial2-search-field {
+    min-width: auto;
+    flex: 1;
+  }
+  
+  .entmaterial2-table-header {
+    padding: 20px;
+  }
+  
+  .entmaterial2-collapse {
+    padding: 0 16px 16px 16px;
+  }
+  
+  .entmaterial2-input-content {
+    padding: 20px !important;
+  }
+  
+  .entmaterial2-product-content {
+    padding: 16px !important;
+  }
+  
+  .entmaterial2-actions-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .entmaterial2-save-btn {
+    min-width: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .entmaterial2-container {
+    padding: 12px;
+  }
+  
+  .entmaterial2-header {
+    padding: 16px;
+  }
+  
+  .entmaterial2-header-icon {
+    font-size: 2rem !important;
+    padding: 10px;
+  }
+  
+  .entmaterial2-title {
+    font-size: 1.75rem;
+  }
+  
+  .entmaterial2-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  
+  .entmaterial2-search-field {
+    width: 100%;
+  }
+  
+  .entmaterial2-refresh-btn {
+    width: 100%;
+  }
+  
+  .entmaterial2-table {
+    min-width: 800px;
+  }
+  
+  .entmaterial2-header-cell {
+    font-size: 0.75rem;
+    padding: 12px 8px;
+  }
+  
+  .entmaterial2-data-cell {
+    font-size: 0.9rem;
+    padding: 12px 8px !important;
+  }
+  
+  .entmaterial2-input-title {
+    font-size: 1.2rem;
+  }
+  
+  .entmaterial2-product-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .entmaterial2-fab {
+    bottom: 24px;
+    right: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .entmaterial2-container {
+    padding: 8px;
+  }
+  
+  .entmaterial2-header {
+    padding: 12px;
+  }
+  
+  .entmaterial2-title {
+    font-size: 1.5rem;
+  }
+  
+  .entmaterial2-subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .entmaterial2-table-header {
+    padding: 16px 12px;
+  }
+  
+  .entmaterial2-table-title {
+    font-size: 1.25rem;
+  }
+  
+  .entmaterial2-collapse {
+    padding: 0 12px 12px 12px;
+  }
+  
+  .entmaterial2-input-content {
+    padding: 16px !important;
+  }
+  
+  .entmaterial2-input-title {
+    font-size: 1.1rem;
+  }
+  
+  .entmaterial2-save-btn {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+}
