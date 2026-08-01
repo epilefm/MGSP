@@ -116,8 +116,13 @@ import {
   RouterProvider,
   Route,
 } from "react-router-dom";
+import { AuthProvider } from './auth/AuthContext';
+import RequireAuth from './auth/RequireAuth';
 
-const router = createBrowserRouter([
+// Rotas acessíveis sem login. Todas as outras exigem autenticação.
+const PUBLIC_PATHS = new Set(["Login"]);
+
+const rawRoutes = [
   {
     path: "/",
     element: <App/>,
@@ -450,14 +455,24 @@ const router = createBrowserRouter([
    },
   {
     path: "DescriptN",
-   element: <DescriptN/>, 
+   element: <DescriptN/>,
    },
 
 
 
-]);
+];
+
+const router = createBrowserRouter(
+  rawRoutes.map((route) =>
+    PUBLIC_PATHS.has(route.path)
+      ? route
+      : { ...route, element: <RequireAuth>{route.element}</RequireAuth> }
+  )
+);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <RouterProvider router={router} />
+  <AuthProvider>
+    <RouterProvider router={router} />
+  </AuthProvider>
 );

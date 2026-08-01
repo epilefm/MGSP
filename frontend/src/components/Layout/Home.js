@@ -10,6 +10,7 @@ import { Button } from 'react-bootstrap';
 import styles from '../../styles.css'
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../auth/AuthContext';
 
 // Dados dos departamentos e seus itens
 const departments = [
@@ -105,6 +106,16 @@ export default function ActionAreaCard() {
   const [expandedDepartment, setExpandedDepartment] = useState(null);
   const navigate = useNavigate();
   const departmentRefs = useRef({});
+  const { user, logout } = useAuth();
+
+  const allowedDepartments = departments.filter(
+    (dept) => user?.departments?.includes(dept.id)
+  );
+
+  const handleLogout = () => {
+    logout();
+    navigate('/Login', { replace: true });
+  };
 
   const handleDepartmentClick = (deptId) => {
     setExpandedDepartment(expandedDepartment === deptId ? null : deptId);
@@ -139,10 +150,17 @@ export default function ActionAreaCard() {
         <img src='/images/logo.png' alt="Logo" style={{maxWidth: '300px'}}/>
       </Box>
 
-      {/* Exibir lista de departamentos com itens expandidos abaixo */}
+      {user && (
+        <Box style={{textAlign:'center', marginTop: 10}}>
+          <span style={{marginRight: 15}}>Olá, {user.nome}</span>
+          <Button variant="outline-secondary" size="sm" onClick={handleLogout}>Sair</Button>
+        </Box>
+      )}
+
+      {/* Exibir lista de departamentos com itens expandidos abaixo, filtrada pela permissão do usuário */}
       <Box style={{marginTop:'40px', textAlign:'center'}} className='d-flex justify-content-center'>
         <Row>
-          {departments.map((dept) => (
+          {allowedDepartments.map((dept) => (
             <Col key={dept.id} style={{marginBottom: '20px'}}>
               <div 
                 ref={el => departmentRefs.current[dept.id] = el}
