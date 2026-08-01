@@ -27,3 +27,4 @@ build-test.log
 
 dev_test*.log
 build_test.log
+.claude/scheduled_tasks.lock
