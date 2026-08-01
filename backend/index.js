@@ -16,13 +16,12 @@ const multer = require('multer');
 
 
 
-const PORT = 8080
+const PORT = process.env.PORT || 8080
 // Criar router para endpoints do Router
 const router = express.Router();
 
-app.listen(8080, () => {
-  // inserir porta padrao 8080
-  console.log("rodando na porta 8080");
+app.listen(PORT, () => {
+  console.log(`rodando na porta ${PORT}`);
 });
 
 // Registrar router com prefixo /router
@@ -30,10 +29,10 @@ app.use('/router', router);
 
 // Comece com o mínimo
 const db = mysql.createPool({
-  host: "105.103.39.102",
-  user: "materiais",
-  password: "1234",
-  database: "mydb",
+  host: process.env.DB_HOST || "localhost",
+  user: process.env.DB_USER || "materiais",
+  password: process.env.DB_PASSWORD || "1234",
+  database: process.env.DB_NAME || "mydb",
   connectionLimit: 50
 });
 
