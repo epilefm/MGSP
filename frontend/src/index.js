@@ -116,13 +116,8 @@ import {
   RouterProvider,
   Route,
 } from "react-router-dom";
-import { AuthProvider } from './auth/AuthContext';
-import RequireAuth from './auth/RequireAuth';
 
-// Rotas acessíveis sem login. Todas as outras exigem autenticação.
-const PUBLIC_PATHS = new Set(["Login"]);
-
-const rawRoutes = [
+const router = createBrowserRouter([
   {
     path: "/",
     element: <App/>,
@@ -455,24 +450,14 @@ const rawRoutes = [
    },
   {
     path: "DescriptN",
-   element: <DescriptN/>,
+   element: <DescriptN/>, 
    },
 
 
 
-];
-
-const router = createBrowserRouter(
-  rawRoutes.map((route) =>
-    PUBLIC_PATHS.has(route.path)
-      ? route
-      : { ...route, element: <RequireAuth>{route.element}</RequireAuth> }
-  )
-);
+]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <AuthProvider>
-    <RouterProvider router={router} />
-  </AuthProvider>
+  <RouterProvider router={router} />
 );
