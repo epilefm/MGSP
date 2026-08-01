@@ -9,15 +9,14 @@ import {
   ClipboardType, PackageSearch, Recycle,
 } from "lucide-react";
 
-// Metadados visuais por departamento: cor de destaque + ícone padrão
-// (usado quando nenhuma palavra-chave da tela casa com nada abaixo).
+// Departamentos exibidos na Home, na ordem em que aparecem.
 export const GRUPOS = [
-  { id: "material", nome: "Material", cor: "#f59e0b", icone: Package },
-  { id: "quality", nome: "Qualidade / Reparo", cor: "#10b981", icone: ShieldCheck },
-  { id: "production", nome: "Produção", cor: "#2563eb", icone: Factory },
-  { id: "maintenance", nome: "Manutenção", cor: "#ef4444", icone: Wrench },
-  { id: "inovacao", nome: "Inovação", cor: "#8b5cf6", icone: Lightbulb },
-  { id: "support", nome: "Suporte", cor: "#0891b2", icone: LifeBuoy },
+  { id: "material", nome: "Material", icone: Package },
+  { id: "quality", nome: "Qualidade / Reparo", icone: ShieldCheck },
+  { id: "production", nome: "Produção", icone: Factory },
+  { id: "maintenance", nome: "Manutenção", icone: Wrench },
+  { id: "inovacao", nome: "Inovação", icone: Lightbulb },
+  { id: "support", nome: "Suporte", icone: LifeBuoy },
 ];
 
 // Palavras-chave (no slug ou nome da tela) -> ícone. Ordem importa: a
