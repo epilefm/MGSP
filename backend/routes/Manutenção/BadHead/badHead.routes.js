@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../../config/db");
+const { authorizeScreen } = require("../../../auth/middleware");
+const requireScreen = authorizeScreen(['BadHead', 'BadHead_Lista']);
 
-router.get("/BadHead", (req, res) => {
+router.get("/BadHead", requireScreen, (req, res) => {
   let mysql = `
   select Linha, Equipamento,
 case when Equipamento = 'NPM-1' and TBL = '1' then '1'
@@ -40,7 +42,7 @@ Head, Status,
   });
 });
 
-router.get("/BadHead_graf1", (req, res) => {
+router.get("/BadHead_graf1", requireScreen, (req, res) => {
   let mysql = `
 SELECT a.Linha,
   COUNT(b.linha) AS Total_Defeitos,
@@ -61,7 +63,7 @@ GROUP BY a.Linha ORDER BY a.Linha ASC;
   });
 });
 
-router.get("/BadHead_graf2", (req, res) => {
+router.get("/BadHead_graf2", requireScreen, (req, res) => {
   let mysql = `
 SELECT b.linha,
   concat(round((1-(COUNT(a.id) / b.qty)) * 100,2),'%') AS Eficiencia
@@ -83,7 +85,7 @@ GROUP BY b.linha;
 });
 
 //////////---------------Salvar Itens de BadHead
-router.post("/Bad_headCom", (req, res) => {
+router.post("/Bad_headCom", requireScreen, (req, res) => {
   const { linha, equipamento, tbl, head, status, data, hora, tempo, observacao } = req.body;
   let mysql = `
   INSERT INTO bad_head_comments (Linha, Equipamento, TBL, Head, Status, Data, Hora, Tempo, Observacao)
@@ -99,7 +101,7 @@ router.post("/Bad_headCom", (req, res) => {
   });
 });
 
-router.get("/Bad_headComm", (req, res) => {
+router.get("/Bad_headComm", requireScreen, (req, res) => {
   const { date } = req.query;
 
   let mysql = `

@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
+const { authorizeScreen } = require("../../auth/middleware");
+const requireScreen = authorizeScreen('RepairSaida');
 
 //----------------------------Reparo Saida--------------------------------------------------------
 
-router.post("/ReparoSaida", async (req, res) => {
+router.post("/ReparoSaida", requireScreen, async (req, res) => {
   try {
     let resultVerifysaida = await verifysaida(req.body);
     res.send(resultVerifysaida);
@@ -112,7 +114,7 @@ const verifysaida = (array) => {
 };
 
 // As funções checkCNInReparoProcess e checkCNInReparoAuxiliar permanecem como mencionado anteriormente
-router.get("/getReparoSaida", (req, res) => {
+router.get("/getReparoSaida", requireScreen, (req, res) => {
   let mysql =
     "select *, date_format(Data_saida, '%y-%m-%d %Hh:%i') as Data_saida from mydb.reparo_saida order by id desc limit 1000;";
   db.query(mysql, (err, result) => {

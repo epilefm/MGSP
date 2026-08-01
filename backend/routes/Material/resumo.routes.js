@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
+const { authorizeScreen } = require("../../auth/middleware");
+const requireScreen = authorizeScreen(['Charts', 'Material_Analysis']);
 
-router.get("/getDescarteResumo", (req, res) => {
+router.get("/getDescarteResumo", requireScreen, (req, res) => {
   const { Line } = req.query;
   const { datei } = req.query;
   const { datef } = req.query;
@@ -18,7 +20,7 @@ router.get("/getDescarteResumo", (req, res) => {
   });
 });
 
-router.get("/getEntra", (req, res) => {
+router.get("/getEntra", requireScreen, (req, res) => {
   const { Line } = req.query;
   const { Halb } = req.query;
   const { datei } = req.query;
@@ -36,7 +38,7 @@ router.get("/getEntra", (req, res) => {
   });
 });
 
-router.get("/getResumo", (req, res) => {
+router.get("/getResumo", requireScreen, (req, res) => {
   const { Line } = req.query;
   const { Halb } = req.query;
   const { datei } = req.query;
@@ -53,7 +55,7 @@ router.get("/getResumo", (req, res) => {
   });
 });
 
-router.get("/getSaidaResumo", (req, res) => {
+router.get("/getSaidaResumo", requireScreen, (req, res) => {
   const { Line } = req.query;
   const { Halb } = req.query;
   const { datei } = req.query;
@@ -70,7 +72,7 @@ router.get("/getSaidaResumo", (req, res) => {
   });
 });
 
-router.get("/getReturnResumo", (req, res) => {
+router.get("/getReturnResumo", requireScreen, (req, res) => {
   const { Line } = req.query;
   const { Halb } = req.query;
   const { datei } = req.query;
@@ -88,7 +90,7 @@ router.get("/getReturnResumo", (req, res) => {
 });
 
 
-router.get("/getClasseAResumo", (req, res) => {
+router.get("/getClasseAResumo", requireScreen, (req, res) => {
   const { Line } = req.query;
   const { Halb } = req.query;
   const { datei } = req.query;
@@ -105,7 +107,7 @@ router.get("/getClasseAResumo", (req, res) => {
 });
 
 /*Consulta relacionada a diferença de materiais no WIP. Entrada - Saida*/
-router.get("/getEstoque", (req, res) => {
+router.get("/getEstoque", requireScreen, (req, res) => {
   const { Line } = req.query;
   const { Halb } = req.query;
   const { datei } = req.query;
@@ -165,7 +167,7 @@ GROUP BY a.Part_Number;`;
   });
 });
 
-router.get("/getDiscardChart", (req, res) => {
+router.get("/getDiscardChart", requireScreen, (req, res) => {
   const { datei } = req.query;
   const { datef } = req.query;
 
@@ -182,7 +184,7 @@ router.get("/getDiscardChart", (req, res) => {
 });
 
 // --------------------------Dashboard turno descarte-----------------------------------
-router.get("/getPie", (req, res) => {
+router.get("/getPie", requireScreen, (req, res) => {
   let mysql = "select shift, count(id) as Qty from mydb.descarte group by shift order by id desc ;";
   db.query(mysql, (err, result) => {
     if (err) {

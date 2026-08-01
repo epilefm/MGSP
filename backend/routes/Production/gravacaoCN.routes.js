@@ -1,12 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
+const { authorizeScreen } = require("../../auth/middleware");
+const requireScreen = authorizeScreen(['2D_CN', 'CN_List', 'CNresult']);
 
 //------------------------------------
 // **-----------Gravacao QRCODE --------------------
 // Gravação CN - 1T
 // Gravação CN - 1T
-router.get("/GravacaoCN", (req, res) => {
+router.get("/GravacaoCN", requireScreen, (req, res) => {
   const {data} = req.query;
  
    let mysql = `
@@ -163,7 +165,7 @@ ORDER BY
 
 
 // Gravação CN - 2T
-router.get("/GravacaoCN2T", (req, res) => {
+router.get("/GravacaoCN2T", requireScreen, (req, res) => {
   const {data} = req.query;
  
    let mysql = `
@@ -319,7 +321,7 @@ ORDER BY
 
 
 // Gravação CN - 3T
-router.get("/GravacaoCN3T", (req, res) => {
+router.get("/GravacaoCN3T", requireScreen, (req, res) => {
   const {data} = req.query;
  
    let mysql = `
@@ -469,7 +471,7 @@ ORDER BY
  });
 
 // GET para buscar comentários da Gravação CN
-router.get("/gravacaoCN_comments", (req, res) => {
+router.get("/gravacaoCN_comments", requireScreen, (req, res) => {
   const { data, linha, modelo, horario } = req.query;
   
   const sql = `
@@ -490,7 +492,7 @@ router.get("/gravacaoCN_comments", (req, res) => {
 });
 
 // POST/PUT para salvar/atualizar comentários da Gravação CN
-router.post("/gravacaoCNUp_comments", (req, res) => {
+router.post("/gravacaoCNUp_comments", requireScreen, (req, res) => {
   const { 
     data, 
     linha, 

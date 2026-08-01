@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
+const { authorizeScreen } = require("../../auth/middleware");
+const requireScreen = authorizeScreen(['RepairAnalysis', 'RepairInv']);
 
-router.get("/getModalReparoDetalhado", (req, res) => {
+router.get("/getModalReparoDetalhado", requireScreen, (req, res) => {
   const cnProcess = req.query.cnProcess;
   // Modify your SQL query to filter by CN
   let mysql = `  SELECT A.CN_rep as 'CN',
@@ -27,7 +29,7 @@ router.get("/getModalReparoDetalhado", (req, res) => {
 //-------------------------------------------------------------------------------------
 //--------------Reparo Inventário------------------------------------------------------
 
-router.get("/getReparoInventario", (req, res) => {
+router.get("/getReparoInventario", requireScreen, (req, res) => {
   let mysql = ` select B.Linha, A.Modelo, B.good, B.scrap, B.ng,  A.Estoque,
   case when A.Estoque - (B.good+B.scrap+B.ng) < 0 then -1 * (A.Estoque - (B.good+B.scrap+B.ng)) end as pendencia, B.good+B.scrap+B.ng Total FROM
     (
@@ -172,7 +174,7 @@ router.get("/getReparoInventario", (req, res) => {
 });
 
 //-------Reparo Inventario Resultado total ultima linha--------------------------------
-router.get("/getReparoInventarioTotal", (req, res) => {
+router.get("/getReparoInventarioTotal", requireScreen, (req, res) => {
   let mysql = `
   SELECT a.Modelo, a.Linha,
   SUM(IFNULL(b.QtyGood, 0)) AS 'Good',
@@ -223,7 +225,7 @@ HAVING SUM(IFNULL(b.QtyGood, 0)) > 0 OR SUM(IFNULL(b.QtyNG, 0)) > 0
 });
 
 //----------------ModalInventario---------
-router.get("/getModalRepInventario", (req, res) => {
+router.get("/getModalRepInventario", requireScreen, (req, res) => {
   const modelo = req.query.modelo;
   const linha = req.query.linha;
   const status = req.query.status;

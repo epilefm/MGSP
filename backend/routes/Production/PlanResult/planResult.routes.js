@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../../config/db");
+const { authorizeScreen } = require("../../../auth/middleware");
+const requireScreen = authorizeScreen('HoraPlanResult');
 
 // ///--------- 
 //---------------- Plan vs Result Hourly
-router.get("/planVsResultHourly", (req, res) => {
+router.get("/planVsResultHourly", requireScreen, (req, res) => {
   const {data} = req.query;
 
   let mysql = `

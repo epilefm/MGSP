@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../../config/db");
+const { authorizeScreen } = require("../../../auth/middleware");
+const requireScreen = authorizeScreen('ESD');
 
 /// ESD REAL - STRAP FREE
-router.get("/StrapFree", (req, res) => {
+router.get("/StrapFree", requireScreen, (req, res) => {
   const { date } = req.query;
 
   let mysql = `

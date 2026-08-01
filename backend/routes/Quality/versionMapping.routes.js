@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
+const { authorizeScreen } = require("../../auth/middleware");
+const requireScreen = authorizeScreen(['Version', 'Mapping']);
 
 //-------------------Version SW----------------------------------
 
-  router.get("/getVersion", (req, res) => {
+  router.get("/getVersion", requireScreen, (req, res) => {
     let mysql =
       `SELECT *,
       case   when a.PDA_VER = a.SW_VER_LINE
@@ -27,7 +29,7 @@ const db = require("../../config/db");
     });
   });
 
- router.get("/get2DMapping", (req, res) => {
+ router.get("/get2DMapping", requireScreen, (req, res) => {
    let mysql =
      `SELECT *, date_format(PLAN_YMD,'%Y-%m-%d') as Date FROM mydb.pcb_2d_control;`
    db.query(mysql, (err, result) => {

@@ -7,7 +7,7 @@ const { authenticateToken, requireAdmin } = require("./middleware");
 router.use(authenticateToken, requireAdmin);
 
 // Lista todos os usuários, com as telas que cada um tem liberadas.
-router.get("/admin/usuarios", (req, res) => {
+router.get("/usuarios", (req, res) => {
   const query = `
     SELECT u.id, u.nome, u.matricula, u.is_admin, u.ativo, u.reset_solicitado, u.criado_em,
            GROUP_CONCAT(DISTINCT s.slug) AS telas_liberadas
@@ -31,7 +31,7 @@ router.get("/admin/usuarios", (req, res) => {
 });
 
 // Catálogo completo de telas (pro admin montar a UI de concessão).
-router.get("/admin/telas", (req, res) => {
+router.get("/telas", (req, res) => {
   db.query(`SELECT id, slug, nome, grupo, is_public FROM mydb.screens ORDER BY grupo ASC, nome ASC`, [], (err, results) => {
     if (err) {
       console.error("Erro ao listar telas: ", err);
@@ -43,7 +43,7 @@ router.get("/admin/telas", (req, res) => {
 
 // Define o conjunto completo de telas liberadas para um usuário
 // (substitui as anteriores - o frontend manda a lista final desejada).
-router.post("/admin/usuarios/:id/telas", (req, res) => {
+router.post("/usuarios/:id/telas", (req, res) => {
   const { id } = req.params;
   const { screenIds } = req.body; // array de ids de mydb.screens
 
@@ -73,7 +73,7 @@ router.post("/admin/usuarios/:id/telas", (req, res) => {
 });
 
 // Admin redefine a senha de um usuário manualmente (fluxo de "esqueci a senha").
-router.post("/admin/usuarios/:id/reset-senha", (req, res) => {
+router.post("/usuarios/:id/reset-senha", (req, res) => {
   const { id } = req.params;
   const { novaSenha } = req.body;
 
@@ -102,7 +102,7 @@ router.post("/admin/usuarios/:id/reset-senha", (req, res) => {
 });
 
 // Ativa/desativa a conta de um usuário.
-router.post("/admin/usuarios/:id/ativo", (req, res) => {
+router.post("/usuarios/:id/ativo", (req, res) => {
   const { id } = req.params;
   const { ativo } = req.body;
 

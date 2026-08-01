@@ -1,11 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../../config/db");
+const { authorizeScreen } = require("../../../auth/middleware");
+const requireScreen = authorizeScreen('HanaroScrap');
 
 const { buildFilterConditions } = require("./filterConditions");
 
 // Equipamentos disponíveis
-router.get("/api/hanaro-equipamentos-registrados", (req, res) => {
+router.get("/api/hanaro-equipamentos-registrados", requireScreen, (req, res) => {
   const { conditions, params } = buildFilterConditions(req);
   
   let query = `
@@ -33,7 +35,7 @@ router.get("/api/hanaro-equipamentos-registrados", (req, res) => {
 });
 
 // Causas disponíveis
-router.get("/api/hanaro-causas-registradas", (req, res) => {
+router.get("/api/hanaro-causas-registradas", requireScreen, (req, res) => {
   const { conditions, params } = buildFilterConditions(req);
   
   let query = `
@@ -61,7 +63,7 @@ router.get("/api/hanaro-causas-registradas", (req, res) => {
 });
 
 // Linhas disponíveis
-router.get("/api/hanaro-linhas-registradas", (req, res) => {
+router.get("/api/hanaro-linhas-registradas", requireScreen, (req, res) => {
   const { conditions, params } = buildFilterConditions(req);
   
   let query = `
@@ -89,7 +91,7 @@ router.get("/api/hanaro-linhas-registradas", (req, res) => {
 });
 
 // Fases disponíveis (usa tipo_placa que é o campo correto na tabela)
-router.get("/api/hanaro-fases-registradas", (req, res) => {
+router.get("/api/hanaro-fases-registradas", requireScreen, (req, res) => {
   const { conditions, params } = buildFilterConditions(req);
   
   let query = `
@@ -117,7 +119,7 @@ router.get("/api/hanaro-fases-registradas", (req, res) => {
 });
 
 // Turnos disponíveis
-router.get("/api/hanaro-turnos-registrados", (req, res) => {
+router.get("/api/hanaro-turnos-registrados", requireScreen, (req, res) => {
   const { conditions, params } = buildFilterConditions(req, 'turno');
   
   let query = `
@@ -145,7 +147,7 @@ router.get("/api/hanaro-turnos-registrados", (req, res) => {
 });
 
 // Responsáveis disponíveis
-router.get("/api/hanaro-responsaveis-registrados", (req, res) => {
+router.get("/api/hanaro-responsaveis-registrados", requireScreen, (req, res) => {
   const { conditions, params } = buildFilterConditions(req, 'responsavel');
   
   let query = `
@@ -173,7 +175,7 @@ router.get("/api/hanaro-responsaveis-registrados", (req, res) => {
 });
 
 // Tipos de Scrap disponíveis
-router.get("/api/hanaro-tipo-scrap-registrados", (req, res) => {
+router.get("/api/hanaro-tipo-scrap-registrados", requireScreen, (req, res) => {
   const { conditions, params } = buildFilterConditions(req, 'tipo_scrap');
   
   let query = `
@@ -204,7 +206,7 @@ router.get("/api/hanaro-tipo-scrap-registrados", (req, res) => {
 // Hanaro Scrap - Modelos Únicos (para filtro)
 // ==========================================
 // Retorna apenas modelos que já têm registros APROVADOS
-router.get("/api/hanaro-modelos-registrados", (req, res) => {
+router.get("/api/hanaro-modelos-registrados", requireScreen, (req, res) => {
   const { dataInicio, dataFim, origem } = req.query;
   
   let query = `
@@ -258,7 +260,7 @@ router.get("/api/hanaro-modelos-registrados", (req, res) => {
 // Hanaro Scrap - Origens Únicas (para filtro)
 // ==========================================
 // Retorna apenas origens que já têm registros APROVADOS
-router.get("/api/hanaro-origens-registradas", (req, res) => {
+router.get("/api/hanaro-origens-registradas", requireScreen, (req, res) => {
   const { dataInicio, dataFim, modelo } = req.query;
   
   let query = `

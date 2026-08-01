@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../../config/db");
+const { authorizeScreen } = require("../../../auth/middleware");
+const requireScreen = authorizeScreen('Monit_Router');
 
 /// -------  Monitoramento de Corte da Router-----------------------------------------------------
-router.get('/Monit_Router', (req, res) => {
+router.get('/Monit_Router', requireScreen, (req, res) => {
   const date = req.query.date || new Date().toISOString().slice(0, 10); // Usar data recebida ou atual
 
   const sql = `
@@ -24,8 +26,11 @@ router.get('/Monit_Router', (req, res) => {
   `;
 
   db.query(sql, [date], (err, results) => {
-    if (err) throw err;
-    
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Erro ao buscar dados do monitor" });
+    }
+
     // Group by production line and hour
     const groupedData = results.reduce((acc, item) => {
       if (!acc[item.linha]) acc[item.linha] = {};
@@ -57,7 +62,7 @@ router.get('/Monit_Router', (req, res) => {
 // ==========================================
 
 // Rota alternativa para o frontend moderno (sem auth)
-router.get('/router/monitor', (req, res) => {
+router.get('/router/monitor', requireScreen, (req, res) => {
   const date = req.query.date || new Date().toISOString().slice(0, 10);
 
   const sql = `

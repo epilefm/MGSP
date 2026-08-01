@@ -1,11 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
+const { authorizeScreen } = require("../../auth/middleware");
+const requireScreen = authorizeScreen('RepairScreen');
 
 //---------------------------------------------------------------------------------------------
 //--                                      Reparo_Entrada                                     --
 
-router.post("/ReparoEnt", async (req, res) => {
+router.post("/ReparoEnt", requireScreen, async (req, res) => {
   try {
     let resultVerifyRep = await verifyRep(req.body);
     res.send(resultVerifyRep);
@@ -107,7 +109,7 @@ const verifyRep = (array) => {
   });
 };
 
-router.get("/getReparo", (req, res) => {
+router.get("/getReparo", requireScreen, (req, res) => {
   let mysql =
     "select *, date_format(Data, '%y-%m-%d %Hh:%i') as Data from mydb.reparo_entrada order by id desc limit 1000;";
   db.query(mysql, (err, result) => {

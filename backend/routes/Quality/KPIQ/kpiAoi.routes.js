@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../../config/db");
+const { authorizeScreen } = require("../../../auth/middleware");
+const requireScreen = authorizeScreen('KPIQuality');
 
 // Definir metas como constantes para fácil manutenção
 const METAS_QUALIDADE = {
@@ -12,7 +14,7 @@ const METAS_QUALIDADE = {
   'TEACHING S': 2.0
 };
 
-router.get("/kpi_aoi_historico", (req, res) => {
+router.get("/kpi_aoi_historico", requireScreen, (req, res) => {
   let mysql = `
 SELECT
       date_format(Work_ymd, '%d/%m/%Y') as Data,
@@ -48,7 +50,7 @@ SELECT
     }
   })});
 
-router.get("/kpi_aoi_atual", (req, res) => {
+router.get("/kpi_aoi_atual", requireScreen, (req, res) => {
   let mysql = `
     SELECT date_format(Work_ymd, '%d/%m/%Y') as Data, PAOI_PPM as 'P-AOI', MAOI_PPM as 'M-AOI', SAOI_PPM as 'S-AOI',  AOI_PPM as 'FT', AOI_PROD 'TEACHING M', AOI as 'TEACHING S'
     FROM mydb.kpi_aoii where WORK_YMD = CURDATE() order by WORK_YMD desc limit 1;

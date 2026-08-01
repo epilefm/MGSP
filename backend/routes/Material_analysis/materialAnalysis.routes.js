@@ -1,11 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
+const { authorizeScreen } = require("../../auth/middleware");
+const requireScreen = authorizeScreen('Material_Analysis');
 
 // nao ta usando-----------------------------------------------------
 /*Consulta relacionada a diferença de materiais no processo. Entrada - Saida*/
 /*Consulta relacionada a diferença de materiais no processo. Pagamento, Saida, Retorno, Descarte*/
-router.get("/getProcesso", (req, res) => {
+router.get("/getProcesso", requireScreen, (req, res) => {
   const { Line } = req.query;
   const { Halb } = req.query;
   const { datei } = req.query;

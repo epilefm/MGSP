@@ -15,7 +15,7 @@ array.forEach(item => {
      db.query('INSERT INTO mydb.smdkittingplan (LINE_NM ,MODEL_CODE, BASIC_MODEL_CODE, PLAN_QTY, PRODC_INST_NO, PLANT_CODE,PLAN_YMD,WORK_YMD,CNTN_YN) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);',
      [item.LINE_NM, item.MODEL_CODE, item.BASIC_MODEL_CODE, item.PLAN_QTY,
       item.PRODC_INST_NO,item.PLANT_CODE, item.CNTN_YN,item.WORK_YMD,item.PLAN_YMD], (err, result) => {
-      if (err) throw err;
+      if (err) { console.error(err); return; }
       console.log('Dados inseridos: ' + res.affectedRows);
     });
   });

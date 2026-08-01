@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../../config/db");
+const { authorizeScreen } = require("../../../auth/middleware");
+const requireScreen = authorizeScreen('PM');
 
 //------------------------------------------------
 //------------------------------------------------
@@ -8,7 +10,7 @@ const db = require("../../../config/db");
  //------------------------------------------------         TELA DE PM --------------------------------------
 
 // GET PMs
-router.get('/pms', async (req, res) => {
+router.get('/pms', requireScreen, async (req, res) => {
   try {
     const { year } = req.query;
     let query = 'SELECT * FROM pm_records';
@@ -29,7 +31,7 @@ router.get('/pms', async (req, res) => {
 });
 
 // GET Tower Lamps
-router.get('/tower-lamps', async (req, res) => {
+router.get('/tower-lamps', requireScreen, async (req, res) => {
   try {
     const { year } = req.query;
     let query = 'SELECT * FROM tower_lamp_records';
@@ -48,7 +50,7 @@ router.get('/tower-lamps', async (req, res) => {
 });
 
 // GET Tower Lamp by ID
-router.get('/tower-lamps/:id', async (req, res) => {
+router.get('/tower-lamps/:id', requireScreen, async (req, res) => {
   try {
     const { id } = req.params;
     const [rows] = await db.promise().query('SELECT * FROM tower_lamp_records WHERE id = ?', [id]);
@@ -62,7 +64,7 @@ router.get('/tower-lamps/:id', async (req, res) => {
 });
 
 // CREATE Tower Lamp
-router.post('/tower-lamps', async (req, res) => {
+router.post('/tower-lamps', requireScreen, async (req, res) => {
   try {
     const { production_line, month, year, justification, is_delayed, is_scheduled, scheduled_week } = req.body;
     const [result] = await db.promise().query(
@@ -79,7 +81,7 @@ router.post('/tower-lamps', async (req, res) => {
 });
 
 // UPDATE Tower Lamp
-router.put('/tower-lamps/:id', async (req, res) => {
+router.put('/tower-lamps/:id', requireScreen, async (req, res) => {
   try {
     const { id } = req.params;
     const { justification, is_delayed, is_scheduled, scheduled_week } = req.body;
@@ -106,7 +108,7 @@ router.put('/tower-lamps/:id', async (req, res) => {
 });
 
 // DELETE Tower Lamp
-router.delete('/tower-lamps/:id', async (req, res) => {
+router.delete('/tower-lamps/:id', requireScreen, async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -125,7 +127,7 @@ router.delete('/tower-lamps/:id', async (req, res) => {
 });
 
 // GET Tower Lamp Stats
-router.get('/tower-lamp-stats', async (req, res) => {
+router.get('/tower-lamp-stats', requireScreen, async (req, res) => {
   try {
     const { year } = req.query;
     let yearCondition = '';
@@ -164,7 +166,7 @@ router.get('/tower-lamp-stats', async (req, res) => {
 });
 
 // GET PM by ID
-router.get('/pms/:id', async (req, res) => {
+router.get('/pms/:id', requireScreen, async (req, res) => {
   try {
     const { id } = req.params;
     const [rows] = await db.promise().query('SELECT * FROM pm_records WHERE id = ?', [id]);
@@ -186,7 +188,7 @@ router.get('/pms/:id', async (req, res) => {
 });
 
 // CREATE PM
-router.post('/pms', async (req, res) => {
+router.post('/pms', requireScreen, async (req, res) => {
   try {
     const { production_line, month, year, justification, is_delayed, is_scheduled, scheduled_week } = req.body;
     const [result] = await db.promise().query(
@@ -203,7 +205,7 @@ router.post('/pms', async (req, res) => {
 });
 
 // UPDATE PM
-router.put('/pms/:id', async (req, res) => {
+router.put('/pms/:id', requireScreen, async (req, res) => {
   try {
     const { id } = req.params;
     const { justification, is_delayed, is_scheduled, scheduled_week } = req.body;
@@ -230,7 +232,7 @@ router.put('/pms/:id', async (req, res) => {
 });
 
 // DELETE PM
-router.delete('/pms/:id', async (req, res) => {
+router.delete('/pms/:id', requireScreen, async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -249,7 +251,7 @@ router.delete('/pms/:id', async (req, res) => {
 });
 
 // GET Available Years
-router.get('/available-years', async (req, res) => {
+router.get('/available-years', requireScreen, async (req, res) => {
   try {
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
@@ -276,7 +278,7 @@ router.get('/available-years', async (req, res) => {
 });
 
 // GET PM Stats
-router.get('/stats', async (req, res) => {
+router.get('/stats', requireScreen, async (req, res) => {
   try {
     const { year } = req.query;
     let yearCondition = '';
@@ -372,7 +374,7 @@ router.get('/stats', async (req, res) => {
 });
 
 // CREATE PM Schedule
-router.post('/schedule', async (req, res) => {
+router.post('/schedule', requireScreen, async (req, res) => {
   try {
     const { production_line, month, year, schedule_date, observations } = req.body;
 

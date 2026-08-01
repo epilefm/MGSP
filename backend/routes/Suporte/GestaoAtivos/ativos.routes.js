@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../../config/db");
+const { authorizeScreen } = require("../../../auth/middleware");
+const requireScreen = authorizeScreen('GestaoAtivos');
 
 // Rota para buscar ativos unificados (ativo_fixo + ativo_bnp)
-router.get('/api/ativos-unificados', (req, res) => {
+router.get('/api/ativos-unificados', requireScreen, (req, res) => {
   const { tipo } = req.query; // Adiciona filtro por tipo (opcional)
 
   let query = '';
@@ -68,7 +70,7 @@ router.get('/api/ativos-unificados', (req, res) => {
 });
 
 // Endpoint para verificar se a tabela de inventário existe
-router.get('/api/verificar-tabela-inventario', (req, res) => {
+router.get('/api/verificar-tabela-inventario', requireScreen, (req, res) => {
   const checkTableQuery = `
     SELECT 1 FROM information_schema.tables
     WHERE table_schema = 'mydb' AND table_name = 'ativo_inventario_historico' LIMIT 1
@@ -86,7 +88,7 @@ router.get('/api/verificar-tabela-inventario', (req, res) => {
 });
 
 // Rota para salvar o status do inventário de um ativo
-router.post('/api/salvar-inventario-ativo', (req, res) => {
+router.post('/api/salvar-inventario-ativo', requireScreen, (req, res) => {
   const { asset_identifier, serial_number, description, localizacao, tipo_ativo, status } = req.body;
 
   // Validar campos obrigatórios
@@ -161,7 +163,7 @@ router.post('/api/salvar-inventario-ativo', (req, res) => {
 });
 
 // Rota para buscar o histórico de inventário de um ativo específico
-router.get('/api/historico-inventario-ativo/:asset_identifier', (req, res) => {
+router.get('/api/historico-inventario-ativo/:asset_identifier', requireScreen, (req, res) => {
   const { asset_identifier } = req.params;
 
   const query = `
@@ -181,7 +183,7 @@ router.get('/api/historico-inventario-ativo/:asset_identifier', (req, res) => {
 });
 
 // Rota para buscar estatísticas de inventário
-router.get('/api/estatisticas-inventario', (req, res) => {
+router.get('/api/estatisticas-inventario', requireScreen, (req, res) => {
   const query = `
     SELECT
       tipo_ativo,
@@ -218,7 +220,7 @@ router.get('/api/estatisticas-inventario', (req, res) => {
 });
 
 // Rota para buscar contadores de ativos
-router.get('/api/contadores-ativos', (req, res) => {
+router.get('/api/contadores-ativos', requireScreen, (req, res) => {
   // Contar total de ativos fixos
   const queryFixos = `SELECT COUNT(*) as total FROM ativo_fixo`;
 
@@ -312,7 +314,7 @@ router.get('/api/contadores-ativos', (req, res) => {
 });
 
 // Rota para buscar status de múltiplos ativos de uma vez
-router.post('/api/ativos-com-status', (req, res) => {
+router.post('/api/ativos-com-status', requireScreen, (req, res) => {
   const { assetIdentifiers } = req.body;
 
   if (!assetIdentifiers || !Array.isArray(assetIdentifiers) || assetIdentifiers.length === 0) {

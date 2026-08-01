@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../../config/db");
+const { authorizeScreen } = require("../../../auth/middleware");
+const requireScreen = authorizeScreen(['SplicingScreen', 'OfflineSplicing', 'Splicing_history', 'Splicing_ops', 'Switch_splice']);
 
 ////---------------------------------Comparacao Reel id -------------------------
-router.post("/SplicingOffline", (req, res) => {
+router.post("/SplicingOffline", requireScreen, (req, res) => {
   const data = req.body;
 
   let mysql =
@@ -37,7 +39,7 @@ router.post("/SplicingOffline", (req, res) => {
   });
 });
 
-router.get("/getSplicingOffline", (req, res) => {
+router.get("/getSplicingOffline", requireScreen, (req, res) => {
   let mysql =
     `SELECT id, date_format(t1.Data, '%Y-%m-%d %H:%i:%s') as Data, t1.operador, t1.Modelo,
 t1.Linha, t1.Reel_ID, t1.Codigo, t1.Qty, t1.Barcode, t1.Status_barcode, t1.Status_codigo, t1.Qty_Splicing
@@ -56,7 +58,7 @@ INNER JOIN (
   });
 });
 
-router.get("/getModalOffSplicing", (req, res) => {
+router.get("/getModalOffSplicing", requireScreen, (req, res) => {
   const Barcode = req.query.Barcode;
   // Modify your SQL query to filter by CN
   let mysql = `SELECT date_format(t1.Data, '%Y-%m-%d %H:%i:%s') as Data,
@@ -77,7 +79,7 @@ GROUP BY t1.id; `;
 });
 
 //--------------------------------
-router.get("/Splicing", (req, res) => {
+router.get("/Splicing", requireScreen, (req, res) => {
   const {data, turno} = req.query;
 
    let mysql = `SELECT Linha, replace(date_format(WORK_YMD, '%Y-%m-%d'), '00:00:00','') as data,
@@ -110,7 +112,7 @@ router.get("/Splicing", (req, res) => {
    }
  });
 
-router.get("/SplicingOpss", (req, res) => {
+router.get("/SplicingOpss", requireScreen, (req, res) => {
   const {data, turno} = req.query;
 
    let mysql = `SELECT *, replace(date_format(WORK_YMD, '%Y-%m-%d'), '00:00:00','') as data
@@ -140,7 +142,7 @@ router.get("/SplicingOpss", (req, res) => {
    }
  });
 
-  router.get("/SplicingOpssMaior", (req, res) => {
+  router.get("/SplicingOpssMaior", requireScreen, (req, res) => {
    const {data} = req.query;
 
     let mysql = `SELECT OPERATOR_NAME, turno, linha, replace(date_format(WORK_YMD, '%Y-%m-%d'), '00:00:00','') as data, sum(qty) as qty
@@ -157,7 +159,7 @@ router.get("/SplicingOpss", (req, res) => {
   });
 
 
-  router.get("/SplicingComparison", (req, res) => {
+  router.get("/SplicingComparison", requireScreen, (req, res) => {
    const {data} = req.query;
 
     let mysql = ` select DATE_FORMAT(WORK_YMD, '%Y-%m-%d %H:%i:%s') as data, turno, OPERATOR_NAME, Linha, Qty, COMPARISON_ID, PAC_PART_NO,
@@ -175,7 +177,7 @@ router.get("/SplicingOpss", (req, res) => {
   });
 
 
-  router.get("/SplicingDMF", (req, res) => {
+  router.get("/SplicingDMF", requireScreen, (req, res) => {
     const {data} = req.query;
 
      let mysql = `SELECT * FROM (

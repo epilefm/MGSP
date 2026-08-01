@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../../config/db");
+const { authorizeScreen } = require("../../../auth/middleware");
+const requireScreen = authorizeScreen('GestaoAtivos');
 
 // ═══════════════════════════════════════════════════════════════
 // ROTAS PARA GESTÃO DE CICLOS DE INVENTÁRIO
@@ -8,7 +10,7 @@ const db = require("../../../config/db");
 
 // GET /api/ciclo-inventario-ativo
 // Retorna o ciclo de inventário atualmente ativo. Se não existir, cria automaticamente.
-router.get('/api/ciclo-inventario-ativo', (req, res) => {
+router.get('/api/ciclo-inventario-ativo', requireScreen, (req, res) => {
   // Usar data_fim IS NULL para encontrar o ciclo ativo (evita problemas com UNIQUE constraint na coluna ativo)
   const queryBuscar = `SELECT * FROM ativo_inv_ciclo WHERE data_fim IS NULL ORDER BY id DESC LIMIT 1`;
 
@@ -41,7 +43,7 @@ router.get('/api/ciclo-inventario-ativo', (req, res) => {
 
 // POST /api/novo_ciclo_inventario
 // Fecha o ciclo atual e cria um novo. O histórico anterior fica intacto.
-router.post('/api/novo_ciclo_inventario', (req, res) => {
+router.post('/api/novo_ciclo_inventario', requireScreen, (req, res) => {
   const { descricao } = req.body;
   const nome = descricao || `Inventário ${new Date().toLocaleDateString('pt-BR')}`;
 
@@ -97,7 +99,7 @@ router.post('/api/novo_ciclo_inventario', (req, res) => {
 
 // GET /api/ciclos-historico
 // Lista todos os ciclos anteriores (para relatórios).
-router.get('/api/ciclos-historico', (req, res) => {
+router.get('/api/ciclos-historico', requireScreen, (req, res) => {
   const query = `
     SELECT
       c.*,

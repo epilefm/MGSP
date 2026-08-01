@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
+const { authorizeScreen } = require("../../auth/middleware");
+const requireScreen = authorizeScreen('RepairTNP_IA');
 
 // Função auxiliar para gerar resposta fallback rica (sem IA)
 const gerarRespostaFallback = (cases, totalCases, goodCount, ngCount, scrapCount, modelosUnicos, tecnicosUnicos, message = '') => {
@@ -103,7 +105,7 @@ Veja os casos históricos na tabela para mais detalhes.`;
 // ============================================================================
 
 // Rota para buscar estatísticas gerais
-router.get("/reparo-ia/stats", (req, res) => {
+router.get("/reparo-ia/stats", requireScreen, (req, res) => {
   const stats = {
     totalEntrada: 0,
     totalProcess: 0,
@@ -171,7 +173,7 @@ router.get("/reparo-ia/stats", (req, res) => {
 
 // Rota para buscar casos históricos baseados na mensagem - COM JOIN ENTRE TABELAS
 // Suporta filtro por data, técnico, modelo, sintoma, CN, e perguntas genéricas
-router.post("/reparo-ia/chat", (req, res) => {
+router.post("/reparo-ia/chat", requireScreen, (req, res) => {
   const { message } = req.body;
 
   if (!message) {

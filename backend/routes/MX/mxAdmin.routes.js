@@ -1,13 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
+const { authorizeScreen } = require("../../auth/middleware");
+const requireScreen = authorizeScreen('InspecMX');
 
 // ==========================================
 // Inspeção MX - Administração (CRUD)
 // ==========================================
 
 // Autenticação de administrador
-router.post("/admin/login", (req, res) => {
+router.post("/admin/login", requireScreen, (req, res) => {
   const { senha } = req.body;
 
   // Senha de administrador fixa (em produção, usar hash e banco de dados)
@@ -21,7 +23,7 @@ router.post("/admin/login", (req, res) => {
 });
 
 // Pessoas - Listar
-router.get("/admin/mx_pessoas", (req, res) => {
+router.get("/admin/mx_pessoas", requireScreen, (req, res) => {
   const query = `SELECT id, nome, matricula FROM mydb.mx_pessoas ORDER BY nome ASC`;
 
   db.query(query, (err, result) => {
@@ -34,7 +36,7 @@ router.get("/admin/mx_pessoas", (req, res) => {
 });
 
 // Pessoas - Inserir
-router.post("/admin/mx_pessoas", (req, res) => {
+router.post("/admin/mx_pessoas", requireScreen, (req, res) => {
   const { nome, matricula } = req.body;
 
   if (!nome || !matricula) {
@@ -53,7 +55,7 @@ router.post("/admin/mx_pessoas", (req, res) => {
 });
 
 // Pessoas - Atualizar
-router.put("/admin/mx_pessoas/:id", (req, res) => {
+router.put("/admin/mx_pessoas/:id", requireScreen, (req, res) => {
   const { id } = req.params;
   const { nome, matricula } = req.body;
 
@@ -76,7 +78,7 @@ router.put("/admin/mx_pessoas/:id", (req, res) => {
 });
 
 // Pessoas - Deletar
-router.delete("/admin/mx_pessoas/:id", (req, res) => {
+router.delete("/admin/mx_pessoas/:id", requireScreen, (req, res) => {
   const { id } = req.params;
 
   const query = `DELETE FROM mydb.mx_pessoas WHERE id = ?`;
@@ -94,7 +96,7 @@ router.delete("/admin/mx_pessoas/:id", (req, res) => {
 });
 
 // Failures - Listar
-router.get("/admin/mx_failures", (req, res) => {
+router.get("/admin/mx_failures", requireScreen, (req, res) => {
   const query = `SELECT id, failures FROM mydb.mx_insp_screening_failures ORDER BY failures ASC`;
 
   db.query(query, (err, result) => {
@@ -107,7 +109,7 @@ router.get("/admin/mx_failures", (req, res) => {
 });
 
 // Failures - Inserir
-router.post("/admin/mx_failures", (req, res) => {
+router.post("/admin/mx_failures", requireScreen, (req, res) => {
   const { failures } = req.body;
 
   if (!failures) {
@@ -126,7 +128,7 @@ router.post("/admin/mx_failures", (req, res) => {
 });
 
 // Failures - Atualizar
-router.put("/admin/mx_failures/:id", (req, res) => {
+router.put("/admin/mx_failures/:id", requireScreen, (req, res) => {
   const { id } = req.params;
   const { failures } = req.body;
 
@@ -149,7 +151,7 @@ router.put("/admin/mx_failures/:id", (req, res) => {
 });
 
 // Failures - Deletar
-router.delete("/admin/mx_failures/:id", (req, res) => {
+router.delete("/admin/mx_failures/:id", requireScreen, (req, res) => {
   const { id } = req.params;
 
   const query = `DELETE FROM mydb.mx_insp_screening_failures WHERE id = ?`;
@@ -167,7 +169,7 @@ router.delete("/admin/mx_failures/:id", (req, res) => {
 });
 
 // Cores - Listar
-router.get("/admin/mx_cores", (req, res) => {
+router.get("/admin/mx_cores", requireScreen, (req, res) => {
   const query = `SELECT id, code, cor FROM mydb.mx_insp_screening_collor ORDER BY cor ASC`;
 
   db.query(query, (err, result) => {
@@ -180,7 +182,7 @@ router.get("/admin/mx_cores", (req, res) => {
 });
 
 // Cores - Inserir
-router.post("/admin/mx_cores", (req, res) => {
+router.post("/admin/mx_cores", requireScreen, (req, res) => {
   const { code, cor } = req.body;
 
   if (!code || !cor) {
@@ -199,7 +201,7 @@ router.post("/admin/mx_cores", (req, res) => {
 });
 
 // Cores - Atualizar
-router.put("/admin/mx_cores/:id", (req, res) => {
+router.put("/admin/mx_cores/:id", requireScreen, (req, res) => {
   const { id } = req.params;
   const { code, cor } = req.body;
 
@@ -222,7 +224,7 @@ router.put("/admin/mx_cores/:id", (req, res) => {
 });
 
 // Cores - Deletar
-router.delete("/admin/mx_cores/:id", (req, res) => {
+router.delete("/admin/mx_cores/:id", requireScreen, (req, res) => {
   const { id } = req.params;
 
   const query = `DELETE FROM mydb.mx_insp_screening_collor WHERE id = ?`;
@@ -240,7 +242,7 @@ router.delete("/admin/mx_cores/:id", (req, res) => {
 });
 
 // Parts - Listar (para admin)
-router.get("/admin/mx_parts", (req, res) => {
+router.get("/admin/mx_parts", requireScreen, (req, res) => {
   const query = `SELECT id, part FROM mydb.mx_insp_screening_part ORDER BY part ASC`;
 
   db.query(query, (err, result) => {
@@ -253,7 +255,7 @@ router.get("/admin/mx_parts", (req, res) => {
 });
 
 // Parts - Inserir
-router.post("/admin/mx_parts", (req, res) => {
+router.post("/admin/mx_parts", requireScreen, (req, res) => {
   const { part } = req.body;
 
   if (!part) {
@@ -272,7 +274,7 @@ router.post("/admin/mx_parts", (req, res) => {
 });
 
 // Parts - Atualizar
-router.put("/admin/mx_parts/:id", (req, res) => {
+router.put("/admin/mx_parts/:id", requireScreen, (req, res) => {
   const { id } = req.params;
   const { part } = req.body;
 
@@ -295,7 +297,7 @@ router.put("/admin/mx_parts/:id", (req, res) => {
 });
 
 // Parts - Deletar
-router.delete("/admin/mx_parts/:id", (req, res) => {
+router.delete("/admin/mx_parts/:id", requireScreen, (req, res) => {
   const { id } = req.params;
 
   const query = `DELETE FROM mydb.mx_insp_screening_part WHERE id = ?`;
@@ -313,7 +315,7 @@ router.delete("/admin/mx_parts/:id", (req, res) => {
 });
 
 // Custos - Listar
-router.get("/admin/mx_custos", (req, res) => {
+router.get("/admin/mx_custos", requireScreen, (req, res) => {
   const query = `SELECT id, basico as Basic_Model, material as Part, descricao as Descricao, valor_unit as Valor_Unitario FROM mydb.mx_insp_screening_custofront ORDER BY basico ASC, material ASC`;
 
   db.query(query, (err, result) => {
@@ -326,7 +328,7 @@ router.get("/admin/mx_custos", (req, res) => {
 });
 
 // Custos - Inserir
-router.post("/admin/mx_custos", (req, res) => {
+router.post("/admin/mx_custos", requireScreen, (req, res) => {
   const { Basic_Model, Part, Descricao, Valor_Unitario } = req.body;
 
   if (!Basic_Model || !Part || !Descricao || Valor_Unitario === undefined || Valor_Unitario === null) {
@@ -350,7 +352,7 @@ router.post("/admin/mx_custos", (req, res) => {
 });
 
 // Custos - Atualizar
-router.put("/admin/mx_custos/:id", (req, res) => {
+router.put("/admin/mx_custos/:id", requireScreen, (req, res) => {
   const { id } = req.params;
   const { Basic_Model, Part, Descricao, Valor_Unitario } = req.body;
 
@@ -378,7 +380,7 @@ router.put("/admin/mx_custos/:id", (req, res) => {
 });
 
 // Custos - Deletar
-router.delete("/admin/mx_custos/:id", (req, res) => {
+router.delete("/admin/mx_custos/:id", requireScreen, (req, res) => {
   const { id } = req.params;
 
   const query = `DELETE FROM mydb.mx_insp_screening_custofront WHERE id = ?`;

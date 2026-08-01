@@ -1,12 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../../config/db");
+const { authorizeScreen } = require("../../../auth/middleware");
+const requireScreen = authorizeScreen('HanaroScrap');
 
 // ==========================================
 // Hanaro Scrap - Aprovadores (Chefes/Gerentes)
 // ==========================================
 // Listar todos os aprovadores
-router.get("/api/hanaro-aprovadores", (req, res) => {
+router.get("/api/hanaro-aprovadores", requireScreen, (req, res) => {
   const query = `SELECT * FROM hanaro_aprovadores WHERE ativo = TRUE ORDER BY nome ASC`;
   
   db.query(query, (err, result) => {
@@ -19,7 +21,7 @@ router.get("/api/hanaro-aprovadores", (req, res) => {
 });
 
 // Adicionar aprovador
-router.post("/api/hanaro-aprovadores", (req, res) => {
+router.post("/api/hanaro-aprovadores", requireScreen, (req, res) => {
   const { matricula, nome, cargo, departamento } = req.body;
   
   if (!matricula || !nome) {
@@ -64,7 +66,7 @@ router.post("/api/hanaro-aprovadores", (req, res) => {
 });
 
 // Remover aprovador (desativar)
-router.delete("/api/hanaro-aprovadores/:matricula", (req, res) => {
+router.delete("/api/hanaro-aprovadores/:matricula", requireScreen, (req, res) => {
   const { matricula } = req.params;
   
   const query = `UPDATE hanaro_aprovadores SET ativo = FALSE WHERE matricula = ?`;
@@ -84,7 +86,7 @@ router.delete("/api/hanaro-aprovadores/:matricula", (req, res) => {
 });
 
 // Verificar se uma matrícula pode aprovar (seguindo padrão de verifyMatricula)
-router.get("/verificar-aprovador/:matricula", (req, res) => {
+router.get("/verificar-aprovador/:matricula", requireScreen, (req, res) => {
   const { matricula } = req.params;
   
   const query = `

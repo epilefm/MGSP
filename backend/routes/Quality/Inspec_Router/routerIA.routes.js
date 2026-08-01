@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../../config/db");
+const { authorizeScreen } = require("../../../auth/middleware");
+const requireScreen = authorizeScreen('Monit_Router');
 
 // Rota para análise IA com Gauss (sem auth)
-router.post('/router/ai-alerts', async (req, res) => {
+router.post('/router/ai-alerts', requireScreen, async (req, res) => {
   try {
     const { message, grid, date, alerts, linhas, totalOK, totalNG, totalSem, eficiencia } = req.body;
 
@@ -109,7 +111,7 @@ INSTRUÇÃO: Responda à pergunta acima usando os dados de produção fornecidos
   }
 });
 
-router.post("/Monit_Router_IA", async (req, res) => {
+router.post("/Monit_Router_IA", requireScreen, async (req, res) => {
   try {
     const { message, grid, date, linhas, totalOK, totalNG, totalSem, eficiencia } = req.body;
     

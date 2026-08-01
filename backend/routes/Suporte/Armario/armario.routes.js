@@ -1,11 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../../config/db");
+const { authorizeScreen } = require("../../../auth/middleware");
+const requireScreen = authorizeScreen('Armarios');
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Endpoints para armários
 // Buscar todos os armários
-router.get('/armarios', (req, res) => {
+router.get('/armarios', requireScreen, (req, res) => {
   const query = `SELECT * FROM armario_smd ORDER BY numero_armario`;
 
   db.query(query, (err, results) => {
@@ -19,7 +21,7 @@ router.get('/armarios', (req, res) => {
 });
 
 // Buscar um armário específico pelo número
-router.get('/armario/:numero', (req, res) => {
+router.get('/armario/:numero', requireScreen, (req, res) => {
   const { numero } = req.params;
 
   const query = `SELECT * FROM armario_smd WHERE numero_armario = ?`;
@@ -39,7 +41,7 @@ router.get('/armario/:numero', (req, res) => {
 });
 
 // Criar ou atualizar um armário
-router.post('/armario/:numero', (req, res) => {
+router.post('/armario/:numero', requireScreen, (req, res) => {
   const { numero } = req.params;
   const { numero_real, pessoa_id, funcionario, matricula, turno, cargo, departamento } = req.body;
 
@@ -188,7 +190,7 @@ router.post('/armario/:numero', (req, res) => {
 });
 
 // Liberar um armário (remover pessoa)
-router.delete('/armario/:numero', (req, res) => {
+router.delete('/armario/:numero', requireScreen, (req, res) => {
   const { numero } = req.params;
 
   // Verificar se o armário existe

@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../../config/db");
+const { authorizeScreen } = require("../../../auth/middleware");
+const requireScreen = authorizeScreen('SplicingScreen');
 
-  router.get("/SplicingDefect", (req, res) => {
+  router.get("/SplicingDefect", requireScreen, (req, res) => {
     const {data} = req.query;
 
      let mysql = ` SELECT
@@ -47,7 +49,7 @@ const db = require("../../../config/db");
      });
    });
 
-   router.get("/SplicingDefectQTY", (req, res) => {
+   router.get("/SplicingDefectQTY", requireScreen, (req, res) => {
     const {date} = req.query;
 
      let mysql =  `select  'Total', '',
@@ -115,7 +117,7 @@ const db = require("../../../config/db");
      });
    });
 
-   router.get("/SplicingDefectLineQTY", (req, res) => {
+   router.get("/SplicingDefectLineQTY", requireScreen, (req, res) => {
     const {date} = req.query;
 
      let mysql =  `select  * from (SELECT

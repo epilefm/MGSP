@@ -1,11 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
+const { authorizeScreen } = require("../../auth/middleware");
+const requireScreen = authorizeScreen('InspecMX');
 
 // ==========================================
 // Inspeção MX - Pessoas
 // ==========================================
-router.get("/getMXPessoas", (req, res) => {
+router.get("/getMXPessoas", requireScreen, (req, res) => {
   const { searchTerm } = req.query;
 
   let query = `SELECT nome, matricula FROM mydb.mx_pessoas WHERE 1=1`;
@@ -30,7 +32,7 @@ router.get("/getMXPessoas", (req, res) => {
 // ==========================================
 // Inspeção MX - Failures
 // ==========================================
-router.get("/getMXFailures", (req, res) => {
+router.get("/getMXFailures", requireScreen, (req, res) => {
   let query = `SELECT failures FROM mydb.mx_insp_screening_failures ORDER BY failures ASC`;
 
   db.query(query, (err, result) => {
@@ -45,7 +47,7 @@ router.get("/getMXFailures", (req, res) => {
 // ==========================================
 // Inspeção MX - Cores
 // ==========================================
-router.get("/getMXColors", (req, res) => {
+router.get("/getMXColors", requireScreen, (req, res) => {
   let query = `SELECT code, cor FROM mydb.mx_insp_screening_collor ORDER BY cor ASC`;
 
   db.query(query, (err, result) => {
@@ -60,7 +62,7 @@ router.get("/getMXColors", (req, res) => {
 // ==========================================
 // Inspeção MX - Histórico
 // ==========================================
-router.get("/getMXInsp", (req, res) => {
+router.get("/getMXInsp", requireScreen, (req, res) => {
   const { dataInicio, dataFim, modelo, tnp } = req.query;
 
   // Query otimizada que já faz o matching de custos no backend
@@ -124,7 +126,7 @@ router.get("/getMXInsp", (req, res) => {
 // ==========================================
 // Inspeção MX - Registro
 // ==========================================
-router.post("/registerMXInsp", (req, res) => {
+router.post("/registerMXInsp", requireScreen, (req, res) => {
   const { nome, modelo, Halb, part, cor, failure_test, place, qty_inspec, qty_defect, qrcode, data_hora } = req.body;
 
   if (!nome || !modelo || !part || !cor || qty_inspec === undefined) {
@@ -147,7 +149,7 @@ router.post("/registerMXInsp", (req, res) => {
 // ==========================================
 
 // Parts - Listar
-router.get("/getMXParts", (req, res) => {
+router.get("/getMXParts", requireScreen, (req, res) => {
   const query = `SELECT id, part FROM mydb.mx_insp_screening_part ORDER BY part ASC`;
 
   db.query(query, (err, result) => {
@@ -160,7 +162,7 @@ router.get("/getMXParts", (req, res) => {
 });
 
 // Parts - Listar por modelo
-router.get("/getMXPartsByModel", (req, res) => {
+router.get("/getMXPartsByModel", requireScreen, (req, res) => {
   const { modelo } = req.query;
 
   if (!modelo) {
@@ -224,7 +226,7 @@ router.get("/getMXPartsByModel", (req, res) => {
 });
 
 // Descrições - Listar por modelo e part
-router.get("/getMXDescricoesByModeloPart", (req, res) => {
+router.get("/getMXDescricoesByModeloPart", requireScreen, (req, res) => {
   const { modelo, part } = req.query;
 
   if (!modelo) {
@@ -249,7 +251,7 @@ router.get("/getMXDescricoesByModeloPart", (req, res) => {
 });
 
 // Modelos - Listar da tabela de custo (basico)
-router.get("/getMXModelos", (req, res) => {
+router.get("/getMXModelos", requireScreen, (req, res) => {
   const query = `
     SELECT DISTINCT basico as Basic_Model
     FROM mydb.mx_insp_screening_custofront

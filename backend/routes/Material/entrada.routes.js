@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
+const { authorizeScreen } = require("../../auth/middleware");
+const requireScreen = authorizeScreen(['InputScreenEntrada', 'EntMaterial2']);
 
-router.post("/register", (req, res) => {
+router.post("/register", requireScreen, (req, res) => {
   const array = req.body;
   const results = [];
   const errors = []
@@ -47,7 +49,7 @@ router.post("/register", (req, res) => {
 
 });
 
-router.post("/search", (req, res) => {
+router.post("/search", requireScreen, (req, res) => {
   const { Date } = req.body;
   const { PO } = req.body;
   const { Line } = req.body;
@@ -72,7 +74,7 @@ router.post("/search", (req, res) => {
   });
 });
 
-router.get("/getCards", (req, res) => {
+router.get("/getCards", requireScreen, (req, res) => {
   let mysql = "SELECT *, date_format(SUBSTR(Date, 1, 10), '%d/%m/%Y') as Date, time_format(SUBSTR(Date, 11, 19), '%H:%i') as Hour FROM mydb.entrada where date >= curdate() - INTERVAL 30 DAY order by id desc;";
   db.query(mysql, (err, result) => {
     if (err) {
@@ -83,7 +85,7 @@ router.get("/getCards", (req, res) => {
   });
 });
 
-router.put("/edit", (req, res) => {
+router.put("/edit", requireScreen, (req, res) => {
   const { id } = req.body;
   const { dia } = req.body;
   const { po } = req.body;
@@ -109,7 +111,7 @@ router.put("/edit", (req, res) => {
   });
 });
 
-router.delete("/delete/:id", (req, res) => {
+router.delete("/delete/:id", requireScreen, (req, res) => {
   const { id } = req.params;
   let mysql = "DELETE FROM entrada WHERE id = ?";
   db.query(mysql, id, (err, result) => {

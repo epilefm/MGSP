@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
+const { authorizeScreen } = require("../../auth/middleware");
+const requireScreen = authorizeScreen('Inventario');
 
 // ---------------------------------------Inventário de Componentes / Placas ---------------------------------------
 
-router.post('/inv', (req, res)=>{
+router.post('/inv', requireScreen, (req, res)=>{
   const {
     Data,
     Basic_Model,
@@ -44,7 +46,7 @@ router.post('/inv', (req, res)=>{
 
 })
 
-router.get("/getinventario", (req, res) => {
+router.get("/getinventario", requireScreen, (req, res) => {
  let mysql = "SELECT * FROM mydb.inventario ORDER BY id desc;";
  db.query(mysql, (err, result) => {
    if (err) {

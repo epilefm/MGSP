@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../../config/db");
+const { authorizeScreen } = require("../../../auth/middleware");
+const requireScreen = authorizeScreen('Control_Temp');
 
 //----------------
 //----------------Tela de temperatura e umidade------------------------------------------------------------------------------
-router.get("/Temperatura", (req, res) => {
+router.get("/Temperatura", requireScreen, (req, res) => {
   const {data} = req.query;
 
    let mysql = `SELECT
@@ -39,7 +41,7 @@ order by linha;
    });
  });
 
-router.get("/TempAmbiente", (req, res) => {
+router.get("/TempAmbiente", requireScreen, (req, res) => {
   const {data} = req.query;
 
    let mysql = `SELECT
@@ -73,7 +75,7 @@ INNER JOIN (
    });
  });
 
-router.get("/Temperaturaa", (req, res) => {
+router.get("/Temperaturaa", requireScreen, (req, res) => {
     const {data} = req.query;
 
      let mysql = `SELECT line_smd AS 'line',

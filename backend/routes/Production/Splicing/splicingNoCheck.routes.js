@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../../config/db");
+const { authorizeScreen } = require("../../../auth/middleware");
+const requireScreen = authorizeScreen('SplicingNoCheck');
 
 //-Erro de Splicing - Não foi feito splicing
 
-router.get("/SplicingNoCheck", (req, res) => {
+router.get("/SplicingNoCheck", requireScreen, (req, res) => {
   const {data} = req.query;
 
    let mysql = `SELECT
@@ -30,7 +32,7 @@ ORDER BY WORK_DT desc;`;
    });
  });
 
- router.get("/SplicingNoCheckGraf", (req, res) => {
+ router.get("/SplicingNoCheckGraf", requireScreen, (req, res) => {
   const {date} = req.query;
 
    let mysql = `SELECT DATE_FORMAT(WORK_YMD, '%d-%m-%Y') AS data, LINE_NM, SUM(CASE WHEN ERR_DESC = 'No Splicing Check' THEN 1 ELSE 0 END) AS ErrorCount
@@ -47,7 +49,7 @@ ORDER BY ErrorCount DESC limit 10;`;
    });
  });
 
- router.get("/SplicingNoCheckGrafII", (req, res) => {
+ router.get("/SplicingNoCheckGrafII", requireScreen, (req, res) => {
   const {date} = req.query;
 
    let mysql = `SELECT DATE_FORMAT(WORK_YMD, '%d-%m-%Y') AS data,LINE_NM, equip, feeder, SUM(CASE WHEN ERR_DESC = 'No Splicing Check' THEN 1 ELSE 0 END) AS ErrorCount
@@ -66,7 +68,7 @@ ORDER BY ErrorCount DESC limit 10;`;
 
   //---------------------------------------/**************////////////////////////////////////////////////////////////// */
  // Endpoint para salvar verificação de feeder
-router.post("/saveNoSplicingFeederCheck", (req, res) => {
+router.post("/saveNoSplicingFeederCheck", requireScreen, (req, res) => {
   const { data, feeder, matricula } = req.body;
   
   // Primeiro verificar se a matrícula existe na tabela de pessoas
@@ -104,7 +106,7 @@ router.post("/saveNoSplicingFeederCheck", (req, res) => {
 });
 
 // Endpoint para buscar verificações de feeder
-router.get("/getNoSplicingFeederChecks", (req, res) => {
+router.get("/getNoSplicingFeederChecks", requireScreen, (req, res) => {
   const { data } = req.query;
   
   const getChecksQuery = `
@@ -125,7 +127,7 @@ router.get("/getNoSplicingFeederChecks", (req, res) => {
 });
 
 // Endpoint para criar tabela de checks se não existir
-router.get("/initNoSplicingFeederTable", (req, res) => {
+router.get("/initNoSplicingFeederTable", requireScreen, (req, res) => {
   const createTableQuery = `
     CREATE TABLE IF NOT EXISTS mydb.no_splicing_feeder (
       id INT AUTO_INCREMENT PRIMARY KEY,
@@ -151,7 +153,7 @@ router.get("/initNoSplicingFeederTable", (req, res) => {
 });
 
 // Endpoint para salvar verificação de feeder com motivo
-router.post("/saveNoSplicingFeederCheckWithMotivo", (req, res) => {
+router.post("/saveNoSplicingFeederCheckWithMotivo", requireScreen, (req, res) => {
   const { data, feeder, matricula, motivo, linha, equipamento, lado } = req.body;
   
   // Primeiro verificar se a matrícula existe na tabela de pessoas
@@ -193,7 +195,7 @@ router.post("/saveNoSplicingFeederCheckWithMotivo", (req, res) => {
 });
 
 // Endpoint para verificar matrícula
-router.get("/verifyMatricula/:matricula", (req, res) => {
+router.get("/verifyMatricula/:matricula", requireScreen, (req, res) => {
   const { matricula } = req.params;
   
   // Remover espaços em branco e converter para string
@@ -216,7 +218,7 @@ router.get("/verifyMatricula/:matricula", (req, res) => {
 });
 
 // Endpoint para salvar indicadores diários do Splicing No Check
-router.post('/splicing-nocheck-indicators', async (req, res) => {
+router.post('/splicing-nocheck-indicators', requireScreen, async (req, res) => {
   try {
     const {
       data,
@@ -271,7 +273,7 @@ router.post('/splicing-nocheck-indicators', async (req, res) => {
 });
 
 // Endpoint para buscar indicadores do dashboard
-router.get('/splicing-nocheck-dashboard', async (req, res) => {
+router.get('/splicing-nocheck-dashboard', requireScreen, async (req, res) => {
   try {
     const { startDate, endDate } = req.query;
     
@@ -295,7 +297,7 @@ router.get('/splicing-nocheck-dashboard', async (req, res) => {
 
 ////------------------
 // Endpoint para buscar verificações de feeder
-router.get("/NoSplicingRPA", (req, res) => {
+router.get("/NoSplicingRPA", requireScreen, (req, res) => {
   const { data } = req.query;
   
   const getChecksQuery = `

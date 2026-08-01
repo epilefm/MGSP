@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../../config/db");
+const { authorizeScreen } = require("../../../auth/middleware");
+const requireScreen = authorizeScreen('HanaroScrap');
 
 const { buildFilterConditions } = require("./filterConditions");
 
@@ -8,7 +10,7 @@ const { buildFilterConditions } = require("./filterConditions");
 // Dashboard Hanaro - Rota com Filtros (Total do Período)
 // ==========================================
 // Apenas registros APROVADOS (igual ao histórico)
-router.get("/api/hanaro-dashboard-hoje", (req, res) => {
+router.get("/api/hanaro-dashboard-hoje", requireScreen, (req, res) => {
   const { dataInicio, dataFim, modelo, origem } = req.query;
   
   let query = `
@@ -80,7 +82,7 @@ router.get("/api/hanaro-dashboard-hoje", (req, res) => {
 // ==========================================
 // Apenas registros APROVADOS, agrupados por modelo
 // ACEITA TODOS OS FILTROS: data, modelo, origem, equipamento, causa, linha, fase, turno, responsavel, tipo_scrap
-router.get("/api/hanaro-dashboard-por-modelo", (req, res) => {
+router.get("/api/hanaro-dashboard-por-modelo", requireScreen, (req, res) => {
   const { conditions, params } = buildFilterConditions(req);
   
   let query = `
@@ -122,7 +124,7 @@ router.get("/api/hanaro-dashboard-por-modelo", (req, res) => {
 // ==========================================
 // Apenas registros APROVADOS, agrupados por origem
 // ACEITA TODOS OS FILTROS: data, modelo, origem, equipamento, causa, linha, fase, turno, responsavel, tipo_scrap
-router.get("/api/hanaro-dashboard-por-origem", (req, res) => {
+router.get("/api/hanaro-dashboard-por-origem", requireScreen, (req, res) => {
   const { conditions, params } = buildFilterConditions(req);
   
   let query = `
@@ -164,7 +166,7 @@ router.get("/api/hanaro-dashboard-por-origem", (req, res) => {
 // ==========================================
 // Apenas registros APROVADOS, agrupados por equipamento
 // ACEITA TODOS OS FILTROS: data, modelo, origem, equipamento, causa, linha, fase, turno, responsavel, tipo_scrap
-router.get("/api/hanaro-dashboard-por-equipamento", (req, res) => {
+router.get("/api/hanaro-dashboard-por-equipamento", requireScreen, (req, res) => {
   const { conditions, params } = buildFilterConditions(req);
   
   let query = `
@@ -206,7 +208,7 @@ router.get("/api/hanaro-dashboard-por-equipamento", (req, res) => {
 // ==========================================
 // Apenas registros APROVADOS, agrupados por causa
 // ACEITA TODOS OS FILTROS: data, modelo, origem, equipamento, causa, linha, fase, turno, responsavel, tipo_scrap
-router.get("/api/hanaro-dashboard-por-causa", (req, res) => {
+router.get("/api/hanaro-dashboard-por-causa", requireScreen, (req, res) => {
   const { conditions, params } = buildFilterConditions(req);
   
   let query = `
@@ -248,7 +250,7 @@ router.get("/api/hanaro-dashboard-por-causa", (req, res) => {
 // ==========================================
 // Apenas registros APROVADOS, agrupados por linha
 // ACEITA TODOS OS FILTROS: data, modelo, origem, equipamento, causa, linha, fase, turno, responsavel, tipo_scrap
-router.get("/api/hanaro-dashboard-por-linha", (req, res) => {
+router.get("/api/hanaro-dashboard-por-linha", requireScreen, (req, res) => {
   const { conditions, params } = buildFilterConditions(req);
   
   let query = `
@@ -290,7 +292,7 @@ router.get("/api/hanaro-dashboard-por-linha", (req, res) => {
 // ==========================================
 // Apenas registros APROVADOS, agrupados por tipo_placa
 // ACEITA TODOS OS FILTROS: data, modelo, origem, equipamento, causa, linha, fase, turno, responsavel, tipo_scrap
-router.get("/api/hanaro-dashboard-por-fase", (req, res) => {
+router.get("/api/hanaro-dashboard-por-fase", requireScreen, (req, res) => {
   const { conditions, params } = buildFilterConditions(req);
   
   let query = `
@@ -332,7 +334,7 @@ router.get("/api/hanaro-dashboard-por-fase", (req, res) => {
 // ==========================================
 // Apenas registros APROVADOS, agrupados por turno
 // ACEITA TODOS OS FILTROS: data, modelo, origem, equipamento, causa, linha, fase, turno, responsavel, tipo_scrap
-router.get("/api/hanaro-dashboard-por-turno", (req, res) => {
+router.get("/api/hanaro-dashboard-por-turno", requireScreen, (req, res) => {
   const { conditions, params } = buildFilterConditions(req);
   
   let query = `
@@ -374,7 +376,7 @@ router.get("/api/hanaro-dashboard-por-turno", (req, res) => {
 // ==========================================
 // Apenas registros APROVADOS, agrupados por responsavel (matricula/nome)
 // ACEITA TODOS OS FILTROS: data, modelo, origem, equipamento, causa, linha, fase, turno, responsavel, tipo_scrap
-router.get("/api/hanaro-dashboard-por-responsavel", (req, res) => {
+router.get("/api/hanaro-dashboard-por-responsavel", requireScreen, (req, res) => {
   const { conditions, params } = buildFilterConditions(req);
   
   let query = `
@@ -418,7 +420,7 @@ router.get("/api/hanaro-dashboard-por-responsavel", (req, res) => {
 // ==========================================
 // Apenas registros APROVADOS, agrupados por tipo_scrap
 // ACEITA TODOS OS FILTROS: data, modelo, origem, equipamento, causa, linha, fase, turno, responsavel, tipo_scrap
-router.get("/api/hanaro-dashboard-por-tipo-scrap", (req, res) => {
+router.get("/api/hanaro-dashboard-por-tipo-scrap", requireScreen, (req, res) => {
   const { conditions, params } = buildFilterConditions(req);
   
   let query = `
@@ -460,7 +462,7 @@ router.get("/api/hanaro-dashboard-por-tipo-scrap", (req, res) => {
 // ==========================================
 // Gráfico estilo STOCKS: Area (custo) + Bar (quantidade)
 // ACEITA TODOS OS FILTROS: data, modelo, origem, equipamento, causa, linha, fase, turno, responsavel, tipo_scrap
-router.get("/api/hanaro-dashboard-por-periodo", (req, res) => {
+router.get("/api/hanaro-dashboard-por-periodo", requireScreen, (req, res) => {
   const { dataInicio, dataFim, modelo, origem, equipamento, causa, linha, fase, turno, responsavel, tipo_scrap } = req.query;
   
   const conditions = ["status = 'Aprovado'"];
@@ -545,7 +547,7 @@ function agruparPorCampo(dados, campo) {
 }
 
 // Endpoint para IA - Buscar dados completos para análise (COM DADOS TEMPORAIS)
-router.get("/api/hanaro_scrap_dados_ia", (req, res) => {
+router.get("/api/hanaro_scrap_dados_ia", requireScreen, (req, res) => {
   const { limite } = req.query;
   const limiteQtd = limite ? parseInt(limite) : 1000; // Default 1000 registros
   

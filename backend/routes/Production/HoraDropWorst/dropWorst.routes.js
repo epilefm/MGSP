@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../../config/db");
+const { authorizeScreen } = require("../../../auth/middleware");
+const requireScreen = authorizeScreen('HoraDropW');
 
-router.get("/drop_worst/current", async (req, res) => {
+router.get("/drop_worst/current", requireScreen, async (req, res) => {
   let tempTableName = null;
   
   try {
@@ -221,7 +223,7 @@ router.get("/drop_worst/current", async (req, res) => {
 });
 
 // Endpoint para obter dados históricos do Drop Worst (entre datas)
-router.get("/drop_worst/history", async (req, res) => {
+router.get("/drop_worst/history", requireScreen, async (req, res) => {
   try {
     const { from, to } = req.query;
     
@@ -378,7 +380,7 @@ router.get("/drop_worst/history", async (req, res) => {
 
 // Endpoint para buscar dados do Drop Worst por hora (para tela HoraDropW - aba Por Hora)
 // Nova estrutura: cada part tem 1 registro por dia com colunas h00-h23
-router.get('/drop_worst/por_hora', async (req, res) => {
+router.get('/drop_worst/por_hora', requireScreen, async (req, res) => {
   try {
     const { startDate, endDate, data } = req.query;
     
@@ -679,18 +681,18 @@ function dropWorstParar() {
 dropWorstIniciar();
 
 // Endpoints
-router.get('/drop_worst/coletar', async (req, res) => { 
+router.get('/drop_worst/coletar', requireScreen, async (req, res) => { 
   res.json(await dropWorstColetar()); 
 });
 
-router.get('/drop_worst/status', (req, res) => { 
+router.get('/drop_worst/status', requireScreen, (req, res) => { 
   res.json({ 
     ativo: dropTimerId !== null,
     snapshotsMemoria: ultimoSnapshot.size
   }); 
 });
 
-router.post('/drop_worst/toggle', (req, res) => { 
+router.post('/drop_worst/toggle', requireScreen, (req, res) => { 
   const { ativo } = req.body; 
   if (ativo) dropWorstIniciar(); 
   else dropWorstParar(); 
@@ -698,7 +700,7 @@ router.post('/drop_worst/toggle', (req, res) => {
 });
 
 // Endpoint para LIMPAR snapshots e começar do zero (útil para testes)
-router.get('/drop_worst/reset', (req, res) => {
+router.get('/drop_worst/reset', requireScreen, (req, res) => {
   ultimoSnapshot.clear();
   res.json({ success: true, message: 'Snapshots limpos. Próxima coleta inicia do zero.' });
 });

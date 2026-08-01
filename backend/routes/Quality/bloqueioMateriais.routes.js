@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
+const { authorizeScreen } = require("../../auth/middleware");
+const requireScreen = authorizeScreen('Bloq_Mat');
 
-   router.post("/BloqMat", (req, res) => {
+   router.post("/BloqMat", requireScreen, (req, res) => {
     const { Basic_Model } = req.body;
     const { Linha } = req.body;
     const { Turno } = req.body;
@@ -39,7 +41,7 @@ const db = require("../../config/db");
     );
   });
   
-  router.get("/getBloqMat", (req, res) => {
+  router.get("/getBloqMat", requireScreen, (req, res) => {
     let mysql =
       "SELECT *, DATE_FORMAT(Data, '%Y-%m-%d %H:%i:%s') AS 'Data' FROM mydb.bloqueio_mat order by id desc";
     db.query(mysql, (err, result) => {

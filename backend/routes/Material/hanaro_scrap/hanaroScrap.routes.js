@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../../config/db");
+const { authorizeScreen } = require("../../../auth/middleware");
+const requireScreen = authorizeScreen('HanaroScrap');
 
 const axios = require("axios");
 
-router.get("/getOrigens", (req, res) => {
+router.get("/getOrigens", requireScreen, (req, res) => {
   let query = `SELECT id, Origem as nome FROM hanaro_origem ORDER BY Origem ASC`;
   
   db.query(query, (err, result) => {
@@ -19,7 +21,7 @@ router.get("/getOrigens", (req, res) => {
 // ==========================================
 // Hanaro Scrap - Equipamentos
 // ==========================================
-router.get("/getEquipamentos", (req, res) => {
+router.get("/getEquipamentos", requireScreen, (req, res) => {
   let query = `SELECT id, Equipamentos as nome FROM hanaro_equip ORDER BY Equipamentos ASC`;
   
   db.query(query, (err, result) => {
@@ -34,7 +36,7 @@ router.get("/getEquipamentos", (req, res) => {
 // ==========================================
 // Hanaro Scrap - Causas
 // ==========================================
-router.get("/getCausas", (req, res) => {
+router.get("/getCausas", requireScreen, (req, res) => {
   let query = `SELECT id, Causas as nome FROM hanaro_causas ORDER BY Causas ASC`;
   
   db.query(query, (err, result) => {
@@ -47,7 +49,7 @@ router.get("/getCausas", (req, res) => {
 });
 
 // ----------------------------------------Custo de Placas----------------------------------------
-router.get("/api/custo-placa", (req, res) => {
+router.get("/api/custo-placa", requireScreen, (req, res) => {
   try {
     const { modelo, tipoPlaca } = req.query;
     
@@ -104,7 +106,7 @@ router.get("/api/custo-placa", (req, res) => {
 });
 
 // ----------------------------------------Modelos de Custo----------------------------------------
-router.get("/api/modelos-custo", (req, res) => {
+router.get("/api/modelos-custo", requireScreen, (req, res) => {
   try {
     const query = `
       SELECT DISTINCT modelo, halb 
@@ -189,7 +191,7 @@ Por favor, envie um email de notificação para aprovação.
 // Rota para verificar CN duplicada
 // Agora suporta múltiplas CNs separadas por ';' no banco de dados
 // A busca usa LIKE para encontrar a CN dentro de uma string com múltiplas CNs
-router.get("/api/hanaro-scrap/verificar-cn/:cn", (req, res) => {
+router.get("/api/hanaro-scrap/verificar-cn/:cn", requireScreen, (req, res) => {
   const { cn } = req.params;
 
   if (!cn || cn.length !== 13) {
@@ -229,7 +231,7 @@ router.get("/api/hanaro-scrap/verificar-cn/:cn", (req, res) => {
 });
 
 // Rota para salvar registro de scrap
-router.post("/api/hanaro-scrap", async (req, res) => {
+router.post("/api/hanaro-scrap", requireScreen, async (req, res) => {
   const {
     matricula,
     nome_operador,
@@ -353,7 +355,7 @@ router.post("/api/hanaro-scrap", async (req, res) => {
 });
 
 // Rota para buscar histórico de registros de scrap
-router.get("/api/hanaro-scrap", (req, res) => {
+router.get("/api/hanaro-scrap", requireScreen, (req, res) => {
   const { 
     dataInicio, 
     dataFim, 
@@ -457,7 +459,7 @@ router.get("/api/hanaro-scrap", (req, res) => {
 });
 
 // Rota para buscar um registro específico por ID
-router.get("/api/hanaro-scrap/:id", (req, res) => {
+router.get("/api/hanaro-scrap/:id", requireScreen, (req, res) => {
   const { id } = req.params;
 
   const query = "SELECT * FROM hanaro_scrap WHERE id = ?";
@@ -487,7 +489,7 @@ router.get("/api/hanaro-scrap/:id", (req, res) => {
 });
 
 // Rota para atualizar status do registro (aprovar/rejeitar)
-router.put("/api/hanaro-scrap/:id/status", (req, res) => {
+router.put("/api/hanaro-scrap/:id/status", requireScreen, (req, res) => {
   const { id } = req.params;
   const { 
     status, 
@@ -573,7 +575,7 @@ router.put("/api/hanaro-scrap/:id/status", (req, res) => {
 
 
 // Rota para buscar registros pendentes de aprovação
-router.get("/api/hanaro-scrap/aprovacao/pendentes", (req, res) => {
+router.get("/api/hanaro-scrap/aprovacao/pendentes", requireScreen, (req, res) => {
   const { limit = 50, offset = 0 } = req.query;
 
   const query = `
@@ -601,7 +603,7 @@ router.get("/api/hanaro-scrap/aprovacao/pendentes", (req, res) => {
 });
 
 // Rota para deletar registro de scrap
-router.delete("/api/hanaro-scrap/:id", (req, res) => {
+router.delete("/api/hanaro-scrap/:id", requireScreen, (req, res) => {
   const { id } = req.params;
 
   // Verificar se o registro existe

@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
+const { authorizeScreen } = require("../../auth/middleware");
+const requireScreen = authorizeScreen('PlantScreen');
 
 /////-------------------------------------
-router.get("/getPlantHistory", (req, res) => {
+router.get("/getPlantHistory", requireScreen, (req, res) => {
   let mysql =
     `           -- Histórico de planta errada
      SELECT date_format(WORK_YMD, '%d-%m-%Y') as 'Data', date_format(Insp_DT, '%h:%i:%s') as 'Hora',

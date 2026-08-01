@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
+const { authorizeScreen } = require("../../auth/middleware");
+const requireScreen = authorizeScreen('SlipScreen');
 
 //-------------------GMES SLIP
 
-router.post("/slip", (req, res) => {
+router.post("/slip", requireScreen, (req, res) => {
 
   const array = req.body.dados;
 
@@ -30,7 +32,7 @@ router.post("/slip", (req, res) => {
   });
 })
 
-router.get("/getSlip", (req, res) => {
+router.get("/getSlip", requireScreen, (req, res) => {
   let mysql = `select *,  date_format(Data, '%Y-%m-%d / %H:%m') as Data from mydb.slip order by id desc limit 1000;`;
   db.query(mysql, (err, result) => {
     if (err) {

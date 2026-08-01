@@ -1,13 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
+const { authorizeScreen } = require("../../auth/middleware");
+const requireScreen = authorizeScreen(['ListaEntradaWIP', 'InputScreenEntrada']);
 const { determinarTurno } = require("../../shared/turno");
 
 ////----------------------------------------------------------------------------------------*********
 // Nova Tela de Entrada e saida de material para o WIP
 // ********
 
-router.post("/saveEntradawip", (req, res) => {
+router.post("/saveEntradawip", requireScreen, (req, res) => {
   const { products, line, prodOrder, model, halb, plant, keep, planQty } = req.body;
 
   console.log('Recebendo requisição para salvar produtos:', { products, line, prodOrder, model, halb, plant, keep, planQty });
@@ -57,7 +59,7 @@ router.post("/saveEntradawip", (req, res) => {
 });
 
 // Rota alternativa para salvar dados da tela EntMaterial2
-router.post("/saveEntradawipAlternative", (req, res) => {
+router.post("/saveEntradawipAlternative", requireScreen, (req, res) => {
   const { products, turno } = req.body;
 
   // Verificar se products é um array
@@ -88,7 +90,7 @@ router.post("/saveEntradawipAlternative", (req, res) => {
 });
 
 // Rota para verificar se o Reel ID já existe no banco de dados
-router.get("/checkReelId/:reelId", (req, res) => {
+router.get("/checkReelId/:reelId", requireScreen, (req, res) => {
   const { reelId } = req.params;
 
   // Query para verificar se o Reel ID existe
@@ -106,7 +108,7 @@ router.get("/checkReelId/:reelId", (req, res) => {
 });
 
 // Rota para buscar todos os registros da tabela entradawip2
-router.get("/getEntradawip", (req, res) => {
+router.get("/getEntradawip", requireScreen, (req, res) => {
   // Query para buscar todos os registros
   const query = `SELECT * FROM entradawip2 ORDER BY created_at DESC`;
 
@@ -121,7 +123,7 @@ router.get("/getEntradawip", (req, res) => {
 });
 
 // Rota para confirmar a saída de registros
-router.post("/confirmExit", (req, res) => {
+router.post("/confirmExit", requireScreen, (req, res) => {
   const { recordIds } = req.body;
 
   // Verificar se recordIds é um array válido

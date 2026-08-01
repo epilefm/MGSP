@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../../config/db");
+const { authorizeScreen } = require("../../../auth/middleware");
+const requireScreen = authorizeScreen(['HoraHora', 'HoraHora2T', 'HoraHora3T', 'HoraHoraMounter', 'HoraProdLista']);
 
  //---------------- Hora produção 1T
- router.get("/HoraProd", (req, res) => {
+ router.get("/HoraProd", requireScreen, (req, res) => {
   const {data} = req.query;
 
     let mysql = `
@@ -297,7 +299,7 @@ INNER JOIN pcb_qty_array B ON A.Modelo = B.Modelo
 
 
 // GET para buscar comentários
-router.get("/horaProd_comments", (req, res) => {
+router.get("/horaProd_comments", requireScreen, (req, res) => {
   const { data, linha, modelo, horario } = req.query;
   
   const sql = `
@@ -318,7 +320,7 @@ router.get("/horaProd_comments", (req, res) => {
 });
 
 // POST/PUT para salvar/atualizar comentários
-router.post("/horaProdUp_comments", (req, res) => {
+router.post("/horaProdUp_comments", requireScreen, (req, res) => {
   console.log("Dados recebidos:", req.body); // Adicione este log
 
   const { 
@@ -409,7 +411,7 @@ router.post("/horaProdUp_comments", (req, res) => {
 
 // Historico de registro do horahora
 
-router.get("/HoraProd_Lista", (req, res) => {
+router.get("/HoraProd_Lista", requireScreen, (req, res) => {
   const { date } = req.query;
 
   let mysql = `
@@ -466,7 +468,7 @@ router.get("/HoraProd_Lista", (req, res) => {
 
 
   //---------------Hora produção 2T
-router.get("/HoraProd2T", (req, res) => {
+router.get("/HoraProd2T", requireScreen, (req, res) => {
   const {data} = req.query;
  
    let mysql = `
@@ -758,7 +760,7 @@ INNER JOIN pcb_qty_array B ON A.Modelo = B.Modelo
 
 
  //-------- Hora produção 3T
-router.get("/HoraProd3T", (req, res) => {
+router.get("/HoraProd3T", requireScreen, (req, res) => {
   const {data} = req.query;
  
    let mysql = ` 

@@ -1,11 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../../config/db");
+const { authorizeScreen } = require("../../../auth/middleware");
+const requireScreen = authorizeScreen('OfflineSaida');
 
 //------------------------------------------------------------------------------------------------------------------
 //--------------------- Reparo + Offline ---------------------------------------------------------------------------
 //-------------------- REPARO Offline ->Offline Saida<-   -------------------------------
-router.post("/RegisterOfflineSaida", async (req, res) => {
+router.post("/RegisterOfflineSaida", requireScreen, async (req, res) => {
   try {
     let resultVerifyOffSaida = await verifyOffSaida(req.body);
     res.send(resultVerifyOffSaida);
@@ -75,7 +77,7 @@ const verifyOffSaida = (array) => {
   });
 };
 
-router.get("/getOfflineSaida", (req, res) => {
+router.get("/getOfflineSaida", requireScreen, (req, res) => {
   let mysql =
     "select *, date_format(Data_saida, '%y-%m-%d %Hh:%i') as Data_saida from mydb.offline_saida order by id desc;";
   db.query(mysql, (err, result) => {

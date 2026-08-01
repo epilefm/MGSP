@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../../config/db");
+const { authorizeScreen } = require("../../../auth/middleware");
+const requireScreen = authorizeScreen('KPIQuality');
 
 ///------------------------------------------------------------------ RPA -------------------------------
 //------------KPI_AOI
-router.get("/KPI_AOI", (req, res) => {
+router.get("/KPI_AOI", requireScreen, (req, res) => {
   const { slip } = req.query;
 
   // Consulta para obter slots e slips do banco de dados

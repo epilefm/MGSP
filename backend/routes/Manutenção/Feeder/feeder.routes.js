@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../../config/db");
+const { authorizeScreen } = require("../../../auth/middleware");
+const requireScreen = authorizeScreen('Feeder');
 
 //----------------------Feeder-------------------------------
-router.post('/Feeder', (req, res) => {
+router.post('/Feeder', requireScreen, (req, res) => {
   const {
     id,    Turno,    Tecnico,    Codigo,    Tamanho,
     Ano,    Status,    Manutencao,    Peca
@@ -36,7 +38,7 @@ router.post('/Feeder', (req, res) => {
 
 })
 
-router.get("/getFeeder", (req, res) => {
+router.get("/getFeeder", requireScreen, (req, res) => {
   let mysql = `select *, date_format(Data, '%Y-%m-%d / %Hh:%mm') as Data from mydb.feeder order by id desc;`
   db.query(mysql, (err, result) => {
     if (err) {

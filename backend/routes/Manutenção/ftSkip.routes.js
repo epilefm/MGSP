@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
+const { authorizeScreen } = require("../../auth/middleware");
+const requireScreen = authorizeScreen('FTSkipMonitoring');
 
 // Rota para buscar dados da tabela FT Skip Monitoring
 // Pega apenas o registro MAIS RECENTE de cada linha (evita duplicados do dia)
-router.get("/getFTSkipData", (req, res) => {
+router.get("/getFTSkipData", requireScreen, (req, res) => {
   const { date } = req.query;
 
   let mysql;

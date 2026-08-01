@@ -1,11 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
+const { authorizeScreen } = require("../../auth/middleware");
+const requireScreen = authorizeScreen('Estoque_comp');
 
 ////////////////////////////////---- Estoque de Componentes do Reparo ----------------------------------------------------------------------------------------------------------------------------------
 
 // Endpoint para buscar sugestões de códigos de componentes
-router.get("/searchComponentCodes", (req, res) => {
+router.get("/searchComponentCodes", requireScreen, (req, res) => {
   const { searchTerm } = req.query;
 
   // Verificar se o termo de busca foi fornecido
@@ -44,7 +46,7 @@ router.get("/searchComponentCodes", (req, res) => {
 
 //----------------------------Reparo Componentes Logs--------------------------------------------------------
 
-router.get("/getReparoComponentesLogs", (req, res) => {
+router.get("/getReparoComponentesLogs", requireScreen, (req, res) => {
   let mysql = "SELECT * FROM mydb.reparo_componentes_log ORDER BY created_at DESC LIMIT 1000";
   db.query(mysql, (err, result) => {
     if (err) {
@@ -60,7 +62,7 @@ router.get("/getReparoComponentesLogs", (req, res) => {
 });
 
 //----------------------------Reparo Componentes Estoque--------------------------------------------------------
-router.get("/getReparoCompEstoque", (req, res) => {
+router.get("/getReparoCompEstoque", requireScreen, (req, res) => {
   let mysql = "select id,cod_comp,qty,valor*qty as valor,DATE_FORMAT(data, '%Y-%m-%d %H:%i:%s') as data from mydb.reparo_ctrl_comp group by cod_comp order by data desc limit 500;"
   db.query(mysql, (err, result) => {
     if (err) {
@@ -73,7 +75,7 @@ router.get("/getReparoCompEstoque", (req, res) => {
 
 //----------------------------Reparo Componentes--------------------------------------------------------
 
-router.post("/ReparoEntradaComponentes", (req, res) => {
+router.post("/ReparoEntradaComponentes", requireScreen, (req, res) => {
   const array = req.body;
 
   array.forEach(item => {
@@ -164,7 +166,7 @@ router.post("/ReparoEntradaComponentes", (req, res) => {
 
 //----------------------------Reparo Diminui Estoque--------------------------------------------------------
 
-router.post("/ReparoDiminuiEstoque", (req, res) => {
+router.post("/ReparoDiminuiEstoque", requireScreen, (req, res) => {
   const { cod_comp, qty } = req.body;
 
   // First, check if the component exists and get its current quantity
@@ -245,7 +247,7 @@ router.post("/ReparoDiminuiEstoque", (req, res) => {
 });
 
 // Buscar pessoas/colaboradores por nome (autocomplete)
-router.get('/searchPessoas', (req, res) => {
+router.get('/searchPessoas', requireScreen, (req, res) => {
   const { searchTerm } = req.query;
 
   if (!searchTerm || searchTerm.length < 2) {

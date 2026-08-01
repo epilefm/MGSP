@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
+const { authorizeScreen } = require("../../auth/middleware");
+const requireScreen = authorizeScreen('POPControl');
 
 ///--------------------------------------------------------------------------------------------------------------------------------
 ///--------------------------------------------------------------------------------------------------------------------------------
@@ -8,7 +10,7 @@ const db = require("../../config/db");
 ///--------------------------------------------------------------------------------------------------------------------------------
 // Endpoints para POP_Control
 // Buscar todos os registros
-router.get('/api/pop-control', (req, res) => {
+router.get('/api/pop-control', requireScreen, (req, res) => {
   const { data } = req.query;
   
   let query = `SELECT * FROM pop_control`;
@@ -35,7 +37,7 @@ router.get('/api/pop-control', (req, res) => {
 });
 
 // Criar um novo registro
-router.post('/api/pop-control', (req, res) => {
+router.post('/api/pop-control', requireScreen, (req, res) => {
   const {
     data,
     linha,
@@ -97,7 +99,7 @@ router.post('/api/pop-control', (req, res) => {
 });
 
 // Buscar um registro específico por ID
-router.get('/api/pop-control/:id', (req, res) => {
+router.get('/api/pop-control/:id', requireScreen, (req, res) => {
   const { id } = req.params;
   
   const query = `SELECT * FROM pop_control WHERE id = ?`;
@@ -117,7 +119,7 @@ router.get('/api/pop-control/:id', (req, res) => {
 });
 
 // Atualizar um registro específico por ID
-router.put('/api/pop-control/:id', (req, res) => {
+router.put('/api/pop-control/:id', requireScreen, (req, res) => {
   const { id } = req.params;
   const {
     data,
@@ -176,7 +178,7 @@ router.put('/api/pop-control/:id', (req, res) => {
 });
 
 // Deletar um registro específico por ID
-router.delete('/api/pop-control/:id', (req, res) => {
+router.delete('/api/pop-control/:id', requireScreen, (req, res) => {
   const { id } = req.params;
   
   const query = `DELETE FROM pop_control WHERE id = ?`;
@@ -196,7 +198,7 @@ router.delete('/api/pop-control/:id', (req, res) => {
 });
 
 // Buscar informações do operador por matrícula
-router.get('/api/operador/:matricula', (req, res) => {
+router.get('/api/operador/:matricula', requireScreen, (req, res) => {
   const { matricula } = req.params;
   
   const query = `SELECT funcionarios, matricula, turno FROM mydb.pessoas WHERE matricula = ?`;
@@ -216,7 +218,7 @@ router.get('/api/operador/:matricula', (req, res) => {
 });
 
 // Buscar modelos do banco de dados
-router.get('/api/modelos', (req, res) => {
+router.get('/api/modelos', requireScreen, (req, res) => {
   const query = `
     SELECT modelo, Halb
     FROM (
@@ -252,7 +254,7 @@ router.get('/api/modelos', (req, res) => {
 });
 
 // Rota para verificar a estrutura da tabela pop_control
-router.get('/api/pop_control_structure', (req, res) => {
+router.get('/api/pop_control_structure', requireScreen, (req, res) => {
   const query = `DESCRIBE pop_control`;
   
   db.query(query, (err, results) => {
@@ -266,7 +268,7 @@ router.get('/api/pop_control_structure', (req, res) => {
 });
 
 // Rota para buscar opções de molhagem da tabela pop_control_molhagem
-router.get('/pop_control_molhagem', (req, res) => {
+router.get('/pop_control_molhagem', requireScreen, (req, res) => {
   const query = `SELECT id, molhagem as valor FROM pop_control_molhagem ORDER BY molhagem ASC`;
   
   db.query(query, (err, results) => {
@@ -284,7 +286,7 @@ router.get('/pop_control_molhagem', (req, res) => {
 });
 
 // Rota para buscar opções de medição jig da tabela pop_control_jig
-router.get('/pop_control_jig', (req, res) => {
+router.get('/pop_control_jig', requireScreen, (req, res) => {
   const query = `SELECT id, medicao as valor FROM pop_control_jig ORDER BY CAST(medicao AS DECIMAL(10,3)) ASC`;
   
   db.query(query, (err, results) => {
@@ -306,7 +308,7 @@ router.get('/pop_control_jig', (req, res) => {
 });
 
 // Rota específica para a tabela de controle POP
-router.get('/api/popControl_controle', (req, res) => {
+router.get('/api/popControl_controle', requireScreen, (req, res) => {
   const { data } = req.query;
   
   let query = `
