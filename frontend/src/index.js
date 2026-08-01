@@ -2,7 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import LoginForm from './components/Layout/Loginform'
+import { AuthProvider } from './auth/AuthContext';
+import RequireAuth from './auth/RequireAuth';
+import RequireAdmin from './auth/RequireAdmin';
+import LoginPage from './components/Auth/LoginPage';
+import RegisterPage from './components/Auth/RegisterPage';
+import ForgotPasswordPage from './components/Auth/ForgotPasswordPage';
+import AdminPanel from './components/Admin/AdminPanel';
 import InputScreenEntrada from './Pages/Material/InputScreenEntrada'
 import Entrada from './components/Material/Entrada'
 import InputScreenOut from './Pages/Material/InputScreenOut'
@@ -117,14 +123,10 @@ import {
   Route,
 } from "react-router-dom";
 
-const router = createBrowserRouter([
+const rawRoutes = [
   {
     path: "/",
     element: <App/>,
-  },
-  {
-    path: "Login",
-    element: <LoginForm/>,
   },
   {
     path: "InputScreenEntrada",
@@ -450,14 +452,28 @@ const router = createBrowserRouter([
    },
   {
     path: "DescriptN",
-   element: <DescriptN/>, 
+   element: <DescriptN/>,
    },
+];
 
+// Rotas de conteúdo exigem login; cada uma é embrulhada em RequireAuth sem
+// precisar editar as ~80 entradas acima uma por uma.
+const protectedRoutes = rawRoutes.map((rota) => ({
+  ...rota,
+  element: <RequireAuth>{rota.element}</RequireAuth>,
+}));
 
-
+const router = createBrowserRouter([
+  { path: "Login", element: <LoginPage /> },
+  { path: "Registrar", element: <RegisterPage /> },
+  { path: "EsqueciSenha", element: <ForgotPasswordPage /> },
+  { path: "Admin", element: <RequireAdmin><AdminPanel /></RequireAdmin> },
+  ...protectedRoutes,
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <RouterProvider router={router} />
+  <AuthProvider>
+    <RouterProvider router={router} />
+  </AuthProvider>
 );

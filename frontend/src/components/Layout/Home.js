@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import axios from 'axios';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -7,122 +9,68 @@ import { CardActionArea } from '@mui/material';
 import { Box } from '@mui/material';
 import { Row, Col } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
+import { Lightbulb } from 'lucide-react';
 import styles from '../../styles.css'
-import { useState, useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../auth/AuthContext';
+import { API_URL } from '../../config/api';
 
-// Dados dos departamentos e seus itens
-const departments = [
-  {
-    id: 'material',
-    name: 'Material',
-    image: '/images/film reel.png',
-    description: '',
-    items: [
-      { name: 'Análise de Material', href: 'Material_Analysis' },
-      { name: 'Dashboards', href: 'Charts' },
-      { name: 'Lavagem de Componentes', href: 'LavEnt' },
-      { name: 'Registro de Entrada', href: 'InputScreenEntrada' },
-      { name: 'Registro de Saída', href: 'InputScreenSaida' },
-      { name: 'Registro de Devolução', href: 'InputScreenDevolucao' },
-      { name: 'Registro de Descarte', href: 'InputScreenDescarte' },
-      { name: 'Registro de Inventário', href: 'Inventario' }
-    ]
-  },
-  {
-    id: 'quality',
-    name: 'Qualidade / Reparo',
-    image: '/images/checklist.png',
-    description: '',
-    items: [
-      { name: 'Bloqueio de Materiais', href: 'Bloq_Mat' },
-      { name: 'Controle ESD', href: 'ESD' },
-      { name: 'Monitoramento de Versão', href: 'Version' },
-      { name: 'Mapeamento 2D', href: 'Mapping' },
-      { name: 'Controle MSL', href: 'Baking' },
-      { name: 'Monitoramento de Planta', href: 'PlantScreen' },
-      { name: 'Gestão de Materiais', href: 'SubScreen' },
-      { name: 'Reparo - Entrada', href: 'RepairScreen' },
-      { name: 'Reparo - Processo', href: 'RepairProcess' },
-      { name: 'Reparo - Saída', href: 'RepairSaida' },
-      { name: 'Reparo - Análise', href: 'RepairAnalysis' },
-      { name: 'Estoque de Componentes', href: 'Estoque_comp' },
-      { name: 'Offline - Saída', href: 'OfflineSaida' },
-      { name: 'Controle POP', href: 'POPControl' }
-    ]
-  },
-  {
-    id: 'production',
-    name: 'Produção',
-    image: '/images/statistic.png',
-    description: '',
-    items: [
-      { name: 'Produção Mounter', href: 'HoraHora' },
-      { name: 'Hora Resultado', href: 'HoraPlanResult' },
-      { name: '50 Piores Indicadores', href: 'WorstDrop50' },
-      { name: 'Plano de Produção', href: 'prod' },
-      { name: 'Scrap - Entrada', href: 'Scrap_entrada' },
-      { name: 'Scrap - Recebimento', href: 'Scrap_Receb' },
-      { name: 'Scrap - Reposição', href: 'Scrap_reposicao' },
-      { name: 'Scrap - Saída', href: 'Scrap_saida' },
-      { name: 'Scrap - Análise', href: 'ScrapInv' },
-      { name: 'Monitoramento Splicing', href: 'SplicingScreen' },
-      { name: 'Duplo Check CN', href: 'SlipScreen' },
-      { name: 'Mapa', href: 'Mapa' },
-      { name: 'Pagamento', href: 'Pgto' },
-      { name: 'Virtual T/O', href: 'Virtual_Label' }
-    ]
-  },
-  {
-    id: 'maintenance',
-    name: 'Manutenção',
-    image: '/images/maintenance.png',
-    description: '',
-    items: [
-      { name: 'Monitoramento Smart Rack', href: 'SM_Slots' },
-      { name: 'Controle de Temperatura', href: 'Control_Temp' },
-      { name: 'Reflow - Perfis', href: 'InputSpindle' },
-      { name: 'Monitoramento Spindle', href: 'Spindle' },
-      { name: 'Registro de Feeder', href: 'Feeder' },
-      { name: 'Auditoria BadHead', href: 'BadHead'},
-      { name: 'MFM', href: 'MFM' },
-      { name: 'FT Skip Monitoring', href: 'FTSkipMonitoringV2' },
-      { name: 'Armários SMD', href: 'Armarios' }
-    ]
-  },
-  {
-    id: 'support',
-    name: 'Suporte',
-    image: '/images/puzzle.png',
-    description: '',
-    items: [
-      { name: 'Peças de Reposição', href: 'spareparts' }
-    ]
-  }
+const GRUPOS = [
+  { id: 'material', nome: 'Material', imagem: '/images/film reel.png' },
+  { id: 'quality', nome: 'Qualidade / Reparo', imagem: '/images/checklist.png' },
+  { id: 'production', nome: 'Produção', imagem: '/images/statistic.png' },
+  { id: 'maintenance', nome: 'Manutenção', imagem: '/images/maintenance.png' },
+  { id: 'inovacao', nome: 'Inovação', imagem: null },
+  { id: 'support', nome: 'Suporte', imagem: '/images/puzzle.png' },
 ];
 
 export default function ActionAreaCard() {
-  const [expandedDepartment, setExpandedDepartment] = useState(null);
+  const [expandedGrupo, setExpandedGrupo] = useState(null);
+  const [telas, setTelas] = useState([]);
+  const [carregando, setCarregando] = useState(true);
   const navigate = useNavigate();
-  const departmentRefs = useRef({});
+  const grupoRefs = useRef({});
+  const { user, logout, podeAcessar } = useAuth();
 
-  const handleDepartmentClick = (deptId) => {
-    setExpandedDepartment(expandedDepartment === deptId ? null : deptId);
+  useEffect(() => {
+    axios.get(`${API_URL}/auth/screens`)
+      .then((res) => setTelas(res.data))
+      .catch(() => setTelas([]))
+      .finally(() => setCarregando(false));
+  }, []);
+
+  // Só mostra telas que o usuário pode acessar (liberadas + públicas + tudo, se admin).
+  const gruposComTelas = useMemo(() => {
+    return GRUPOS
+      .map((grupo) => ({
+        ...grupo,
+        itens: telas.filter((t) => t.grupo === grupo.id && podeAcessar(t.slug)),
+      }))
+      .filter((grupo) => grupo.itens.length > 0);
+  }, [telas, podeAcessar]);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/Login', { replace: true });
   };
 
-  const handleItemClick = (href) => {
-    navigate(`/${href}`);
+  const handleGrupoClick = (grupoId) => {
+    setExpandedGrupo(expandedGrupo === grupoId ? null : grupoId);
   };
 
-  // Fechar a lista ao clicar fora
+  const handleItemClick = (slug) => {
+    navigate(`/${slug}`);
+  };
+
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (expandedDepartment) {
-        const isClickInside = Object.values(departmentRefs.current).some(el => 
+      if (expandedGrupo) {
+        const isClickInside = Object.values(grupoRefs.current).some(el =>
           el && el.contains(event.target)
         );
         if (!isClickInside) {
-          setExpandedDepartment(null);
+          setExpandedGrupo(null);
         }
       }
     };
@@ -131,81 +79,130 @@ export default function ActionAreaCard() {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [expandedDepartment]);
+  }, [expandedGrupo]);
 
   return (
     <>
-      <Box style={{fontFamily: 'SamsungOne', fontSize:72, textAlign: 'center', marginTop:40}}>
-        <img src='/images/logo.png' alt="Logo" style={{maxWidth: '300px'}}/>
+      <Box
+        style={{
+          background: 'linear-gradient(135deg, #0a1e5c 0%, #1428A0 55%, #1d63d1 100%)',
+          padding: '48px 20px 56px',
+          textAlign: 'center',
+          color: '#fff',
+        }}
+      >
+        <img src='/images/logo.png' alt="Logo" style={{ maxWidth: '260px' }} />
+        <Typography style={{ fontFamily: 'SamsungOne', fontSize: 26, marginTop: 18, fontWeight: 600 }}>
+          Intranet SMD
+        </Typography>
+        {user && (
+          <Typography style={{ fontSize: 15, opacity: 0.85, marginTop: 4 }}>
+            Bem-vindo(a), {user.nome}{user.isAdmin ? ' · administrador' : ''}
+          </Typography>
+        )}
+
+        <Box style={{ marginTop: 20 }}>
+          {user?.isAdmin && (
+            <Button
+              variant="outline-light"
+              size="sm"
+              style={{ marginRight: 10 }}
+              onClick={() => navigate('/Admin')}
+            >
+              Painel Admin
+            </Button>
+          )}
+          <Button variant="light" size="sm" onClick={handleLogout}>
+            Sair
+          </Button>
+        </Box>
       </Box>
 
-      {/* Exibir lista de departamentos com itens expandidos abaixo */}
-      <Box style={{marginTop:'40px', textAlign:'center'}} className='d-flex justify-content-center'>
-        <Row>
-          {departments.map((dept) => (
-            <Col key={dept.id} style={{marginBottom: '20px'}}>
-              <div 
-                ref={el => departmentRefs.current[dept.id] = el}
-                style={{ position: 'relative', display: 'inline-block' }}
-              >
-                {/* Card do departamento */}
-                <Card 
-                  style={{ width:250, height: '100%', transition: 'transform 0.3s', cursor: 'pointer' }}
-                  onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-                  onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDepartmentClick(dept.id);
-                  }}
+      <Box style={{ marginTop: '40px', textAlign: 'center', padding: '0 16px' }} className='d-flex justify-content-center'>
+        {carregando ? (
+          <Typography style={{ color: '#666' }}>Carregando suas telas...</Typography>
+        ) : gruposComTelas.length === 0 ? (
+          <Box style={{ maxWidth: 420, color: '#666' }}>
+            <Typography variant="h6" style={{ marginBottom: 8 }}>Nenhuma tela liberada ainda</Typography>
+            <Typography variant="body2">
+              Fale com o administrador do sistema para que ele libere o acesso
+              às telas que você precisa usar.
+            </Typography>
+          </Box>
+        ) : (
+          <Row>
+            {gruposComTelas.map((grupo) => (
+              <Col key={grupo.id} style={{ marginBottom: '24px' }}>
+                <div
+                  ref={el => grupoRefs.current[grupo.id] = el}
+                  style={{ position: 'relative', display: 'inline-block' }}
                 >
-                  <CardActionArea>
-                    <CardMedia
-                      component="img"
-                      height='140'
-                      image={dept.image}
-                      alt={dept.name.toLowerCase()}
-                    />
-                    <CardContent>
-                      <Typography gutterBottom component="div" variant='h5' style={{fontWeight: 'bold'}}>
-                        {dept.name}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary" style={{fontSize:15}}>
-                        {dept.description.split(' | ').map((line, i) => (
-                          <span key={i}>{line}<br/></span>
-                        ))}
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-
-                {/* Itens do departamento (exibidos abaixo quando expandido) */}
-                {expandedDepartment === dept.id && (
-                  <Box 
-                    style={{ 
-                      width: '250px',
-                      maxHeight: '350px',
-                      overflowY: 'auto',
-                      backgroundColor: '#f8f9fa', 
-                      borderRadius: '0 0 8px 8px', 
-                      padding: '15px',
-                      boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                      border: '1px solid #e0e0e0',
-                      borderTop: 'none',
-                      marginTop: '5px',
-                      position: 'absolute',
-                      top: '100%',
-                      left: '0',
-                      zIndex: 1000
+                  <Card
+                    style={{
+                      width: 260,
+                      height: '100%',
+                      transition: 'transform 0.2s, box-shadow 0.2s',
+                      cursor: 'pointer',
+                      borderRadius: 12,
+                      overflow: 'hidden',
+                      boxShadow: '0 2px 10px rgba(0,0,0,0.08)',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'translateY(-4px)';
+                      e.currentTarget.style.boxShadow = '0 8px 20px rgba(0,0,0,0.15)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'translateY(0)';
+                      e.currentTarget.style.boxShadow = '0 2px 10px rgba(0,0,0,0.08)';
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleGrupoClick(grupo.id);
                     }}
                   >
-                    <Typography variant="h6" style={{fontWeight: 'bold', color: '#007bff', marginBottom: '10px', fontSize: '16px'}}>
-                      Itens:
-                    </Typography>
-                    <Box style={{textAlign: 'left'}}>
-                      {dept.items.map((item, index) => (
+                    <CardActionArea>
+                      {grupo.imagem ? (
+                        <CardMedia component="img" height="130" image={grupo.imagem} alt={grupo.nome.toLowerCase()} />
+                      ) : (
+                        <Box style={{ height: 130, display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#eef2fb' }}>
+                          <Lightbulb size={48} color="#1428A0" strokeWidth={1.5} />
+                        </Box>
+                      )}
+                      <CardContent>
+                        <Typography gutterBottom component="div" variant='h6' style={{ fontWeight: 700, color: '#0a1e5c' }}>
+                          {grupo.nome}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary" style={{ fontSize: 13 }}>
+                          {grupo.itens.length} tela(s) disponível(is)
+                        </Typography>
+                      </CardContent>
+                    </CardActionArea>
+                  </Card>
+
+                  {expandedGrupo === grupo.id && (
+                    <Box
+                      style={{
+                        width: '260px',
+                        maxHeight: '350px',
+                        overflowY: 'auto',
+                        backgroundColor: '#ffffff',
+                        borderRadius: '0 0 12px 12px',
+                        padding: '15px',
+                        boxShadow: '0 10px 24px rgba(0,0,0,0.18)',
+                        border: '1px solid #e0e0e0',
+                        borderTop: 'none',
+                        marginTop: '2px',
+                        position: 'absolute',
+                        top: '100%',
+                        left: '0',
+                        zIndex: 1000,
+                        textAlign: 'left',
+                      }}
+                    >
+                      {grupo.itens.map((item) => (
                         <Button
-                          key={index}
-                          onClick={() => handleItemClick(item.href)}
+                          key={item.slug}
+                          onClick={() => handleItemClick(item.slug)}
                           style={{
                             display: 'block',
                             width: '100%',
@@ -218,13 +215,12 @@ export default function ActionAreaCard() {
                             fontSize: '13px',
                             padding: '8px',
                             textAlign: 'left',
-                            boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
-                            transition: 'all 0.2s ease'
+                            transition: 'all 0.2s ease',
                           }}
                           onMouseEnter={(e) => {
-                            e.currentTarget.style.backgroundColor = '#007bff';
+                            e.currentTarget.style.backgroundColor = '#1428A0';
                             e.currentTarget.style.color = '#ffffff';
-                            e.currentTarget.style.borderColor = '#007bff';
+                            e.currentTarget.style.borderColor = '#1428A0';
                           }}
                           onMouseLeave={(e) => {
                             e.currentTarget.style.backgroundColor = '#ffffff';
@@ -232,21 +228,24 @@ export default function ActionAreaCard() {
                             e.currentTarget.style.borderColor = '#e0e0e0';
                           }}
                         >
-                          {item.name}
+                          {item.nome}
+                          {item.is_public && (
+                            <span style={{ marginLeft: 6, fontSize: 11, color: '#888' }}>(pública)</span>
+                          )}
                         </Button>
                       ))}
                     </Box>
-                  </Box>
-                )}
-              </div>
-            </Col>
-          ))}
-        </Row>
+                  )}
+                </div>
+              </Col>
+            ))}
+          </Row>
+        )}
       </Box>
 
-      <div style={{textAlign:'center', marginTop:300, marginBottom:20, color: '#666', fontSize: '14px'}}>
-        SEDA(M) - MX SMD <br/> 
-        CONTACT: F.MIGUEL - F.JARLENJ <br/> 
+      <div style={{ textAlign: 'center', marginTop: 80, marginBottom: 20, color: '#666', fontSize: '14px' }}>
+        SEDA(M) - MX SMD <br />
+        CONTACT: F.MIGUEL - F.JARLENJ <br />
         © 2023 COPYRIGHT: SAMSUNG.COM
       </div>
     </>
