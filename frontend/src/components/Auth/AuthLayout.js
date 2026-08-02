@@ -56,7 +56,9 @@ export default function AuthLayout({ title, subtitle, children }) {
           style={{ background: cores.superficie }}
         >
           <div className="md:hidden text-center mb-6">
-            <img src="/images/logo.png" alt="Logo" className="inline-block max-w-[120px]" />
+            <div className="inline-flex bg-white rounded-xl px-4 py-2.5 shadow-sm">
+              <img src="/images/logo.png" alt="Logo" className="block max-w-[110px]" />
+            </div>
           </div>
           <h2 className="text-2xl font-bold text-center mb-2" style={{ color: cores.textoTitulo }}>
             {title}
