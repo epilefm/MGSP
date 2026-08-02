@@ -27,9 +27,15 @@ function formatarQuando(dataIso) {
   return data.toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
 }
 
-function estaOnline(dataIso) {
-  if (!dataIso) return false;
-  return Date.now() - new Date(dataIso).getTime() < ONLINE_LIMITE_MS;
+// "Online agora" exige as duas coisas: a sessão não foi encerrada (nem por
+// "Sair", nem por inatividade, nem por login de outra conta no mesmo
+// terminal - ver AuthContext.js) E teve atividade recente (cobre o caso de
+// a aba/navegador ter travado ou sido fechado à força sem nunca chamar o
+// logout - depois de ONLINE_LIMITE_MS sem atividade, para de contar como
+// online mesmo com sessao_ativa ainda TRUE).
+function estaOnline(usuario) {
+  if (!usuario.sessao_ativa || !usuario.ultimo_acesso) return false;
+  return Date.now() - new Date(usuario.ultimo_acesso).getTime() < ONLINE_LIMITE_MS;
 }
 
 export default function AdminPanel() {
@@ -192,7 +198,7 @@ export default function AdminPanel() {
       dataIndex: "ultimo_acesso",
       render: (valor, usuario) => (
         <div>
-          {estaOnline(valor) && <Tag color="success">online agora</Tag>}
+          {estaOnline(usuario) && <Tag color="success">online agora</Tag>}
           <div style={{ fontSize: 12, color: cores.texto }}>{formatarQuando(valor)}</div>
           {usuario.ultimo_ip && <div style={{ fontSize: 11, color: cores.textoMuted }}>{usuario.ultimo_ip}</div>}
         </div>

@@ -11,7 +11,7 @@ router.use(authenticateToken, requireAdmin);
 router.get("/usuarios", (req, res) => {
   const query = `
     SELECT u.id, u.nome, u.matricula, u.is_admin, u.ativo, u.reset_solicitado, u.criado_em,
-           u.ultimo_ip, u.ultimo_acesso,
+           u.ultimo_ip, u.ultimo_acesso, u.sessao_ativa,
            GROUP_CONCAT(DISTINCT s.slug) AS telas_liberadas
     FROM mydb.users u
     LEFT JOIN mydb.user_screens us ON us.user_id = u.id

@@ -97,7 +97,7 @@ router.post("/login", (req, res) => {
         // não faz o login esperar por isso, e um erro aqui não deve derrubar
         // o login de ninguém.
         const ip = obterIp(req);
-        db.query(`UPDATE mydb.users SET ultimo_ip = ?, ultimo_acesso = NOW() WHERE id = ?`, [ip, user.id], (err) => {
+        db.query(`UPDATE mydb.users SET ultimo_ip = ?, ultimo_acesso = NOW(), sessao_ativa = TRUE WHERE id = ?`, [ip, user.id], (err) => {
           if (err) console.error("Erro ao atualizar último acesso: ", err);
         });
         db.query(`INSERT INTO mydb.login_history (user_id, ip) VALUES (?, ?)`, [user.id, ip], (err) => {
@@ -110,6 +110,22 @@ router.post("/login", (req, res) => {
 
 router.get("/me", authenticateToken, (req, res) => {
   res.status(200).json({ user: req.user });
+});
+
+// Encerra a sessão de verdade (flag sessao_ativa = FALSE), pra "online agora"
+// no painel Admin não continuar marcado depois que a pessoa saiu - seja por
+// clicar em "Sair", seja por logout forçado de inatividade, seja por alguém
+// trocando de conta no mesmo terminal sem apertar "Sair" antes (ver
+// frontend/src/auth/AuthContext.js, que chama isto antes de logar outra
+// conta por cima).
+router.post("/logout", authenticateToken, (req, res) => {
+  db.query(`UPDATE mydb.users SET sessao_ativa = FALSE WHERE id = ?`, [req.user.id], (err) => {
+    if (err) {
+      console.error("Erro ao registrar logout: ", err);
+      return res.status(500).json({ message: "Erro ao encerrar sessão" });
+    }
+    res.status(200).json({ message: "Sessão encerrada" });
+  });
 });
 
 // Catálogo de telas (nome/grupo/is_public) para qualquer usuário autenticado

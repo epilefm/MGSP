@@ -1,0 +1,20 @@
+-- Fase 4 (incremento): sessão ativa de verdade, não só "acessou recentemente".
+--
+-- Problema que isso resolve: com JWT (sem sessão no servidor), o único jeito
+-- de saber quem está "online agora" era olhar ultimo_acesso recente. Isso
+-- falha no caso real de terminal compartilhado: se a pessoa troca de conta
+-- sem clicar em "Sair" (ex: fecha a aba e volta, ou navega direto pra
+-- /Login), a conta anterior continua parecendo "online" até o ultimo_acesso
+-- ficar velho o suficiente. sessao_ativa é uma flag explícita: TRUE no
+-- login, FALSE no logout (POST /auth/logout) - inclusive o logout forçado
+-- por inatividade e a troca de conta sem apertar "Sair" (ver
+-- frontend/src/auth/AuthContext.js). "Online agora" no painel Admin passa a
+-- exigir sessao_ativa = TRUE E ultimo_acesso recente, não só um dos dois.
+--
+-- Execute manualmente contra o MySQL (mydb):
+--   mysql -u materiais -p mydb < backend/auth/db/003_sessao_ativa.sql
+--
+-- Não é idempotente (mesma observação do 002_access_log.sql - essa versão do
+-- MySQL não aceita ADD COLUMN IF NOT EXISTS). Rodar de novo numa base que já
+-- tem a coluna só vai dar erro de "duplicate column" - ignora, não quebra nada.
+ALTER TABLE mydb.users ADD COLUMN sessao_ativa BOOLEAN NOT NULL DEFAULT FALSE;

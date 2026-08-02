@@ -23,6 +23,19 @@ export function AuthProvider({ children }) {
   });
 
   const login = async (matricula, senha) => {
+    // Terminal compartilhado: se já tinha alguém logado neste navegador e não
+    // apertou "Sair" antes de vir logar como outra pessoa, encerra a sessão
+    // anterior no servidor agora - senão ela ficaria marcada "online agora"
+    // no painel Admin pra sempre (ou até o ultimo_acesso ficar velho).
+    const tokenAnterior = localStorage.getItem('mts_token');
+    if (tokenAnterior) {
+      try {
+        await axios.post(`${API_URL}/auth/logout`, {}, { headers: { Authorization: `Bearer ${tokenAnterior}` } });
+      } catch {
+        // Sessão anterior já pode ter expirado/sido encerrada - não impede o login novo.
+      }
+    }
+
     const { data } = await axios.post(`${API_URL}/auth/login`, { matricula, senha });
     localStorage.setItem('mts_token', data.token);
     localStorage.setItem('mts_user', JSON.stringify(data.user));
@@ -41,7 +54,12 @@ export function AuthProvider({ children }) {
     return data;
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await axios.post(`${API_URL}/auth/logout`);
+    } catch {
+      // Mesmo se a chamada falhar (ex: token já expirado), desloga localmente de qualquer jeito.
+    }
     localStorage.removeItem('mts_token');
     localStorage.removeItem('mts_user');
     applyAuthHeader(null);
