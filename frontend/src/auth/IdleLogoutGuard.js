@@ -11,57 +11,61 @@ const AVISO_ANTES_MS = 60 * 1000; // avisa 1 min antes de derrubar de vez
 const CHAVE_ULTIMA_ATIVIDADE = "mts_ultima_atividade";
 const EVENTOS_DE_ATIVIDADE = ["mousemove", "mousedown", "keydown", "touchstart", "scroll"];
 
+// Confere a atividade a cada poucos segundos em vez de agendar um timer fixo
+// de 30min por aba. Isso importa pra quem abre várias abas do sistema ao
+// mesmo tempo: a atividade em QUALQUER aba grava no mesmo localStorage
+// (CHAVE_ULTIMA_ATIVIDADE, compartilhado entre abas da mesma origem), e cada
+// aba confere essa MESMA fonte - então uma aba parada enquanto você mexe em
+// outra não se desconecta sozinha (o timer antigo, por aba, não tinha como
+// saber que "a pessoa" ainda está ali, só que ESSA aba estava parada).
+const INTERVALO_VERIFICACAO_MS = 5 * 1000;
+
 export default function IdleLogoutGuard() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [avisoAberto, setAvisoAberto] = useState(false);
   const [segundosRestantes, setSegundosRestantes] = useState(0);
 
-  const timeoutAvisoRef = useRef(null);
-  const timeoutLogoutRef = useRef(null);
-  const intervalContagemRef = useRef(null);
   const avisoAbertoRef = useRef(false);
-
-  const limparTimers = useCallback(() => {
-    clearTimeout(timeoutAvisoRef.current);
-    clearTimeout(timeoutLogoutRef.current);
-    clearInterval(intervalContagemRef.current);
-  }, []);
-
-  const deslogarPorInatividade = useCallback(() => {
-    limparTimers();
-    logout();
-    navigate("/Login", { replace: true });
-  }, [limparTimers, logout, navigate]);
-
-  const agendarTimers = useCallback(() => {
-    limparTimers();
-    avisoAbertoRef.current = false;
-    setAvisoAberto(false);
-
-    timeoutAvisoRef.current = setTimeout(() => {
-      avisoAbertoRef.current = true;
-      setAvisoAberto(true);
-      let restante = Math.floor(AVISO_ANTES_MS / 1000);
-      setSegundosRestantes(restante);
-      intervalContagemRef.current = setInterval(() => {
-        restante -= 1;
-        setSegundosRestantes(Math.max(restante, 0));
-      }, 1000);
-    }, LIMITE_INATIVIDADE_MS - AVISO_ANTES_MS);
-
-    timeoutLogoutRef.current = setTimeout(deslogarPorInatividade, LIMITE_INATIVIDADE_MS);
-  }, [limparTimers, deslogarPorInatividade]);
+  const intervalRef = useRef(null);
 
   const registrarAtividade = useCallback(() => {
     localStorage.setItem(CHAVE_ULTIMA_ATIVIDADE, String(Date.now()));
   }, []);
 
+  const deslogarPorInatividade = useCallback(() => {
+    clearInterval(intervalRef.current);
+    logout();
+    navigate("/Login", { replace: true });
+  }, [logout, navigate]);
+
   useEffect(() => {
     if (!user) return undefined;
 
     registrarAtividade();
-    agendarTimers();
+
+    const verificar = () => {
+      const ultima = Number(localStorage.getItem(CHAVE_ULTIMA_ATIVIDADE)) || Date.now();
+      const decorrido = Date.now() - ultima;
+
+      if (decorrido >= LIMITE_INATIVIDADE_MS) {
+        deslogarPorInatividade();
+        return;
+      }
+
+      const restanteMs = LIMITE_INATIVIDADE_MS - decorrido;
+      if (restanteMs <= AVISO_ANTES_MS) {
+        avisoAbertoRef.current = true;
+        setAvisoAberto(true);
+        setSegundosRestantes(Math.ceil(restanteMs / 1000));
+      } else if (avisoAbertoRef.current) {
+        avisoAbertoRef.current = false;
+        setAvisoAberto(false);
+      }
+    };
+
+    verificar();
+    intervalRef.current = setInterval(verificar, INTERVALO_VERIFICACAO_MS);
 
     // Enquanto o aviso estiver na tela, ignora atividade "passiva" (mouse
     // tremendo sozinho, etc.) - só reseta de verdade com o clique explícito
@@ -69,31 +73,23 @@ export default function IdleLogoutGuard() {
     const aoDetectarAtividade = () => {
       if (avisoAbertoRef.current) return;
       registrarAtividade();
-      agendarTimers();
     };
     EVENTOS_DE_ATIVIDADE.forEach((ev) => window.addEventListener(ev, aoDetectarAtividade));
 
-    // Cobre sair pra outro site e voltar pelo botão de avançar/voltar do
-    // navegador (bfcache): se já passou do limite enquanto a aba estava
-    // fora, desloga ao restaurar em vez de manter a tela anterior visível.
-    const aoRestaurarPagina = (event) => {
-      if (!event.persisted) return;
-      const ultima = Number(localStorage.getItem(CHAVE_ULTIMA_ATIVIDADE)) || 0;
-      if (Date.now() - ultima >= LIMITE_INATIVIDADE_MS) {
-        deslogarPorInatividade();
-      } else {
-        registrarAtividade();
-        agendarTimers();
-      }
+    // Aba em segundo plano tem timers pausados/atrasados pelo navegador -
+    // ao voltar a ficar visível (troca de aba, volta de outro site via
+    // bfcache), confere na hora em vez de esperar o próximo tick do interval.
+    const aoFicarVisivel = () => {
+      if (document.visibilityState === "visible") verificar();
     };
-    window.addEventListener("pageshow", aoRestaurarPagina);
+    document.addEventListener("visibilitychange", aoFicarVisivel);
 
     return () => {
-      limparTimers();
+      clearInterval(intervalRef.current);
       EVENTOS_DE_ATIVIDADE.forEach((ev) => window.removeEventListener(ev, aoDetectarAtividade));
-      window.removeEventListener("pageshow", aoRestaurarPagina);
+      document.removeEventListener("visibilitychange", aoFicarVisivel);
     };
-  }, [user, registrarAtividade, agendarTimers, deslogarPorInatividade, limparTimers]);
+  }, [user, registrarAtividade, deslogarPorInatividade]);
 
   if (!user) return null;
 
@@ -103,7 +99,8 @@ export default function IdleLogoutGuard() {
       title="Você ainda está aí?"
       onOk={() => {
         registrarAtividade();
-        agendarTimers();
+        avisoAbertoRef.current = false;
+        setAvisoAberto(false);
       }}
       onCancel={deslogarPorInatividade}
       okText="Continuar conectado"

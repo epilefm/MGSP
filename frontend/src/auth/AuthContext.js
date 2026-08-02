@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { API_URL } from '../config/api';
 
@@ -71,6 +71,26 @@ export function AuthProvider({ children }) {
       axios.post(`${API_URL}/auth/logout`, {}, { headers: { Authorization: `Bearer ${tokenAtual}` } }).catch(() => {});
     }
   };
+
+  // Quem abre várias abas do sistema (pra ver mais de uma tela ao mesmo
+  // tempo) compartilha o mesmo login, já que fica no localStorage - mas o
+  // estado em memória (useState) de cada aba só é atualizado quando ELA
+  // muda o storage, não quando outra aba muda. O evento "storage" só dispara
+  // nas OUTRAS abas quando uma muda (nunca na que fez a mudança), então isso
+  // sincroniza: se a aba A faz login/logout, a aba B percebe na hora e
+  // reflete o mesmo estado, em vez de continuar mostrando a tela antiga até
+  // uma chamada de API falhar.
+  useEffect(() => {
+    const aoMudarStorage = (event) => {
+      if (event.key !== 'mts_token' && event.key !== 'mts_user') return;
+      const tokenAtual = localStorage.getItem('mts_token');
+      const userAtual = localStorage.getItem('mts_user');
+      applyAuthHeader(tokenAtual);
+      setUser(userAtual ? JSON.parse(userAtual) : null);
+    };
+    window.addEventListener('storage', aoMudarStorage);
+    return () => window.removeEventListener('storage', aoMudarStorage);
+  }, []);
 
   // Uma tela está liberada se o usuário for admin, ou se o slug estiver na
   // lista de telas que vieram no login (já inclui as públicas - ver backend).
