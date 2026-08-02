@@ -82,16 +82,16 @@ export default function Home() {
 
         <div className="relative z-10 mx-auto max-w-6xl">
           {/* Linha 1: logo quase colado no canto esquerdo, tema+Sair colados no canto direito */}
-          <div className="flex items-center justify-between" style={{ height: 30 }}>
-            <div className="inline-flex items-center gap-2 rounded-lg bg-white/95 px-2.5 py-1">
-              <img src="/images/icones/MGSP.png" alt="MGSP" className="block h-5 w-5" />
-              <span className="text-sm font-bold tracking-tight text-[#0a1e5c]">MGSP</span>
+          <div className="flex items-center justify-between" style={{ height: 44 }}>
+            <div className="inline-flex items-center gap-2.5 rounded-xl bg-white/95 px-4 py-2">
+              <img src="/images/icones/MGSP.png" alt="MGSP" className="block h-7 w-7" />
+              <span className="text-lg font-extrabold tracking-tight text-[#0a1e5c]">MGSP</span>
             </div>
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-3">
               <ThemeToggle variant="light" />
               <button
                 onClick={handleLogout}
-                className="rounded-lg bg-white px-3.5 py-1.5 text-sm font-semibold text-[#0a1e5c] transition-colors hover:bg-white/90"
+                className="rounded-lg bg-white px-4 py-2 text-base font-semibold text-[#0a1e5c] transition-colors hover:bg-white/90"
               >
                 Sair
               </button>
@@ -105,18 +105,22 @@ export default function Home() {
               globalmente por algum componente) que estava aplicando margem
               extra em tags de título/parágrafo sem eu perceber pela classe;
               inline style sempre vence, não importa a causa raiz. */}
-          <div className="grid grid-cols-[1fr_auto_1fr] items-center" style={{ marginTop: 6, minHeight: 46 }}>
+          <div className="grid grid-cols-[1fr_auto_1fr] items-center" style={{ marginTop: 10, minHeight: 64 }}>
             <div />
             <div className="flex flex-col items-center text-center">
-              <div style={{ margin: 0, padding: 0, lineHeight: 1.25 }} className="text-2xl font-bold sm:text-3xl">
+              <div style={{ margin: 0, padding: 0, lineHeight: 1.2 }} className="text-3xl font-bold sm:text-4xl">
                 Intranet MX SMD
               </div>
-              <div style={{ margin: 0, padding: 0, marginTop: 3, lineHeight: 1.2 }} className="text-sm text-white/70">
+              <div style={{ margin: 0, padding: 0, marginTop: 5, lineHeight: 1.2 }} className="text-base text-white/70">
                 Monitoramento e gestão do SMD
               </div>
             </div>
             <div className="flex justify-end">
-              {user && <span className="text-sm text-white/80">{user.nome}</span>}
+              {user && (
+                <span className="rounded-lg bg-white/10 px-3.5 py-2 text-base font-medium text-white">
+                  {user.nome}
+                </span>
+              )}
             </div>
           </div>
         </div>
