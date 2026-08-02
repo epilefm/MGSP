@@ -1,5 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from './AuthContext';
+import IdleLogoutGuard from './IdleLogoutGuard';
 
 export default function RequireAuth({ children }) {
   const { user } = useAuth();
@@ -9,5 +10,10 @@ export default function RequireAuth({ children }) {
     return <Navigate to="/Login" replace state={{ from: location }} />;
   }
 
-  return children;
+  return (
+    <>
+      <IdleLogoutGuard />
+      {children}
+    </>
+  );
 }
