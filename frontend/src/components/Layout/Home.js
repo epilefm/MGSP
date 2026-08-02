@@ -73,18 +73,21 @@ export default function Home() {
   return (
     <div className="min-h-screen" style={{ background: cores.fundo }}>
       {/* Cabeçalho */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-[#061542] via-[#1428A0] to-[#2f6fe0] px-5 pb-3 pt-2.5 text-white">
+      <div
+        className="relative overflow-hidden bg-gradient-to-br from-[#061542] via-[#1428A0] to-[#2f6fe0] text-white"
+        style={{ paddingLeft: 20, paddingRight: 20, paddingTop: 12, paddingBottom: 14 }}
+      >
         <div className="pointer-events-none absolute -top-14 -right-14 h-32 w-32 rounded-full bg-white/5" />
         <div className="pointer-events-none absolute -bottom-14 -left-8 h-28 w-28 rounded-full bg-white/5" />
 
         <div className="relative z-10 mx-auto max-w-6xl">
           {/* Linha 1: logo quase colado no canto esquerdo, tema+Sair colados no canto direito */}
-          <div className="flex items-start justify-between">
-            <div className="inline-flex items-center gap-2 rounded-lg bg-white/95 px-2.5 py-1.5">
+          <div className="flex items-center justify-between" style={{ height: 30 }}>
+            <div className="inline-flex items-center gap-2 rounded-lg bg-white/95 px-2.5 py-1">
               <img src="/images/icones/MGSP.png" alt="MGSP" className="block h-5 w-5" />
               <span className="text-sm font-bold tracking-tight text-[#0a1e5c]">MGSP</span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2.5">
               <ThemeToggle variant="light" />
               <button
                 onClick={handleLogout}
@@ -95,15 +98,22 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Linha 2: título centralizado (vertical e horizontalmente) na
-              tela + nome da pessoa à direita. flex flex-col explícito no
-              bloco do título pra garantir que título/subtítulo empilhem -
-              já tivemos CSS legado desse projeto interferindo nisso antes. */}
-          <div className="mt-1.5 grid grid-cols-[1fr_auto_1fr] items-center">
+          {/* Linha 2: título centralizado (vertical e horizontal) na tela +
+              nome da pessoa à direita. Usa <div>/<span> em vez de <h1>/<p> e
+              margin:0 via style inline em vez de classe do Tailwind - esse
+              projeto tem CSS legado (de algum .css antigo importado
+              globalmente por algum componente) que estava aplicando margem
+              extra em tags de título/parágrafo sem eu perceber pela classe;
+              inline style sempre vence, não importa a causa raiz. */}
+          <div className="grid grid-cols-[1fr_auto_1fr] items-center" style={{ marginTop: 6, minHeight: 46 }}>
             <div />
             <div className="flex flex-col items-center text-center">
-              <h1 className="text-2xl font-bold sm:text-3xl">Intranet MX SMD</h1>
-              <p className="mt-0.5 text-sm text-white/70">Monitoramento e gestão do SMD</p>
+              <div style={{ margin: 0, padding: 0, lineHeight: 1.25 }} className="text-2xl font-bold sm:text-3xl">
+                Intranet MX SMD
+              </div>
+              <div style={{ margin: 0, padding: 0, marginTop: 3, lineHeight: 1.2 }} className="text-sm text-white/70">
+                Monitoramento e gestão do SMD
+              </div>
             </div>
             <div className="flex justify-end">
               {user && <span className="text-sm text-white/80">{user.nome}</span>}
