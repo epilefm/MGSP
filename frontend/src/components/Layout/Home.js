@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Badge, Card, Empty, Tag } from "antd";
+import { Card, Empty, Tag } from "antd";
 import { ChevronRight, ArrowLeft, History, Settings } from "lucide-react";
 import { useAuth } from "../../auth/AuthContext";
 import { API_URL } from "../../config/api";
@@ -190,31 +190,41 @@ export default function Home() {
                  separado no cabeçalho, agora é um card como os outros). */
               <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 md:grid-cols-4">
                 {user?.isAdmin && (
-                  <Card
-                    hoverable
-                    onClick={() => navigate("/Admin")}
-                    className="!overflow-hidden !rounded-2xl [&_.ant-card-body]:!p-0"
-                  >
-                    <div
-                      className="flex h-20 items-center justify-center sm:h-24"
-                      style={{ background: "linear-gradient(135deg, #1428A0, #1428A0cc)" }}
+                  <div className="relative">
+                    <Card
+                      hoverable
+                      onClick={() => navigate("/Admin")}
+                      className="!overflow-hidden !rounded-2xl [&_.ant-card-body]:!p-0"
                     >
-                      <Badge count={pendencias} size="small">
+                      <div
+                        className="flex h-20 items-center justify-center sm:h-24"
+                        style={{ background: "linear-gradient(135deg, #1428A0, #1428A0cc)" }}
+                      >
                         <Settings size={36} strokeWidth={1.6} className="text-white/90" />
-                      </Badge>
-                    </div>
-                    <div className="flex items-center justify-between px-3.5 py-2.5">
-                      <div>
-                        <div className="text-sm font-semibold" style={{ color: cores.texto }}>Gestão do Sistema</div>
-                        <div className="text-xs" style={{ color: cores.textoMuted }}>
-                          {pendencias > 0
-                            ? `${pendencias} pedido(s) de redefinição de senha`
-                            : "Usuários e acessos"}
-                        </div>
                       </div>
-                      <ChevronRight size={16} className="shrink-0" style={{ color: cores.textoMuted }} />
-                    </div>
-                  </Card>
+                      <div className="flex items-center justify-between px-3.5 py-2.5">
+                        <div>
+                          <div className="text-sm font-semibold" style={{ color: cores.texto }}>Gestão do Sistema</div>
+                          <div className="text-xs" style={{ color: cores.textoMuted }}>
+                            {pendencias > 0
+                              ? `${pendencias} pedido(s) de redefinição de senha`
+                              : "Usuários e acessos"}
+                          </div>
+                        </div>
+                        <ChevronRight size={16} className="shrink-0" style={{ color: cores.textoMuted }} />
+                      </div>
+                    </Card>
+                    {/* Selo estilo notificação de app - círculo vermelho no
+                        canto do card, meio pra dentro/meio pra fora. */}
+                    {pendencias > 0 && (
+                      <span
+                        className="pointer-events-none absolute -right-1.5 -top-1.5 flex h-5 min-w-[20px] items-center justify-center rounded-full px-1 text-[11px] font-bold text-white"
+                        style={{ background: "#ff4d4f", boxShadow: `0 0 0 2px ${cores.fundo}` }}
+                      >
+                        {pendencias > 9 ? "9+" : pendencias}
+                      </span>
+                    )}
+                  </div>
                 )}
                 {gruposComTelas.map((grupo) => {
                   const GrupoIcone = grupo.icone;
