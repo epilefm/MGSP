@@ -190,31 +190,31 @@ export default function Home() {
                  separado no cabeçalho, agora é um card como os outros). */
               <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 md:grid-cols-4">
                 {user?.isAdmin && (
-                  <Badge count={pendencias} offset={[-10, 10]} size="small">
-                    <Card
-                      hoverable
-                      onClick={() => navigate("/Admin")}
-                      className="!overflow-hidden !rounded-2xl [&_.ant-card-body]:!p-0"
+                  <Card
+                    hoverable
+                    onClick={() => navigate("/Admin")}
+                    className="!overflow-hidden !rounded-2xl [&_.ant-card-body]:!p-0"
+                  >
+                    <div
+                      className="flex h-20 items-center justify-center sm:h-24"
+                      style={{ background: "linear-gradient(135deg, #1428A0, #1428A0cc)" }}
                     >
-                      <div
-                        className="flex h-20 items-center justify-center sm:h-24"
-                        style={{ background: "linear-gradient(135deg, #1428A0, #1428A0cc)" }}
-                      >
+                      <Badge count={pendencias} size="small">
                         <Settings size={36} strokeWidth={1.6} className="text-white/90" />
-                      </div>
-                      <div className="flex items-center justify-between px-3.5 py-2.5">
-                        <div>
-                          <div className="text-sm font-semibold" style={{ color: cores.texto }}>Gestão do Sistema</div>
-                          <div className="text-xs" style={{ color: cores.textoMuted }}>
-                            {pendencias > 0
-                              ? `${pendencias} pedido(s) de redefinição de senha`
-                              : "Usuários e acessos"}
-                          </div>
+                      </Badge>
+                    </div>
+                    <div className="flex items-center justify-between px-3.5 py-2.5">
+                      <div>
+                        <div className="text-sm font-semibold" style={{ color: cores.texto }}>Gestão do Sistema</div>
+                        <div className="text-xs" style={{ color: cores.textoMuted }}>
+                          {pendencias > 0
+                            ? `${pendencias} pedido(s) de redefinição de senha`
+                            : "Usuários e acessos"}
                         </div>
-                        <ChevronRight size={16} className="shrink-0" style={{ color: cores.textoMuted }} />
                       </div>
-                    </Card>
-                  </Badge>
+                      <ChevronRight size={16} className="shrink-0" style={{ color: cores.textoMuted }} />
+                    </div>
+                  </Card>
                 )}
                 {gruposComTelas.map((grupo) => {
                   const GrupoIcone = grupo.icone;
