@@ -80,13 +80,39 @@ export default function Home() {
         <div className="pointer-events-none absolute -top-14 -right-14 h-32 w-32 rounded-full bg-white/5" />
         <div className="pointer-events-none absolute -bottom-14 -left-8 h-28 w-28 rounded-full bg-white/5" />
 
-        <div className="relative z-10 mx-auto max-w-6xl">
-          {/* Linha 1: logo quase colado no canto esquerdo, tema+Sair colados no canto direito */}
-          <div className="flex items-center justify-between" style={{ height: 44 }}>
+        {/*
+          Estrutura totalmente refeita: em vez de duas linhas separadas com
+          margem/altura fixa tentando aproximar uma da outra (não funcionou,
+          o espaço entre elas continuava grande independente do valor usado -
+          suspeita forte de que algo aqui herda um espaçamento que não
+          consigo eliminar só cutucando margin/height pontuais), tudo agora é
+          UM ÚNICO flex container de 3 colunas (esquerda/centro/direita), com
+          cada coluna organizada internamente em coluna (logo em cima,
+          título embaixo à esquerda; tema+Sair em cima, nome embaixo à
+          direita) - isso elimina de vez qualquer margem entre "linha 1" e
+          "linha 2", porque não existem mais duas linhas, existe uma só.
+        */}
+        <div className="relative z-10 mx-auto flex max-w-6xl items-center justify-between gap-4">
+          {/* Esquerda: logo */}
+          <div className="flex shrink-0 items-center">
             <div className="inline-flex items-center gap-2.5 rounded-xl bg-white/95 px-4 py-2">
               <img src="/images/icones/MGSP.png" alt="MGSP" className="block h-7 w-7" />
               <span className="text-lg font-extrabold tracking-tight text-[#0a1e5c]">MGSP</span>
             </div>
+          </div>
+
+          {/* Centro: título + subtítulo, único bloco, sem linha separada acima */}
+          <div className="flex flex-1 flex-col items-center text-center">
+            <div style={{ margin: 0, padding: 0, lineHeight: 1.2 }} className="text-3xl font-bold sm:text-4xl">
+              Intranet MX SMD
+            </div>
+            <div style={{ margin: 0, padding: 0, marginTop: 5, lineHeight: 1.2 }} className="text-base text-white/70">
+              Monitoramento e gestão do SMD
+            </div>
+          </div>
+
+          {/* Direita: tema+Sair em cima, nome da pessoa embaixo */}
+          <div className="flex shrink-0 flex-col items-end gap-1.5">
             <div className="flex items-center gap-3">
               <ThemeToggle variant="light" />
               <button
@@ -96,32 +122,11 @@ export default function Home() {
                 Sair
               </button>
             </div>
-          </div>
-
-          {/* Linha 2: título centralizado (vertical e horizontal) na tela +
-              nome da pessoa à direita. Usa <div>/<span> em vez de <h1>/<p> e
-              margin:0 via style inline em vez de classe do Tailwind - esse
-              projeto tem CSS legado (de algum .css antigo importado
-              globalmente por algum componente) que estava aplicando margem
-              extra em tags de título/parágrafo sem eu perceber pela classe;
-              inline style sempre vence, não importa a causa raiz. */}
-          <div className="grid grid-cols-[1fr_auto_1fr] items-center" style={{ marginTop: 8 }}>
-            <div />
-            <div className="flex flex-col items-center text-center">
-              <div style={{ margin: 0, padding: 0, lineHeight: 1.2 }} className="text-3xl font-bold sm:text-4xl">
-                Intranet MX SMD
-              </div>
-              <div style={{ margin: 0, padding: 0, marginTop: 5, lineHeight: 1.2 }} className="text-base text-white/70">
-                Monitoramento e gestão do SMD
-              </div>
-            </div>
-            <div className="flex justify-end">
-              {user && (
-                <span className="rounded-lg bg-white/10 px-3.5 py-2 text-base font-medium text-white">
-                  {user.nome}
-                </span>
-              )}
-            </div>
+            {user && (
+              <span className="rounded-lg bg-white/10 px-3.5 py-1.5 text-sm font-medium text-white">
+                {user.nome}
+              </span>
+            )}
           </div>
         </div>
       </div>
