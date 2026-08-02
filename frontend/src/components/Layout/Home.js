@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Card, Empty, Tag, Dropdown, Avatar } from "antd";
-import { ShieldCheck, ChevronRight, ChevronDown, ArrowLeft, History, LogOut } from "lucide-react";
+import { Card, Empty, Tag } from "antd";
+import { ChevronRight, ArrowLeft, History } from "lucide-react";
 import { useAuth } from "../../auth/AuthContext";
 import { API_URL } from "../../config/api";
 import { GRUPOS, iconeParaTela } from "./screenIcons";
@@ -70,56 +70,56 @@ export default function Home() {
 
   const grupoAberto = gruposComTelas.find((g) => g.id === departamento) || null;
 
-  const itensMenuUsuario = [
-    ...(user?.isAdmin
-      ? [{ key: "admin", label: "Painel Admin", icon: <ShieldCheck size={15} />, onClick: () => navigate("/Admin") }]
-      : []),
-    { type: "divider" },
-    { key: "logout", label: "Sair", icon: <LogOut size={15} />, danger: true, onClick: handleLogout },
-  ];
-
   return (
     <div className="min-h-screen" style={{ background: cores.fundo }}>
       {/* Cabeçalho */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-[#061542] via-[#1428A0] to-[#2f6fe0] px-6 py-7 text-white">
-        <div className="pointer-events-none absolute -top-24 -right-24 h-64 w-64 rounded-full bg-white/5" />
-        <div className="pointer-events-none absolute -bottom-28 -left-16 h-56 w-56 rounded-full bg-white/5" />
+      <div className="relative overflow-hidden bg-gradient-to-br from-[#061542] via-[#1428A0] to-[#2f6fe0] px-6 py-4 text-white">
+        <div className="pointer-events-none absolute -top-16 -right-16 h-40 w-40 rounded-full bg-white/5" />
+        <div className="pointer-events-none absolute -bottom-16 -left-10 h-32 w-32 rounded-full bg-white/5" />
 
-        <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center gap-5 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left">
-          <div className="flex items-center gap-4">
-            <div className="inline-flex shrink-0 items-center gap-2 rounded-2xl bg-white px-3.5 py-2 shadow-lg shadow-black/20 sm:px-4 sm:py-2.5">
-              <img src="/images/icones/MGSP.png" alt="MGSP" className="block h-6 w-6 sm:h-7 sm:w-7" />
-              <span className="text-base font-extrabold tracking-tight text-[#0a1e5c] sm:text-lg">MGSP</span>
-            </div>
-            <div>
-              <h1 className="text-lg font-bold sm:text-xl">Intranet MX SMD</h1>
-              <p className="text-sm text-white/70">Monitoramento e gestão do SMD</p>
+        <div className="relative z-10 mx-auto grid max-w-6xl grid-cols-1 items-center gap-3 sm:grid-cols-[1fr_auto_1fr]">
+          {/* Logo - canto esquerdo */}
+          <div className="flex justify-center sm:justify-start">
+            <div className="inline-flex items-center gap-2 rounded-2xl bg-white px-3.5 py-2 shadow-lg shadow-black/20">
+              <img src="/images/icones/MGSP.png" alt="MGSP" className="block h-6 w-6" />
+              <span className="text-base font-extrabold tracking-tight text-[#0a1e5c]">MGSP</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          {/* Título - centralizado na tela, com destaque */}
+          <div className="text-center">
+            <h1 className="text-2xl font-bold sm:text-3xl">Intranet MX SMD</h1>
+            <p className="text-sm text-white/70">Monitoramento e gestão do SMD</p>
+          </div>
+
+          {/* Controles - canto direito, itens separados */}
+          <div className="flex items-center justify-center gap-3 sm:justify-end">
             <ThemeToggle variant="light" />
             {user && (
-              <Dropdown menu={{ items: itensMenuUsuario }} placement="bottomRight" trigger={["click"]}>
-                <button className="flex items-center gap-2.5 rounded-full border border-white/20 bg-white/10 py-1.5 pl-1.5 pr-3.5 transition-colors hover:bg-white/20">
-                  <Avatar size={28} style={{ backgroundColor: "#fff", color: "#1428A0", fontWeight: 700 }}>
-                    {user.nome?.[0]?.toUpperCase()}
-                  </Avatar>
-                  <span className="hidden text-sm font-medium sm:inline">{user.nome}</span>
-                  {user.isAdmin && (
-                    <span className="hidden items-center gap-1 rounded-full bg-white/15 px-2 py-0.5 text-xs font-medium sm:flex">
-                      admin
-                    </span>
-                  )}
-                  <ChevronDown size={14} />
-                </button>
-              </Dropdown>
+              <span className="text-sm font-medium text-white/90">
+                {user.nome}
+                {user.isAdmin && <span className="ml-1.5 text-xs text-white/60">(admin)</span>}
+              </span>
             )}
+            {user?.isAdmin && (
+              <button
+                onClick={() => navigate("/Admin")}
+                className="rounded-lg border border-white/30 bg-white/10 px-3.5 py-1.5 text-sm font-medium transition-colors hover:bg-white/20"
+              >
+                Painel Admin
+              </button>
+            )}
+            <button
+              onClick={handleLogout}
+              className="rounded-lg bg-white px-3.5 py-1.5 text-sm font-semibold text-[#0a1e5c] transition-colors hover:bg-white/90"
+            >
+              Sair
+            </button>
           </div>
         </div>
       </div>
 
-      <div className="mx-auto max-w-6xl px-6 py-8">
+      <div className="mx-auto max-w-6xl px-6 py-5">
         {carregando ? (
           <p className="text-center" style={{ color: cores.textoMuted }}>Carregando suas telas...</p>
         ) : gruposComTelas.length === 0 ? (
@@ -136,9 +136,9 @@ export default function Home() {
           <>
             {/* Acessados recentemente - atalho rápido, sem limite de departamento */}
             {!grupoAberto && recentes.length > 0 && (
-              <div className="mb-8">
-                <div className="mb-3 flex items-center gap-2" style={{ color: cores.textoMuted }}>
-                  <History size={15} />
+              <div className="mb-5">
+                <div className="mb-2.5 flex items-center gap-2" style={{ color: cores.textoMuted }}>
+                  <History size={14} />
                   <span className="text-sm font-semibold">Acessados recentemente</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -166,8 +166,9 @@ export default function Home() {
             )}
 
             {!grupoAberto ? (
-              /* Cards de departamento - banner grande com ícone, não um ícone perdido no meio do card */
-              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+              /* Cards de departamento - banner com ícone, escala reduzida pra
+                 caber mais linhas na tela sem precisar rolar */
+              <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-5">
                 {gruposComTelas.map((grupo) => {
                   const GrupoIcone = grupo.icone;
                   return (
@@ -175,24 +176,24 @@ export default function Home() {
                       key={grupo.id}
                       hoverable
                       onClick={() => setDepartamento(grupo.id)}
-                      className="!overflow-hidden !rounded-2xl [&_.ant-card-body]:!p-0"
+                      className="!overflow-hidden !rounded-xl [&_.ant-card-body]:!p-0"
                     >
                       <div
-                        className="flex h-28 items-center justify-center sm:h-36"
+                        className="flex h-14 items-center justify-center sm:h-16"
                         style={{
                           background: `linear-gradient(135deg, ${grupo.cor}, ${grupo.cor}cc)`,
                         }}
                       >
-                        <GrupoIcone size={52} strokeWidth={1.5} className="text-white/90 sm:!h-16 sm:!w-16" />
+                        <GrupoIcone size={26} strokeWidth={1.6} className="text-white/90" />
                       </div>
-                      <div className="flex items-center justify-between px-4 py-3.5">
+                      <div className="flex items-center justify-between px-3 py-2">
                         <div>
-                          <div className="font-semibold" style={{ color: cores.texto }}>{grupo.nome}</div>
-                          <div className="mt-0.5 text-xs" style={{ color: cores.textoMuted }}>
+                          <div className="text-[13px] font-semibold" style={{ color: cores.texto }}>{grupo.nome}</div>
+                          <div className="text-[11px]" style={{ color: cores.textoMuted }}>
                             {grupo.itens.length} tela(s)
                           </div>
                         </div>
-                        <ChevronRight size={16} className="shrink-0" style={{ color: cores.textoMuted }} />
+                        <ChevronRight size={14} className="shrink-0" style={{ color: cores.textoMuted }} />
                       </div>
                     </Card>
                   );
