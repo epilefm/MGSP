@@ -54,16 +54,22 @@ export function AuthProvider({ children }) {
     return data;
   };
 
-  const logout = async () => {
-    try {
-      await axios.post(`${API_URL}/auth/logout`);
-    } catch {
-      // Mesmo se a chamada falhar (ex: token já expirado), desloga localmente de qualquer jeito.
-    }
+  const logout = () => {
+    // A limpeza local precisa ser síncrona e vir PRIMEIRO: se isso esperasse
+    // a resposta do servidor antes de rodar, sair do sistema e navegar pra
+    // fora imediatamente (fechar a aba, ir pra outro site) podia interromper
+    // a função no meio e nunca limpar o token - a pessoa voltava e o sistema
+    // continuava logado como se nada tivesse acontecido. O aviso ao servidor
+    // (pra marcar sessao_ativa = FALSE) é só melhor esforço, em segundo
+    // plano, e não precisa terminar pra a sessão local já estar encerrada.
+    const tokenAtual = localStorage.getItem('mts_token');
     localStorage.removeItem('mts_token');
     localStorage.removeItem('mts_user');
     applyAuthHeader(null);
     setUser(null);
+    if (tokenAtual) {
+      axios.post(`${API_URL}/auth/logout`, {}, { headers: { Authorization: `Bearer ${tokenAtual}` } }).catch(() => {});
+    }
   };
 
   // Uma tela está liberada se o usuário for admin, ou se o slug estiver na
