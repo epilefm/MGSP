@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Collapse } from "antd";
 import { Compass, Home as HomeIcon, X } from "lucide-react";
 import { useAuth } from "../../auth/AuthContext";
@@ -16,7 +16,6 @@ import { useTema, CORES } from "../../theme/ThemeContext";
 export default function FloatingNav() {
   const [aberto, setAberto] = useState(false);
   const [telas, setTelas] = useState([]);
-  const navigate = useNavigate();
   const location = useLocation();
   const { podeAcessar } = useAuth();
   const { tema } = useTema();
@@ -43,11 +42,6 @@ export default function FloatingNav() {
     })).filter((grupo) => grupo.itens.length > 0);
   }, [telas, podeAcessar]);
 
-  const irPara = (slug) => {
-    setAberto(false);
-    navigate(`/${slug}`);
-  };
-
   // Na própria Home não faz sentido oferecer "voltar pra Home".
   const caminho = location.pathname.toLowerCase();
   if (caminho === "/" || caminho === "/home") return null;
@@ -59,13 +53,13 @@ export default function FloatingNav() {
           className="mb-3 max-h-[70vh] w-72 overflow-y-auto rounded-2xl p-3 shadow-2xl"
           style={{ background: cores.superficie, border: `1px solid ${cores.borda}` }}
         >
-          <button
-            onClick={() => irPara("Home")}
-            className="mb-2 flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-opacity hover:opacity-80"
+          <Link
+            to="/Home"
+            className="mb-2 flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold no-underline transition-opacity hover:opacity-80"
             style={{ background: "#1428A01f", color: tema === "dark" ? "#7c93e6" : "#1428A0" }}
           >
             <HomeIcon size={16} /> Início
-          </button>
+          </Link>
 
           {gruposComTelas.length === 0 ? (
             <p className="px-1 py-2 text-xs" style={{ color: cores.textoMuted }}>
@@ -91,15 +85,15 @@ export default function FloatingNav() {
                       {grupo.itens.map((item) => {
                         const Icone = iconeParaTela(item.slug, item.nome, grupo.id);
                         return (
-                          <button
+                          <Link
                             key={item.slug}
-                            onClick={() => irPara(item.slug)}
-                            className="flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-left text-xs transition-opacity hover:opacity-80"
+                            to={`/${item.slug}`}
+                            className="flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-left text-xs no-underline transition-opacity hover:opacity-80"
                             style={{ color: cores.texto, background: cores.superficieClara }}
                           >
                             <Icone size={13} style={{ color: grupo.cor }} />
                             {item.nome}
-                          </button>
+                          </Link>
                         );
                       })}
                     </div>

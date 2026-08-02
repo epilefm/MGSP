@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Card, Empty, Tag } from "antd";
 import { ChevronRight, ArrowLeft, History, Settings } from "lucide-react";
 import { useAuth } from "../../auth/AuthContext";
@@ -73,11 +73,6 @@ export default function Home() {
       .map((slug) => todasAcessiveis.find((t) => t.slug === slug))
       .filter(Boolean);
   }, [gruposComTelas, user?.id]);
-
-  const irParaTela = (slug) => {
-    registrarAcesso(slug, user?.id);
-    navigate(`/${slug}`);
-  };
 
   const handleLogout = () => {
     logout();
@@ -169,11 +164,12 @@ export default function Home() {
                   {recentes.map((item) => {
                     const Icone = iconeParaTela(item.slug, item.nome, item.grupoId);
                     return (
-                      <button
+                      <Link
                         key={item.slug}
-                        onClick={() => irParaTela(item.slug)}
+                        to={`/${item.slug}`}
+                        onClick={() => registrarAcesso(item.slug, user?.id)}
                         style={{ background: cores.superficie, borderColor: cores.borda, color: cores.texto }}
-                        className="flex items-center gap-2 rounded-full border py-1.5 pl-2 pr-3.5 text-sm shadow-sm transition-colors"
+                        className="flex items-center gap-2 rounded-full border py-1.5 pl-2 pr-3.5 text-sm no-underline shadow-sm transition-colors"
                       >
                         <span
                           className="flex h-6 w-6 items-center justify-center rounded-full"
@@ -182,7 +178,7 @@ export default function Home() {
                           <Icone size={13} />
                         </span>
                         {item.nome}
-                      </button>
+                      </Link>
                     );
                   })}
                 </div>
@@ -195,10 +191,9 @@ export default function Home() {
                  separado no cabeçalho, agora é um card como os outros). */
               <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 md:grid-cols-4">
                 {user?.isAdmin && (
-                  <div className="relative">
+                  <Link to="/Admin" className="relative block no-underline">
                     <Card
                       hoverable
-                      onClick={() => navigate("/Admin")}
                       className="!overflow-hidden !rounded-2xl [&_.ant-card-body]:!p-0"
                     >
                       <div
@@ -229,7 +224,7 @@ export default function Home() {
                         {pendencias > 9 ? "9+" : pendencias}
                       </span>
                     )}
-                  </div>
+                  </Link>
                 )}
                 {gruposComTelas.map((grupo) => {
                   const GrupoIcone = grupo.icone;
@@ -286,11 +281,12 @@ export default function Home() {
                   {grupoAberto.itens.map((item) => {
                     const Icone = iconeParaTela(item.slug, item.nome, grupoAberto.id);
                     return (
-                      <button
+                      <Link
                         key={item.slug}
-                        onClick={() => irParaTela(item.slug)}
+                        to={`/${item.slug}`}
+                        onClick={() => registrarAcesso(item.slug, user?.id)}
                         style={{ background: cores.superficie, boxShadow: `0 1px 3px ${cores.borda}` }}
-                        className="group flex flex-col items-center gap-2 rounded-2xl p-4 text-center transition hover:shadow-md"
+                        className="group flex flex-col items-center gap-2 rounded-2xl p-4 text-center no-underline transition hover:shadow-md"
                       >
                         <span
                           className="flex h-14 w-14 items-center justify-center rounded-2xl transition-transform group-hover:scale-105"
@@ -306,7 +302,7 @@ export default function Home() {
                             pública
                           </Tag>
                         )}
-                      </button>
+                      </Link>
                     );
                   })}
                 </div>
