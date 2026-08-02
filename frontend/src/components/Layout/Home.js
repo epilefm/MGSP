@@ -111,8 +111,8 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Direita: tema+Sair em cima, nome da pessoa embaixo */}
-          <div className="flex shrink-0 flex-col items-end gap-1.5">
+          {/* Direita: tema+Sair em cima, nome da pessoa mais embaixo */}
+          <div className="flex shrink-0 flex-col items-end" style={{ gap: 16 }}>
             <div className="flex items-center gap-3">
               <ThemeToggle variant="light" />
               <button
