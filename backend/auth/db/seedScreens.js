@@ -5,7 +5,7 @@
 // Fonte: cruzamento de frontend/src/index.js (rotas reais), Home.js e
 // NavbarComp.js (nomes amigáveis já usados no projeto).
 
-const SCREENS = [
+const SCREENS_BASE = [
   // material
   { slug: "Material_Analysis", nome: "Análise de Material", grupo: "material" },
   { slug: "Charts", nome: "Dashboards", grupo: "material" },
@@ -96,5 +96,16 @@ const SCREENS = [
   { slug: "AlarmePonto", nome: "Alarme de Ponto", grupo: "support" },
   { slug: "DescriptN", nome: "Tradutor de Descrição", grupo: "support" },
 ];
+
+// Teste temporário de monitoramento de acesso: todo mundo que se cadastrar já
+// vê todas as telas, sem precisar de liberação individual pelo admin. A
+// "Gestão de Usuários" não entra aqui - ela nem faz parte desse catálogo, é
+// protegida à parte (rota /Admin, só pra quem é is_admin).
+// Pra voltar ao controle por usuário: troque TESTE_TODAS_PUBLICAS pra false
+// e rode "node backend/auth/db/seed.js" de novo.
+const TESTE_TODAS_PUBLICAS = true;
+const SCREENS = TESTE_TODAS_PUBLICAS
+  ? SCREENS_BASE.map((tela) => ({ ...tela, is_public: true }))
+  : SCREENS_BASE;
 
 module.exports = { SCREENS };
