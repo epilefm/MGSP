@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const db = require("../config/db");
 const { authenticateToken } = require("./middleware");
+const obterIp = require("./obterIp");
 
 // Cadastro próprio. O usuário começa sem nenhuma tela liberada - o
 // administrador libera depois pelo painel Admin.
@@ -91,6 +92,17 @@ router.post("/login", (req, res) => {
 
         const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "12h" });
         res.status(200).json({ token, user: payload });
+
+        // Registra o acesso (IP + histórico) depois de já ter respondido -
+        // não faz o login esperar por isso, e um erro aqui não deve derrubar
+        // o login de ninguém.
+        const ip = obterIp(req);
+        db.query(`UPDATE mydb.users SET ultimo_ip = ?, ultimo_acesso = NOW() WHERE id = ?`, [ip, user.id], (err) => {
+          if (err) console.error("Erro ao atualizar último acesso: ", err);
+        });
+        db.query(`INSERT INTO mydb.login_history (user_id, ip) VALUES (?, ?)`, [user.id, ip], (err) => {
+          if (err) console.error("Erro ao registrar histórico de login: ", err);
+        });
       });
     });
   });

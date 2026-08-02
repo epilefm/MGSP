@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Card, Empty, Tag } from "antd";
-import { ChevronRight, ArrowLeft, History } from "lucide-react";
+import { ChevronRight, ArrowLeft, History, Settings } from "lucide-react";
 import { useAuth } from "../../auth/AuthContext";
 import { API_URL } from "../../config/api";
 import { GRUPOS, iconeParaTela } from "./screenIcons";
@@ -73,48 +73,38 @@ export default function Home() {
   return (
     <div className="min-h-screen" style={{ background: cores.fundo }}>
       {/* Cabeçalho */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-[#061542] via-[#1428A0] to-[#2f6fe0] px-6 py-4 text-white">
+      <div className="relative overflow-hidden bg-gradient-to-br from-[#061542] via-[#1428A0] to-[#2f6fe0] px-5 pb-4 pt-3 text-white">
         <div className="pointer-events-none absolute -top-16 -right-16 h-40 w-40 rounded-full bg-white/5" />
         <div className="pointer-events-none absolute -bottom-16 -left-10 h-32 w-32 rounded-full bg-white/5" />
 
-        <div className="relative z-10 mx-auto grid max-w-6xl grid-cols-1 items-center gap-3 sm:grid-cols-[1fr_auto_1fr]">
-          {/* Logo - canto esquerdo */}
-          <div className="flex justify-center sm:justify-start">
-            <div className="inline-flex items-center gap-2 rounded-2xl bg-white px-3.5 py-2 shadow-lg shadow-black/20">
-              <img src="/images/icones/MGSP.png" alt="MGSP" className="block h-6 w-6" />
-              <span className="text-base font-extrabold tracking-tight text-[#0a1e5c]">MGSP</span>
+        <div className="relative z-10 mx-auto max-w-6xl">
+          {/* Linha 1: logo quase colado no canto esquerdo, tema+Sair colados no canto direito */}
+          <div className="flex items-start justify-between">
+            <div className="inline-flex items-center gap-1.5 rounded-lg bg-white/95 px-2 py-1">
+              <img src="/images/icones/MGSP.png" alt="MGSP" className="block h-4 w-4" />
+              <span className="text-xs font-bold tracking-tight text-[#0a1e5c]">MGSP</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <ThemeToggle variant="light" />
+              <button
+                onClick={handleLogout}
+                className="rounded-lg bg-white px-3.5 py-1.5 text-sm font-semibold text-[#0a1e5c] transition-colors hover:bg-white/90"
+              >
+                Sair
+              </button>
             </div>
           </div>
 
-          {/* Título - centralizado na tela, com destaque */}
-          <div className="text-center">
-            <h1 className="text-2xl font-bold sm:text-3xl">Intranet MX SMD</h1>
-            <p className="text-sm text-white/70">Monitoramento e gestão do SMD</p>
-          </div>
-
-          {/* Controles - canto direito, itens separados */}
-          <div className="flex items-center justify-center gap-3 sm:justify-end">
-            <ThemeToggle variant="light" />
-            {user && (
-              <span className="text-sm font-medium text-white/90">
-                {user.nome}
-                {user.isAdmin && <span className="ml-1.5 text-xs text-white/60">(admin)</span>}
-              </span>
-            )}
-            {user?.isAdmin && (
-              <button
-                onClick={() => navigate("/Admin")}
-                className="rounded-lg border border-white/30 bg-white/10 px-3.5 py-1.5 text-sm font-medium transition-colors hover:bg-white/20"
-              >
-                Painel Admin
-              </button>
-            )}
-            <button
-              onClick={handleLogout}
-              className="rounded-lg bg-white px-3.5 py-1.5 text-sm font-semibold text-[#0a1e5c] transition-colors hover:bg-white/90"
-            >
-              Sair
-            </button>
+          {/* Linha 2: título centralizado de verdade na tela + nome da pessoa embaixo, à direita */}
+          <div className="mt-2 grid grid-cols-[1fr_auto_1fr] items-end">
+            <div />
+            <div className="text-center">
+              <h1 className="text-2xl font-bold sm:text-3xl">Intranet MX SMD</h1>
+              <p className="mt-0.5 text-sm text-white/70">Monitoramento e gestão do SMD</p>
+            </div>
+            <div className="flex justify-end">
+              {user && <span className="text-sm text-white/80">{user.nome}</span>}
+            </div>
           </div>
         </div>
       </div>
@@ -166,9 +156,31 @@ export default function Home() {
             )}
 
             {!grupoAberto ? (
-              /* Cards de departamento - banner com ícone, escala reduzida pra
-                 caber mais linhas na tela sem precisar rolar */
-              <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-5">
+              /* Cards de departamento - banner com ícone. Pra quem é admin,
+                 entra um card extra de "Gestão do Sistema" (era um botão
+                 separado no cabeçalho, agora é um card como os outros). */
+              <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 md:grid-cols-4">
+                {user?.isAdmin && (
+                  <Card
+                    hoverable
+                    onClick={() => navigate("/Admin")}
+                    className="!overflow-hidden !rounded-2xl [&_.ant-card-body]:!p-0"
+                  >
+                    <div
+                      className="flex h-20 items-center justify-center sm:h-24"
+                      style={{ background: "linear-gradient(135deg, #1428A0, #1428A0cc)" }}
+                    >
+                      <Settings size={36} strokeWidth={1.6} className="text-white/90" />
+                    </div>
+                    <div className="flex items-center justify-between px-3.5 py-2.5">
+                      <div>
+                        <div className="text-sm font-semibold" style={{ color: cores.texto }}>Gestão do Sistema</div>
+                        <div className="text-xs" style={{ color: cores.textoMuted }}>Usuários e acessos</div>
+                      </div>
+                      <ChevronRight size={16} className="shrink-0" style={{ color: cores.textoMuted }} />
+                    </div>
+                  </Card>
+                )}
                 {gruposComTelas.map((grupo) => {
                   const GrupoIcone = grupo.icone;
                   return (
@@ -176,24 +188,24 @@ export default function Home() {
                       key={grupo.id}
                       hoverable
                       onClick={() => setDepartamento(grupo.id)}
-                      className="!overflow-hidden !rounded-xl [&_.ant-card-body]:!p-0"
+                      className="!overflow-hidden !rounded-2xl [&_.ant-card-body]:!p-0"
                     >
                       <div
-                        className="flex h-14 items-center justify-center sm:h-16"
+                        className="flex h-20 items-center justify-center sm:h-24"
                         style={{
                           background: `linear-gradient(135deg, ${grupo.cor}, ${grupo.cor}cc)`,
                         }}
                       >
-                        <GrupoIcone size={26} strokeWidth={1.6} className="text-white/90" />
+                        <GrupoIcone size={36} strokeWidth={1.6} className="text-white/90" />
                       </div>
-                      <div className="flex items-center justify-between px-3 py-2">
+                      <div className="flex items-center justify-between px-3.5 py-2.5">
                         <div>
-                          <div className="text-[13px] font-semibold" style={{ color: cores.texto }}>{grupo.nome}</div>
-                          <div className="text-[11px]" style={{ color: cores.textoMuted }}>
+                          <div className="text-sm font-semibold" style={{ color: cores.texto }}>{grupo.nome}</div>
+                          <div className="text-xs" style={{ color: cores.textoMuted }}>
                             {grupo.itens.length} tela(s)
                           </div>
                         </div>
-                        <ChevronRight size={14} className="shrink-0" style={{ color: cores.textoMuted }} />
+                        <ChevronRight size={16} className="shrink-0" style={{ color: cores.textoMuted }} />
                       </div>
                     </Card>
                   );

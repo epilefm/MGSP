@@ -6,10 +6,12 @@ const { authenticateToken, requireAdmin } = require("./middleware");
 
 router.use(authenticateToken, requireAdmin);
 
-// Lista todos os usuários, com as telas que cada um tem liberadas.
+// Lista todos os usuários, com as telas que cada um tem liberadas e o
+// último IP/horário de acesso (pra dar noção de quem está usando o quê).
 router.get("/usuarios", (req, res) => {
   const query = `
     SELECT u.id, u.nome, u.matricula, u.is_admin, u.ativo, u.reset_solicitado, u.criado_em,
+           u.ultimo_ip, u.ultimo_acesso,
            GROUP_CONCAT(DISTINCT s.slug) AS telas_liberadas
     FROM mydb.users u
     LEFT JOIN mydb.user_screens us ON us.user_id = u.id
@@ -27,6 +29,25 @@ router.get("/usuarios", (req, res) => {
       telas_liberadas: u.telas_liberadas ? u.telas_liberadas.split(",") : [],
     }));
     res.status(200).json(usuarios);
+  });
+});
+
+// Histórico de logins (mais recente primeiro) - de onde e quando cada
+// pessoa entrou no sistema. Limitado aos últimos 200 pra não pesar a tela.
+router.get("/historico-acessos", (req, res) => {
+  const query = `
+    SELECT h.id, h.ip, h.criado_em, u.id AS user_id, u.nome, u.matricula
+    FROM mydb.login_history h
+    JOIN mydb.users u ON u.id = h.user_id
+    ORDER BY h.criado_em DESC
+    LIMIT 200
+  `;
+  db.query(query, [], (err, results) => {
+    if (err) {
+      console.error("Erro ao listar histórico de acessos: ", err);
+      return res.status(500).json({ message: "Erro ao listar histórico de acessos" });
+    }
+    res.status(200).json(results);
   });
 });
 

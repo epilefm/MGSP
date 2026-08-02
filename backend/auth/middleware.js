@@ -1,4 +1,25 @@
 const jwt = require("jsonwebtoken");
+const db = require("../config/db");
+const obterIp = require("./obterIp");
+
+// Throttle em memória: só grava ultimo_ip/ultimo_acesso de um usuário no
+// banco de novo depois de passado esse tempo, pra não bater no banco a cada
+// requisição de quem está com uma tela de monitoramento aberta atualizando
+// sozinha o tempo todo. O valor em si (pra "está online agora?") só precisa
+// de precisão de minutos, não de segundo a segundo.
+const INTERVALO_MIN_ATUALIZACAO_MS = 60 * 1000;
+const ultimaAtualizacaoPorUsuario = new Map();
+
+function registrarAcessoComThrottle(userId, ip) {
+  const agora = Date.now();
+  const ultima = ultimaAtualizacaoPorUsuario.get(userId) || 0;
+  if (agora - ultima < INTERVALO_MIN_ATUALIZACAO_MS) return;
+  ultimaAtualizacaoPorUsuario.set(userId, agora);
+
+  db.query(`UPDATE mydb.users SET ultimo_ip = ?, ultimo_acesso = NOW() WHERE id = ?`, [ip, userId], (err) => {
+    if (err) console.error("Erro ao atualizar último acesso: ", err);
+  });
+}
 
 // Valida o token JWT do header Authorization: Bearer <token> e popula req.user.
 // req.user = { id, nome, matricula, isAdmin, screens: [slug, ...] }
@@ -22,6 +43,7 @@ function authenticateToken(req, res, next) {
       return res.status(403).json({ message: "Token inválido ou expirado" });
     }
     req.user = payload;
+    registrarAcessoComThrottle(payload.id, obterIp(req));
     next();
   });
 }

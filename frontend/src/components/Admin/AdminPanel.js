@@ -13,11 +13,28 @@ const NOME_GRUPO = {
   inovacao: "Inovação",
 };
 
+const ONLINE_LIMITE_MS = 3 * 60 * 1000; // considera "online agora" se acessou nos últimos 3 min
+
+function formatarQuando(dataIso) {
+  if (!dataIso) return "nunca acessou";
+  const data = new Date(dataIso);
+  return data.toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
+}
+
+function estaOnline(dataIso) {
+  if (!dataIso) return false;
+  return Date.now() - new Date(dataIso).getTime() < ONLINE_LIMITE_MS;
+}
+
 export default function AdminPanel() {
   const [usuarios, setUsuarios] = useState([]);
   const [telas, setTelas] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
+
+  const [mostrarHistorico, setMostrarHistorico] = useState(false);
+  const [historico, setHistorico] = useState([]);
+  const [carregandoHistorico, setCarregandoHistorico] = useState(false);
 
   const [usuarioEditando, setUsuarioEditando] = useState(null);
   const [selecionadas, setSelecionadas] = useState(new Set());
@@ -97,6 +114,22 @@ export default function AdminPanel() {
     }
   };
 
+  const alternarHistorico = async () => {
+    const vaiAbrir = !mostrarHistorico;
+    setMostrarHistorico(vaiAbrir);
+    if (vaiAbrir && historico.length === 0) {
+      setCarregandoHistorico(true);
+      try {
+        const { data } = await axios.get(`${API_URL}/admin/historico-acessos`);
+        setHistorico(data);
+      } catch (err) {
+        alert(err.response?.data?.message || "Erro ao carregar histórico de acessos");
+      } finally {
+        setCarregandoHistorico(false);
+      }
+    }
+  };
+
   const confirmarResetSenha = async () => {
     if (!novaSenha || novaSenha.length < 4) {
       alert("Informe uma senha com pelo menos 4 caracteres");
@@ -132,6 +165,7 @@ export default function AdminPanel() {
             <th>Matrícula</th>
             <th>Status</th>
             <th>Telas liberadas</th>
+            <th>Último acesso</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -156,6 +190,13 @@ export default function AdminPanel() {
                   <span>{usuario.telas_liberadas.length} tela(s)</span>
                 )}
               </td>
+              <td style={{ whiteSpace: "nowrap", fontSize: 13 }}>
+                {estaOnline(usuario.ultimo_acesso) && (
+                  <Badge bg="success" style={{ marginRight: 6 }}>online agora</Badge>
+                )}
+                <div>{formatarQuando(usuario.ultimo_acesso)}</div>
+                {usuario.ultimo_ip && <div style={{ color: "#888" }}>{usuario.ultimo_ip}</div>}
+              </td>
               <td style={{ whiteSpace: "nowrap" }}>
                 <Button size="sm" variant="outline-primary" onClick={() => abrirEdicaoTelas(usuario)} disabled={usuario.is_admin} style={{ marginRight: 6 }}>
                   Telas
@@ -171,6 +212,39 @@ export default function AdminPanel() {
           ))}
         </tbody>
       </Table>
+
+      <Button variant="outline-secondary" size="sm" onClick={alternarHistorico} style={{ marginBottom: 16 }}>
+        {mostrarHistorico ? "Ocultar histórico de acessos" : "Ver histórico de acessos"}
+      </Button>
+
+      {mostrarHistorico && (
+        <Table striped hover responsive size="sm">
+          <thead>
+            <tr>
+              <th>Quando</th>
+              <th>Nome</th>
+              <th>Matrícula</th>
+              <th>IP</th>
+            </tr>
+          </thead>
+          <tbody>
+            {carregandoHistorico ? (
+              <tr><td colSpan={4}>Carregando...</td></tr>
+            ) : historico.length === 0 ? (
+              <tr><td colSpan={4}>Nenhum acesso registrado ainda.</td></tr>
+            ) : (
+              historico.map((h) => (
+                <tr key={h.id}>
+                  <td>{formatarQuando(h.criado_em)}</td>
+                  <td>{h.nome}</td>
+                  <td>{h.matricula}</td>
+                  <td>{h.ip}</td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </Table>
+      )}
 
       {/* Modal de concessão de telas */}
       <Modal show={!!usuarioEditando} onHide={() => setUsuarioEditando(null)} size="lg" centered>
