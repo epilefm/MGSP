@@ -73,16 +73,16 @@ export default function Home() {
   return (
     <div className="min-h-screen" style={{ background: cores.fundo }}>
       {/* Cabeçalho */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-[#061542] via-[#1428A0] to-[#2f6fe0] px-5 pb-4 pt-3 text-white">
-        <div className="pointer-events-none absolute -top-16 -right-16 h-40 w-40 rounded-full bg-white/5" />
-        <div className="pointer-events-none absolute -bottom-16 -left-10 h-32 w-32 rounded-full bg-white/5" />
+      <div className="relative overflow-hidden bg-gradient-to-br from-[#061542] via-[#1428A0] to-[#2f6fe0] px-5 pb-3 pt-2.5 text-white">
+        <div className="pointer-events-none absolute -top-14 -right-14 h-32 w-32 rounded-full bg-white/5" />
+        <div className="pointer-events-none absolute -bottom-14 -left-8 h-28 w-28 rounded-full bg-white/5" />
 
         <div className="relative z-10 mx-auto max-w-6xl">
           {/* Linha 1: logo quase colado no canto esquerdo, tema+Sair colados no canto direito */}
           <div className="flex items-start justify-between">
-            <div className="inline-flex items-center gap-1.5 rounded-lg bg-white/95 px-2 py-1">
-              <img src="/images/icones/MGSP.png" alt="MGSP" className="block h-4 w-4" />
-              <span className="text-xs font-bold tracking-tight text-[#0a1e5c]">MGSP</span>
+            <div className="inline-flex items-center gap-2 rounded-lg bg-white/95 px-2.5 py-1.5">
+              <img src="/images/icones/MGSP.png" alt="MGSP" className="block h-5 w-5" />
+              <span className="text-sm font-bold tracking-tight text-[#0a1e5c]">MGSP</span>
             </div>
             <div className="flex items-center gap-2">
               <ThemeToggle variant="light" />
@@ -95,10 +95,13 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Linha 2: título centralizado de verdade na tela + nome da pessoa embaixo, à direita */}
-          <div className="mt-2 grid grid-cols-[1fr_auto_1fr] items-end">
+          {/* Linha 2: título centralizado (vertical e horizontalmente) na
+              tela + nome da pessoa à direita. flex flex-col explícito no
+              bloco do título pra garantir que título/subtítulo empilhem -
+              já tivemos CSS legado desse projeto interferindo nisso antes. */}
+          <div className="mt-1.5 grid grid-cols-[1fr_auto_1fr] items-center">
             <div />
-            <div className="text-center">
+            <div className="flex flex-col items-center text-center">
               <h1 className="text-2xl font-bold sm:text-3xl">Intranet MX SMD</h1>
               <p className="mt-0.5 text-sm text-white/70">Monitoramento e gestão do SMD</p>
             </div>
