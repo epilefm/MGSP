@@ -48,7 +48,7 @@ export default function LoginPage() {
         />
 
         {erro && (
-          <div className="bg-red-50 text-red-700 text-[13px] px-3 py-2.5 rounded-lg mb-4">
+          <div className="bg-red-50 text-red-700 text-[13px] px-3 py-2.5 rounded-lg mb-4 dark:bg-red-500/10 dark:text-red-400">
             {erro}
           </div>
         )}
@@ -65,7 +65,7 @@ export default function LoginPage() {
           <Link to="/EsqueciSenha" className="text-[#1428A0] hover:underline">
             Esqueci minha senha
           </Link>
-          <span className="text-slate-400">
+          <span className="text-slate-400 dark:text-slate-500">
             Não tem conta?{" "}
             <Link to="/Registrar" className="text-[#1428A0] font-semibold hover:underline">
               Criar conta

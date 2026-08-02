@@ -45,17 +45,17 @@ export default function RegisterPage() {
         />
 
         {erro && (
-          <div className="bg-red-50 text-red-700 text-[13px] px-3 py-2.5 rounded-lg mb-4">
+          <div className="bg-red-50 text-red-700 text-[13px] px-3 py-2.5 rounded-lg mb-4 dark:bg-red-500/10 dark:text-red-400">
             {erro}
           </div>
         )}
         {sucesso && (
-          <div className="bg-green-50 text-green-700 text-[13px] px-3 py-2.5 rounded-lg mb-4">
+          <div className="bg-green-50 text-green-700 text-[13px] px-3 py-2.5 rounded-lg mb-4 dark:bg-green-500/10 dark:text-green-400">
             {sucesso}
           </div>
         )}
 
-        <p className="text-[12.5px] text-slate-400 leading-relaxed mb-5">
+        <p className="text-[12.5px] text-slate-400 dark:text-slate-500 leading-relaxed mb-5">
           Sua conta é criada na hora, mas as telas só ficam disponíveis
           depois que um administrador liberar o acesso.
         </p>
@@ -69,7 +69,7 @@ export default function RegisterPage() {
         </button>
 
         <AuthFooterLinks>
-          <span className="text-slate-400">
+          <span className="text-slate-400 dark:text-slate-500">
             Já tem conta?{" "}
             <Link to="/Login" className="text-[#1428A0] font-semibold hover:underline">
               Entrar

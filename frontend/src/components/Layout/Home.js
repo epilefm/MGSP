@@ -6,6 +6,7 @@ import { ShieldCheck, ChevronRight, ArrowLeft, History } from "lucide-react";
 import { useAuth } from "../../auth/AuthContext";
 import { API_URL } from "../../config/api";
 import { GRUPOS, iconeParaTela } from "./screenIcons";
+import ThemeToggle from "../../theme/ThemeToggle";
 
 const RECENTES_KEY = "mts_telas_recentes";
 const RECENTES_MAX = 8;
@@ -38,7 +39,6 @@ export default function Home() {
       .finally(() => setCarregando(false));
   }, []);
 
-  // Só mostra telas que o usuário pode acessar (liberadas + públicas + tudo, se admin).
   const gruposComTelas = useMemo(() => {
     return GRUPOS.map((grupo) => ({
       ...grupo,
@@ -46,10 +46,10 @@ export default function Home() {
     })).filter((grupo) => grupo.itens.length > 0);
   }, [telas, podeAcessar]);
 
-  // Cruza o histórico salvo localmente com as telas que o usuário pode acessar
-  // agora (pode ter perdido acesso a alguma desde a última vez).
   const recentes = useMemo(() => {
-    const todasAcessiveis = gruposComTelas.flatMap((g) => g.itens.map((t) => ({ ...t, grupoId: g.id })));
+    const todasAcessiveis = gruposComTelas.flatMap((g) =>
+      g.itens.map((t) => ({ ...t, grupoId: g.id, cor: g.cor }))
+    );
     return lerRecentes()
       .map((slug) => todasAcessiveis.find((t) => t.slug === slug))
       .filter(Boolean);
@@ -68,7 +68,7 @@ export default function Home() {
   const grupoAberto = gruposComTelas.find((g) => g.id === departamento) || null;
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       {/* Cabeçalho */}
       <div className="relative overflow-hidden bg-gradient-to-br from-[#061542] via-[#1428A0] to-[#2f6fe0] px-6 py-7 text-white">
         <div className="pointer-events-none absolute -top-24 -right-24 h-64 w-64 rounded-full bg-white/5" />
@@ -94,7 +94,8 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
+            <ThemeToggle variant="light" />
             {user?.isAdmin && (
               <button
                 onClick={() => navigate("/Admin")}
@@ -120,7 +121,7 @@ export default function Home() {
           <Empty
             className="mt-16"
             description={
-              <span className="text-slate-500">
+              <span className="text-slate-500 dark:text-slate-400">
                 Nenhuma tela liberada ainda. Fale com o administrador do sistema
                 para que ele libere o acesso às telas que você precisa usar.
               </span>
@@ -131,7 +132,7 @@ export default function Home() {
             {/* Acessados recentemente - atalho rápido, sem limite de departamento */}
             {!grupoAberto && recentes.length > 0 && (
               <div className="mb-8">
-                <div className="mb-3 flex items-center gap-2 text-slate-500">
+                <div className="mb-3 flex items-center gap-2 text-slate-500 dark:text-slate-400">
                   <History size={15} />
                   <span className="text-sm font-semibold">Acessados recentemente</span>
                 </div>
@@ -142,9 +143,12 @@ export default function Home() {
                       <button
                         key={item.slug}
                         onClick={() => irParaTela(item.slug)}
-                        className="flex items-center gap-2 rounded-full border border-slate-200 bg-white py-1.5 pl-2 pr-3.5 text-sm text-slate-700 shadow-sm transition-colors hover:border-[#1428A0]/30 hover:bg-[#1428A0]/5"
+                        className="flex items-center gap-2 rounded-full border border-slate-200 bg-white py-1.5 pl-2 pr-3.5 text-sm text-slate-700 shadow-sm transition-colors hover:border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:border-slate-600"
                       >
-                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#1428A0]/10 text-[#1428A0]">
+                        <span
+                          className="flex h-6 w-6 items-center justify-center rounded-full"
+                          style={{ backgroundColor: `${item.cor}22`, color: item.cor }}
+                        >
                           <Icone size={13} />
                         </span>
                         {item.nome}
@@ -156,7 +160,7 @@ export default function Home() {
             )}
 
             {!grupoAberto ? (
-              /* Cards de departamento */
+              /* Cards de departamento - banner grande com ícone, não um ícone perdido no meio do card */
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
                 {gruposComTelas.map((grupo) => {
                   const GrupoIcone = grupo.icone;
@@ -165,17 +169,24 @@ export default function Home() {
                       key={grupo.id}
                       hoverable
                       onClick={() => setDepartamento(grupo.id)}
-                      className="!rounded-2xl [&_.ant-card-body]:p-5 sm:[&_.ant-card-body]:p-7"
+                      className="!overflow-hidden !rounded-2xl [&_.ant-card-body]:!p-0"
                     >
-                      <div className="flex h-full flex-col items-center gap-3 text-center">
-                        <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#1428A0]/10 text-[#1428A0] sm:h-16 sm:w-16">
-                          <GrupoIcone size={28} strokeWidth={1.8} />
-                        </span>
+                      <div
+                        className="flex h-28 items-center justify-center sm:h-36"
+                        style={{
+                          background: `linear-gradient(135deg, ${grupo.cor}, ${grupo.cor}cc)`,
+                        }}
+                      >
+                        <GrupoIcone size={52} strokeWidth={1.5} className="text-white/90 sm:!h-16 sm:!w-16" />
+                      </div>
+                      <div className="flex items-center justify-between px-4 py-3.5">
                         <div>
-                          <div className="font-semibold text-slate-800">{grupo.nome}</div>
-                          <div className="mt-0.5 text-xs text-slate-400">{grupo.itens.length} tela(s)</div>
+                          <div className="font-semibold text-slate-800 dark:text-slate-100">{grupo.nome}</div>
+                          <div className="mt-0.5 text-xs text-slate-400 dark:text-slate-500">
+                            {grupo.itens.length} tela(s)
+                          </div>
                         </div>
-                        <ChevronRight size={16} className="text-slate-300" />
+                        <ChevronRight size={16} className="shrink-0 text-slate-300 dark:text-slate-600" />
                       </div>
                     </Card>
                   );
@@ -186,16 +197,19 @@ export default function Home() {
               <div>
                 <button
                   onClick={() => setDepartamento(null)}
-                  className="mb-5 flex items-center gap-1.5 text-sm font-medium text-[#1428A0] hover:underline"
+                  className="mb-5 flex items-center gap-1.5 text-sm font-medium text-[#1428A0] hover:underline dark:text-[#7c93e6]"
                 >
                   <ArrowLeft size={15} /> Departamentos
                 </button>
 
                 <div className="mb-5 flex items-center gap-3">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#1428A0]/10 text-[#1428A0]">
+                  <span
+                    className="flex h-11 w-11 items-center justify-center rounded-xl"
+                    style={{ backgroundColor: `${grupoAberto.cor}22`, color: grupoAberto.cor }}
+                  >
                     <grupoAberto.icone size={20} />
                   </span>
-                  <h2 className="text-lg font-bold text-slate-800">{grupoAberto.nome}</h2>
+                  <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100">{grupoAberto.nome}</h2>
                 </div>
 
                 <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6">
@@ -205,12 +219,16 @@ export default function Home() {
                       <button
                         key={item.slug}
                         onClick={() => irParaTela(item.slug)}
-                        className="group flex flex-col items-center gap-2 rounded-2xl bg-white p-4 text-center shadow-sm ring-1 ring-slate-100 transition hover:shadow-md hover:ring-[#1428A0]/20"
+                        className="group flex flex-col items-center gap-2 rounded-2xl bg-white p-4 text-center shadow-sm ring-1 ring-slate-100 transition hover:shadow-md dark:bg-slate-800 dark:ring-slate-700"
+                        style={{ "--tw-shadow-color": grupoAberto.cor }}
                       >
-                        <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#1428A0]/10 text-[#1428A0] transition-transform group-hover:scale-105">
+                        <span
+                          className="flex h-14 w-14 items-center justify-center rounded-2xl transition-transform group-hover:scale-105"
+                          style={{ backgroundColor: `${grupoAberto.cor}1f`, color: grupoAberto.cor }}
+                        >
                           <Icone size={24} strokeWidth={1.8} />
                         </span>
-                        <span className="line-clamp-2 text-[11.5px] font-medium leading-tight text-slate-600">
+                        <span className="line-clamp-2 text-[11.5px] font-medium leading-tight text-slate-600 dark:text-slate-300">
                           {item.nome}
                         </span>
                         {item.is_public && (
@@ -228,7 +246,7 @@ export default function Home() {
         )}
       </div>
 
-      <div className="pb-8 text-center text-xs text-slate-400">
+      <div className="pb-8 text-center text-xs text-slate-400 dark:text-slate-600">
         SEDA(M) · MX SMD · © 2026 SAMSUNG.COM
       </div>
     </div>

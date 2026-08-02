@@ -9,14 +9,15 @@ import {
   ClipboardType, PackageSearch, Recycle,
 } from "lucide-react";
 
-// Departamentos exibidos na Home, na ordem em que aparecem.
+// Departamentos exibidos na Home. Paleta em família de tons frios
+// (índigo/azul/violeta/teal) pra dar identidade sem parecer um arco-íris.
 export const GRUPOS = [
-  { id: "material", nome: "Material", icone: Package },
-  { id: "quality", nome: "Qualidade / Reparo", icone: ShieldCheck },
-  { id: "production", nome: "Produção", icone: Factory },
-  { id: "maintenance", nome: "Manutenção", icone: Wrench },
-  { id: "inovacao", nome: "Inovação", icone: Lightbulb },
-  { id: "support", nome: "Suporte", icone: LifeBuoy },
+  { id: "material", nome: "Material", icone: Package, cor: "#4f46e5" },
+  { id: "quality", nome: "Qualidade / Reparo", icone: ShieldCheck, cor: "#2563eb" },
+  { id: "production", nome: "Produção", icone: Factory, cor: "#0284c7" },
+  { id: "maintenance", nome: "Manutenção", icone: Wrench, cor: "#7c3aed" },
+  { id: "inovacao", nome: "Inovação", icone: Lightbulb, cor: "#9333ea" },
+  { id: "support", nome: "Suporte", icone: LifeBuoy, cor: "#0d9488" },
 ];
 
 // Palavras-chave (no slug ou nome da tela) -> ícone. Ordem importa: a

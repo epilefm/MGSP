@@ -30,7 +30,7 @@ export default function ForgotPasswordPage() {
   return (
     <AuthLayout title="Esqueci minha senha" subtitle="Um administrador vai redefinir pra você">
       <form onSubmit={handleSubmit}>
-        <p className="text-[12.5px] text-slate-400 leading-relaxed mb-5">
+        <p className="text-[12.5px] text-slate-400 dark:text-slate-500 leading-relaxed mb-5">
           Informe sua matrícula. Um administrador vai ser avisado e vai
           redefinir sua senha e entrar em contato com você.
         </p>
@@ -38,12 +38,12 @@ export default function ForgotPasswordPage() {
         <AuthField label="Matrícula" value={matricula} onChange={(e) => setMatricula(e.target.value)} autoFocus required />
 
         {erro && (
-          <div className="bg-red-50 text-red-700 text-[13px] px-3 py-2.5 rounded-lg mb-4">
+          <div className="bg-red-50 text-red-700 text-[13px] px-3 py-2.5 rounded-lg mb-4 dark:bg-red-500/10 dark:text-red-400">
             {erro}
           </div>
         )}
         {mensagem && (
-          <div className="bg-green-50 text-green-700 text-[13px] px-3 py-2.5 rounded-lg mb-4">
+          <div className="bg-green-50 text-green-700 text-[13px] px-3 py-2.5 rounded-lg mb-4 dark:bg-green-500/10 dark:text-green-400">
             {mensagem}
           </div>
         )}

@@ -1,10 +1,11 @@
 import { ShieldCheck, Activity, LayoutGrid } from "lucide-react";
+import ThemeToggle from "../../theme/ThemeToggle";
 
 // Casca visual compartilhada pelas telas de Login, Cadastro e Esqueci a senha:
 // painel de marca (some em telas estreitas) + card branco com o formulário.
 export default function AuthLayout({ title, subtitle, children }) {
   return (
-    <div className="min-h-screen flex bg-slate-50">
+    <div className="min-h-screen flex bg-slate-50 dark:bg-slate-900">
       {/* Painel de marca */}
       <div className="hidden md:flex relative flex-[1.1] flex-col items-center justify-center overflow-hidden px-14 py-14 text-white bg-gradient-to-br from-[#061542] via-[#1428A0] to-[#2f6fe0]">
         <div className="absolute -top-36 -right-40 w-[420px] h-[420px] rounded-full bg-white/5" />
@@ -39,13 +40,16 @@ export default function AuthLayout({ title, subtitle, children }) {
       </div>
 
       {/* Card do formulário */}
-      <div className="flex-1 flex items-center justify-center p-6">
-        <div className="w-full max-w-[400px] bg-white rounded-3xl px-8 py-9 sm:px-10 sm:py-10 shadow-[0_18px_50px_rgba(20,40,160,0.10),0_2px_8px_rgba(0,0,0,0.04)]">
+      <div className="relative flex-1 flex items-center justify-center p-6">
+        <div className="absolute right-5 top-5">
+          <ThemeToggle variant="ghost" />
+        </div>
+        <div className="w-full max-w-[400px] bg-white dark:bg-slate-800 rounded-3xl px-8 py-9 sm:px-10 sm:py-10 shadow-[0_18px_50px_rgba(20,40,160,0.10),0_2px_8px_rgba(0,0,0,0.04)]">
           <div className="md:hidden text-center mb-6">
             <img src="/images/logo.png" alt="Logo" className="inline-block max-w-[120px]" />
           </div>
-          <h2 className="text-2xl font-bold text-[#0a1e5c] text-center mb-2">{title}</h2>
-          {subtitle && <p className="text-[13.5px] text-slate-400 text-center mb-8">{subtitle}</p>}
+          <h2 className="text-2xl font-bold text-[#0a1e5c] dark:text-white text-center mb-2">{title}</h2>
+          {subtitle && <p className="text-[13.5px] text-slate-400 dark:text-slate-400 text-center mb-8">{subtitle}</p>}
           {children}
         </div>
       </div>

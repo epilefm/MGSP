@@ -5,6 +5,7 @@ import App from './App';
 import { AuthProvider } from './auth/AuthContext';
 import RequireAuth from './auth/RequireAuth';
 import RequireAdmin from './auth/RequireAdmin';
+import { ThemeProvider } from './theme/ThemeContext';
 import LoginPage from './components/Auth/LoginPage';
 import RegisterPage from './components/Auth/RegisterPage';
 import ForgotPasswordPage from './components/Auth/ForgotPasswordPage';
@@ -473,7 +474,9 @@ const router = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <AuthProvider>
-    <RouterProvider router={router} />
-  </AuthProvider>
+  <ThemeProvider>
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  </ThemeProvider>
 );
