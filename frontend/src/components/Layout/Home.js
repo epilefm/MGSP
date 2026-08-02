@@ -79,11 +79,12 @@ export default function Home() {
 
         <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center gap-4 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left">
           <div className="flex items-center gap-4">
-            <div className="inline-flex shrink-0 rounded-2xl bg-white px-4 py-2.5 shadow-lg shadow-black/20">
-              <img src="/images/logo.png" alt="Logo" className="block h-6 sm:h-7" />
+            <div className="inline-flex shrink-0 items-center gap-2 rounded-2xl bg-white px-3.5 py-2 shadow-lg shadow-black/20 sm:px-4 sm:py-2.5">
+              <img src="/images/icones/MGSP.png" alt="MGSP" className="block h-6 w-6 sm:h-7 sm:w-7" />
+              <span className="text-base font-extrabold tracking-tight text-[#0a1e5c] sm:text-lg">MGSP</span>
             </div>
             <div>
-              <h1 className="text-lg font-bold sm:text-xl">Intranet SMD</h1>
+              <h1 className="text-lg font-bold sm:text-xl">Intranet MX SMD</h1>
               {user && (
                 <p className="text-sm text-white/75">
                   Bem-vindo(a), {user.nome}
@@ -252,7 +253,7 @@ export default function Home() {
       </div>
 
       <div className="pb-8 text-center text-xs" style={{ color: cores.textoMuted }}>
-        SEDA(M) · MX SMD · © 2026 SAMSUNG.COM
+        SEDA(M) · MX SMD · © 2026
       </div>
     </div>
   );

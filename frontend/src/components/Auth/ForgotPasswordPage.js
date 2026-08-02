@@ -35,7 +35,7 @@ export default function ForgotPasswordPage() {
   return (
     <AuthLayout title="Esqueci minha senha" subtitle="Um administrador vai redefinir pra você">
       <form onSubmit={handleSubmit}>
-        <p className="text-[12.5px] leading-relaxed mb-5" style={{ color: CORES[tema].textoMuted }}>
+        <p className="text-[12.5px] leading-relaxed mb-3.5" style={{ color: CORES[tema].textoMuted }}>
           Informe sua matrícula. Um administrador vai ser avisado e vai
           redefinir sua senha e entrar em contato com você.
         </p>
@@ -44,7 +44,7 @@ export default function ForgotPasswordPage() {
 
         {erro && (
           <div
-            className="text-[13px] px-3 py-2.5 rounded-lg mb-4"
+            className="text-[13px] px-3 py-2 rounded-lg mb-3.5"
             style={{ background: ERRO[tema].bg, color: ERRO[tema].texto }}
           >
             {erro}
@@ -52,7 +52,7 @@ export default function ForgotPasswordPage() {
         )}
         {mensagem && (
           <div
-            className="text-[13px] px-3 py-2.5 rounded-lg mb-4"
+            className="text-[13px] px-3 py-2 rounded-lg mb-3.5"
             style={{ background: SUCESSO[tema].bg, color: SUCESSO[tema].texto }}
           >
             {mensagem}
@@ -62,7 +62,7 @@ export default function ForgotPasswordPage() {
         <button
           type="submit"
           disabled={carregando}
-          className="w-full mt-2 flex items-center justify-center gap-2 rounded-lg bg-[#1428A0] hover:bg-[#0f1f7a] disabled:opacity-60 text-white font-semibold text-[15px] px-5 py-3 transition-colors"
+          className="w-full mt-1 flex items-center justify-center gap-2 rounded-lg bg-[#1428A0] hover:bg-[#0f1f7a] disabled:opacity-60 text-white font-semibold text-sm px-5 py-2.5 transition-colors"
         >
           {carregando ? "Enviando..." : "Solicitar redefinição"}
         </button>

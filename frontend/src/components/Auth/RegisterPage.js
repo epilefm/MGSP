@@ -51,7 +51,7 @@ export default function RegisterPage() {
 
         {erro && (
           <div
-            className="text-[13px] px-3 py-2.5 rounded-lg mb-4"
+            className="text-[13px] px-3 py-2 rounded-lg mb-3.5"
             style={{ background: ERRO[tema].bg, color: ERRO[tema].texto }}
           >
             {erro}
@@ -59,14 +59,14 @@ export default function RegisterPage() {
         )}
         {sucesso && (
           <div
-            className="text-[13px] px-3 py-2.5 rounded-lg mb-4"
+            className="text-[13px] px-3 py-2 rounded-lg mb-3.5"
             style={{ background: SUCESSO[tema].bg, color: SUCESSO[tema].texto }}
           >
             {sucesso}
           </div>
         )}
 
-        <p className="text-[12.5px] leading-relaxed mb-5" style={{ color: CORES[tema].textoMuted }}>
+        <p className="text-[12.5px] leading-relaxed mb-3.5" style={{ color: CORES[tema].textoMuted }}>
           Sua conta é criada na hora, mas as telas só ficam disponíveis
           depois que um administrador liberar o acesso.
         </p>
@@ -74,7 +74,7 @@ export default function RegisterPage() {
         <button
           type="submit"
           disabled={carregando}
-          className="w-full mt-2 flex items-center justify-center gap-2 rounded-lg bg-[#1428A0] hover:bg-[#0f1f7a] disabled:opacity-60 text-white font-semibold text-[15px] px-5 py-3 transition-colors"
+          className="w-full mt-1 flex items-center justify-center gap-2 rounded-lg bg-[#1428A0] hover:bg-[#0f1f7a] disabled:opacity-60 text-white font-semibold text-sm px-5 py-2.5 transition-colors"
         >
           {carregando ? "Criando..." : "Criar conta"}
         </button>

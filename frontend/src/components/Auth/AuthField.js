@@ -8,8 +8,8 @@ export default function AuthField({ label, type = "text", value, onChange, autoF
   const cores = CORES[tema];
 
   return (
-    <div className="mb-5 text-left">
-      <label className="block text-xs font-semibold mb-1.5 tracking-wide" style={{ color: cores.textoMuted }}>
+    <div className="mb-3.5 text-left">
+      <label className="block text-xs font-semibold mb-1 tracking-wide" style={{ color: cores.textoMuted }}>
         {label}
       </label>
       <input
@@ -22,7 +22,7 @@ export default function AuthField({ label, type = "text", value, onChange, autoF
           borderColor: cores.borda,
           color: cores.texto,
         }}
-        className="w-full px-3.5 py-2.5 rounded-lg border-[1.5px] text-[14.5px] transition-colors focus:outline-none focus:border-[#1428A0] focus:ring-[3px] focus:ring-[#1428A0]/10"
+        className="w-full px-3.5 py-2 rounded-lg border-[1.5px] text-[14.5px] transition-colors focus:outline-none focus:border-[#1428A0] focus:ring-[3px] focus:ring-[#1428A0]/10"
         {...rest}
       />
     </div>
