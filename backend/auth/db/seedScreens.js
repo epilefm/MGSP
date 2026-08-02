@@ -22,7 +22,7 @@ const SCREENS = [
   { slug: "Mapa", nome: "Mapa (AGV)", grupo: "material" },
   { slug: "Pgto", nome: "Pagamento (AGV)", grupo: "material" },
 
-  // quality (inclui Reparo e Inspeção MX, como já era na Navbar)
+  // quality (inclui Inspeção MX, como já era na Navbar - Reparo agora é grupo próprio, ver abaixo)
   { slug: "Bloq_Mat", nome: "Bloqueio de Materiais", grupo: "quality" },
   { slug: "ESD", nome: "Controle ESD", grupo: "quality" },
   { slug: "ESD_Edit", nome: "Edição ESD", grupo: "quality" },
@@ -41,15 +41,15 @@ const SCREENS = [
   { slug: "POPControl", nome: "Controle POP", grupo: "quality" },
   { slug: "Prod", nome: "Plano de Produção (legado)", grupo: "quality" },
   { slug: "InspecMX", nome: "Inspeção MX", grupo: "quality" },
-  { slug: "RepairScreen", nome: "Reparo - Entrada", grupo: "quality" },
-  { slug: "RepairScreen_2", nome: "Reparo - Entrada (V2)", grupo: "quality" },
-  { slug: "RepairProcess", nome: "Reparo - Processo", grupo: "quality" },
-  { slug: "RepairSaida", nome: "Reparo - Saída", grupo: "quality" },
-  { slug: "RepairAnalysis", nome: "Reparo - Análise", grupo: "quality" },
-  { slug: "RepairInv", nome: "Reparo - Inventário", grupo: "quality" },
-  { slug: "RepairTNP_IA", nome: "Reparo TNP - Assistente IA", grupo: "quality" },
-  { slug: "Estoque_comp", nome: "Estoque de Componentes", grupo: "quality" },
-  { slug: "OfflineSaida", nome: "Offline - Saída", grupo: "quality" },
+  { slug: "RepairScreen", nome: "Reparo - Entrada", grupo: "repair" },
+  { slug: "RepairScreen_2", nome: "Reparo - Entrada (V2)", grupo: "repair" },
+  { slug: "RepairProcess", nome: "Reparo - Processo", grupo: "repair" },
+  { slug: "RepairSaida", nome: "Reparo - Saída", grupo: "repair" },
+  { slug: "RepairAnalysis", nome: "Reparo - Análise", grupo: "repair" },
+  { slug: "RepairInv", nome: "Reparo - Inventário", grupo: "repair" },
+  { slug: "RepairTNP_IA", nome: "Reparo TNP - Assistente IA", grupo: "repair" },
+  { slug: "Estoque_comp", nome: "Estoque de Componentes", grupo: "repair" },
+  { slug: "OfflineSaida", nome: "Offline - Saída", grupo: "repair" },
 
   // production
   { slug: "HoraHora", nome: "Produção Mounter", grupo: "production" },

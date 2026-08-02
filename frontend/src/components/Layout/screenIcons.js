@@ -1,5 +1,5 @@
 import {
-  Package, ShieldCheck, Factory, Wrench, Lightbulb, LifeBuoy,
+  Package, ShieldCheck, Factory, Wrench, Hammer, Lightbulb, LifeBuoy,
   Link2, Activity, Trash2, ClipboardList, Archive, Boxes, Zap,
   ClipboardCheck, BarChart3, GitCommit, Map, Flame, Layers,
   WifiOff, Tag, Cpu, CircleDot, Thermometer, AlertTriangle,
@@ -10,13 +10,14 @@ import {
 } from "lucide-react";
 
 // Departamentos exibidos na Home. Paleta em família de tons frios
-// (índigo/azul/violeta/teal) pra dar identidade sem parecer um arco-íris.
+// (índigo/azul/ciano/violeta/teal) pra dar identidade sem parecer um arco-íris.
 export const GRUPOS = [
   { id: "material", nome: "Material", icone: Package, cor: "#4f46e5" },
-  { id: "quality", nome: "Qualidade / Reparo", icone: ShieldCheck, cor: "#2563eb" },
+  { id: "quality", nome: "Qualidade", icone: ShieldCheck, cor: "#2563eb" },
+  { id: "repair", nome: "Reparo", icone: Hammer, cor: "#0891b2" },
   { id: "production", nome: "Produção", icone: Factory, cor: "#0284c7" },
   { id: "maintenance", nome: "Manutenção", icone: Wrench, cor: "#7c3aed" },
-  { id: "inovacao", nome: "Inovação", icone: Lightbulb, cor: "#9333ea" },
+  { id: "inovacao", nome: "Inovação", icone: Lightbulb, cor: "#c026d3" },
   { id: "support", nome: "Suporte", icone: LifeBuoy, cor: "#0d9488" },
 ];
 

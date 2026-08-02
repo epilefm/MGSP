@@ -5,7 +5,8 @@ import { API_URL } from "../../config/api";
 
 const NOME_GRUPO = {
   material: "Material",
-  quality: "Qualidade / Reparo",
+  quality: "Qualidade",
+  repair: "Reparo",
   production: "Produção",
   maintenance: "Manutenção",
   support: "Suporte",
