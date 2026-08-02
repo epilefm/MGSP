@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Card, Empty, Tag } from "antd";
+import { Badge, Card, Empty, Tag } from "antd";
 import { ChevronRight, ArrowLeft, History, Settings } from "lucide-react";
 import { useAuth } from "../../auth/AuthContext";
 import { API_URL } from "../../config/api";
@@ -29,6 +29,7 @@ export default function Home() {
   const [telas, setTelas] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [departamento, setDepartamento] = useState(null);
+  const [pendencias, setPendencias] = useState(0);
   const navigate = useNavigate();
   const { user, logout, podeAcessar } = useAuth();
   const { tema } = useTema();
@@ -41,6 +42,16 @@ export default function Home() {
       .catch(() => setTelas([]))
       .finally(() => setCarregando(false));
   }, []);
+
+  // Selo de "pendências" pro admin (hoje: pedidos de redefinição de senha) -
+  // só busca isso se a pessoa logada for admin, senão a rota nem deixaria.
+  useEffect(() => {
+    if (!user?.isAdmin) return;
+    axios
+      .get(`${API_URL}/admin/pendencias`)
+      .then((res) => setPendencias(res.data.resetSenha || 0))
+      .catch(() => setPendencias(0));
+  }, [user?.isAdmin]);
 
   const gruposComTelas = useMemo(() => {
     return GRUPOS.map((grupo) => ({
@@ -179,25 +190,31 @@ export default function Home() {
                  separado no cabeçalho, agora é um card como os outros). */
               <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3 md:grid-cols-4">
                 {user?.isAdmin && (
-                  <Card
-                    hoverable
-                    onClick={() => navigate("/Admin")}
-                    className="!overflow-hidden !rounded-2xl [&_.ant-card-body]:!p-0"
-                  >
-                    <div
-                      className="flex h-20 items-center justify-center sm:h-24"
-                      style={{ background: "linear-gradient(135deg, #1428A0, #1428A0cc)" }}
+                  <Badge count={pendencias} offset={[-10, 10]} size="small">
+                    <Card
+                      hoverable
+                      onClick={() => navigate("/Admin")}
+                      className="!overflow-hidden !rounded-2xl [&_.ant-card-body]:!p-0"
                     >
-                      <Settings size={36} strokeWidth={1.6} className="text-white/90" />
-                    </div>
-                    <div className="flex items-center justify-between px-3.5 py-2.5">
-                      <div>
-                        <div className="text-sm font-semibold" style={{ color: cores.texto }}>Gestão do Sistema</div>
-                        <div className="text-xs" style={{ color: cores.textoMuted }}>Usuários e acessos</div>
+                      <div
+                        className="flex h-20 items-center justify-center sm:h-24"
+                        style={{ background: "linear-gradient(135deg, #1428A0, #1428A0cc)" }}
+                      >
+                        <Settings size={36} strokeWidth={1.6} className="text-white/90" />
                       </div>
-                      <ChevronRight size={16} className="shrink-0" style={{ color: cores.textoMuted }} />
-                    </div>
-                  </Card>
+                      <div className="flex items-center justify-between px-3.5 py-2.5">
+                        <div>
+                          <div className="text-sm font-semibold" style={{ color: cores.texto }}>Gestão do Sistema</div>
+                          <div className="text-xs" style={{ color: cores.textoMuted }}>
+                            {pendencias > 0
+                              ? `${pendencias} pedido(s) de redefinição de senha`
+                              : "Usuários e acessos"}
+                          </div>
+                        </div>
+                        <ChevronRight size={16} className="shrink-0" style={{ color: cores.textoMuted }} />
+                      </div>
+                    </Card>
+                  </Badge>
                 )}
                 {gruposComTelas.map((grupo) => {
                   const GrupoIcone = grupo.icone;

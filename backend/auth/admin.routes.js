@@ -32,6 +32,24 @@ router.get("/usuarios", (req, res) => {
   });
 });
 
+// Pendências que precisam de atenção do admin (hoje só pedidos de redefinição
+// de senha, mas dá pra somar outros tipos aqui no futuro). A Home usa isso
+// pra mostrar um selo de notificação sem precisar carregar a lista inteira
+// de usuários.
+router.get("/pendencias", (req, res) => {
+  db.query(
+    `SELECT COUNT(*) AS total FROM mydb.users WHERE reset_solicitado = TRUE`,
+    [],
+    (err, results) => {
+      if (err) {
+        console.error("Erro ao contar pendências: ", err);
+        return res.status(500).json({ message: "Erro ao contar pendências" });
+      }
+      res.status(200).json({ resetSenha: results[0].total });
+    }
+  );
+});
+
 // Histórico de logins (mais recente primeiro) - de onde e quando cada
 // pessoa entrou no sistema. Limitado aos últimos 200 pra não pesar a tela.
 router.get("/historico-acessos", (req, res) => {
