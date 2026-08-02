@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
+import { useTema, CORES } from "../../theme/ThemeContext";
 import AuthLayout from "./AuthLayout";
 import AuthField from "./AuthField";
 import AuthFooterLinks from "./AuthFooterLinks";
+
+const ERRO = { light: { bg: "#fef2f2", texto: "#b91c1c" }, dark: { bg: "#3f1a1e", texto: "#f87171" } };
+const SUCESSO = { light: { bg: "#f0fdf4", texto: "#15803d" }, dark: { bg: "#132e1e", texto: "#4ade80" } };
 
 export default function RegisterPage() {
   const [nome, setNome] = useState("");
@@ -14,6 +18,7 @@ export default function RegisterPage() {
   const [carregando, setCarregando] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
+  const { tema } = useTema();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,17 +50,23 @@ export default function RegisterPage() {
         />
 
         {erro && (
-          <div className="bg-red-50 text-red-700 text-[13px] px-3 py-2.5 rounded-lg mb-4 dark:bg-red-500/10 dark:text-red-400">
+          <div
+            className="text-[13px] px-3 py-2.5 rounded-lg mb-4"
+            style={{ background: ERRO[tema].bg, color: ERRO[tema].texto }}
+          >
             {erro}
           </div>
         )}
         {sucesso && (
-          <div className="bg-green-50 text-green-700 text-[13px] px-3 py-2.5 rounded-lg mb-4 dark:bg-green-500/10 dark:text-green-400">
+          <div
+            className="text-[13px] px-3 py-2.5 rounded-lg mb-4"
+            style={{ background: SUCESSO[tema].bg, color: SUCESSO[tema].texto }}
+          >
             {sucesso}
           </div>
         )}
 
-        <p className="text-[12.5px] text-slate-400 dark:text-slate-500 leading-relaxed mb-5">
+        <p className="text-[12.5px] leading-relaxed mb-5" style={{ color: CORES[tema].textoMuted }}>
           Sua conta é criada na hora, mas as telas só ficam disponíveis
           depois que um administrador liberar o acesso.
         </p>
@@ -69,7 +80,7 @@ export default function RegisterPage() {
         </button>
 
         <AuthFooterLinks>
-          <span className="text-slate-400 dark:text-slate-500">
+          <span style={{ color: CORES[tema].textoMuted }}>
             Já tem conta?{" "}
             <Link to="/Login" className="text-[#1428A0] font-semibold hover:underline">
               Entrar

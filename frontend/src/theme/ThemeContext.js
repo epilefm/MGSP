@@ -4,6 +4,30 @@ import { ConfigProvider, theme as antdTheme } from "antd";
 const ThemeContext = createContext(null);
 const STORAGE_KEY = "mts_theme";
 
+// Paleta única do app, em camadas (fundo -> superfície -> superfície clara),
+// tipo Spotify/apps modernos: cada camada fica um tom mais claro que a
+// anterior, em vez de tudo na mesma cor.
+export const CORES = {
+  light: {
+    fundo: "#f8fafc",
+    superficie: "#ffffff",
+    superficieClara: "#f1f5f9",
+    borda: "#e2e8f0",
+    texto: "#0f172a",
+    textoTitulo: "#0a1e5c",
+    textoMuted: "#94a3b8",
+  },
+  dark: {
+    fundo: "#0a0e1a",
+    superficie: "#161b2e",
+    superficieClara: "#232a45",
+    borda: "#2a3252",
+    texto: "#f1f5f9",
+    textoTitulo: "#ffffff",
+    textoMuted: "#8891ac",
+  },
+};
+
 function temaInicial() {
   const salvo = localStorage.getItem(STORAGE_KEY);
   if (salvo === "light" || salvo === "dark") return salvo;

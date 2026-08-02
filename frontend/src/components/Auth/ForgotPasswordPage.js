@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
+import { useTema, CORES } from "../../theme/ThemeContext";
 import AuthLayout from "./AuthLayout";
 import AuthField from "./AuthField";
 import AuthFooterLinks from "./AuthFooterLinks";
+
+const ERRO = { light: { bg: "#fef2f2", texto: "#b91c1c" }, dark: { bg: "#3f1a1e", texto: "#f87171" } };
+const SUCESSO = { light: { bg: "#f0fdf4", texto: "#15803d" }, dark: { bg: "#132e1e", texto: "#4ade80" } };
 
 export default function ForgotPasswordPage() {
   const [matricula, setMatricula] = useState("");
@@ -11,6 +15,7 @@ export default function ForgotPasswordPage() {
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
   const { solicitarReset } = useAuth();
+  const { tema } = useTema();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,7 +35,7 @@ export default function ForgotPasswordPage() {
   return (
     <AuthLayout title="Esqueci minha senha" subtitle="Um administrador vai redefinir pra você">
       <form onSubmit={handleSubmit}>
-        <p className="text-[12.5px] text-slate-400 dark:text-slate-500 leading-relaxed mb-5">
+        <p className="text-[12.5px] leading-relaxed mb-5" style={{ color: CORES[tema].textoMuted }}>
           Informe sua matrícula. Um administrador vai ser avisado e vai
           redefinir sua senha e entrar em contato com você.
         </p>
@@ -38,12 +43,18 @@ export default function ForgotPasswordPage() {
         <AuthField label="Matrícula" value={matricula} onChange={(e) => setMatricula(e.target.value)} autoFocus required />
 
         {erro && (
-          <div className="bg-red-50 text-red-700 text-[13px] px-3 py-2.5 rounded-lg mb-4 dark:bg-red-500/10 dark:text-red-400">
+          <div
+            className="text-[13px] px-3 py-2.5 rounded-lg mb-4"
+            style={{ background: ERRO[tema].bg, color: ERRO[tema].texto }}
+          >
             {erro}
           </div>
         )}
         {mensagem && (
-          <div className="bg-green-50 text-green-700 text-[13px] px-3 py-2.5 rounded-lg mb-4 dark:bg-green-500/10 dark:text-green-400">
+          <div
+            className="text-[13px] px-3 py-2.5 rounded-lg mb-4"
+            style={{ background: SUCESSO[tema].bg, color: SUCESSO[tema].texto }}
+          >
             {mensagem}
           </div>
         )}

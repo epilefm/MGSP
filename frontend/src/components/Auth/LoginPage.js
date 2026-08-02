@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
+import { useTema, CORES } from "../../theme/ThemeContext";
 import AuthLayout from "./AuthLayout";
 import AuthField from "./AuthField";
 import AuthFooterLinks from "./AuthFooterLinks";
+
+const ERRO = { light: { bg: "#fef2f2", texto: "#b91c1c" }, dark: { bg: "#3f1a1e", texto: "#f87171" } };
 
 export default function LoginPage() {
   const [matricula, setMatricula] = useState("");
@@ -11,6 +14,7 @@ export default function LoginPage() {
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(false);
   const { login } = useAuth();
+  const { tema } = useTema();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -48,7 +52,10 @@ export default function LoginPage() {
         />
 
         {erro && (
-          <div className="bg-red-50 text-red-700 text-[13px] px-3 py-2.5 rounded-lg mb-4 dark:bg-red-500/10 dark:text-red-400">
+          <div
+            className="text-[13px] px-3 py-2.5 rounded-lg mb-4"
+            style={{ background: ERRO[tema].bg, color: ERRO[tema].texto }}
+          >
             {erro}
           </div>
         )}
@@ -65,7 +72,7 @@ export default function LoginPage() {
           <Link to="/EsqueciSenha" className="text-[#1428A0] hover:underline">
             Esqueci minha senha
           </Link>
-          <span className="text-slate-400 dark:text-slate-500">
+          <span style={{ color: CORES[tema].textoMuted }}>
             Não tem conta?{" "}
             <Link to="/Registrar" className="text-[#1428A0] font-semibold hover:underline">
               Criar conta

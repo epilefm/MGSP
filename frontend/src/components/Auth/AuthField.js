@@ -1,8 +1,15 @@
-// Input padronizado das telas de autenticação: label + campo, com estado de foco.
+import { useTema, CORES } from "../../theme/ThemeContext";
+
+// Input padronizado das telas de autenticação: label + campo, com estado de
+// foco. No escuro, o campo fica um tom mais claro que o card ao redor dele
+// (profundidade tipo Spotify), não a mesma cor.
 export default function AuthField({ label, type = "text", value, onChange, autoFocus, ...rest }) {
+  const { tema } = useTema();
+  const cores = CORES[tema];
+
   return (
     <div className="mb-5 text-left">
-      <label className="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1.5 tracking-wide">
+      <label className="block text-xs font-semibold mb-1.5 tracking-wide" style={{ color: cores.textoMuted }}>
         {label}
       </label>
       <input
@@ -10,7 +17,12 @@ export default function AuthField({ label, type = "text", value, onChange, autoF
         value={value}
         onChange={onChange}
         autoFocus={autoFocus}
-        className="w-full px-3.5 py-2.5 rounded-lg border-[1.5px] border-slate-200 bg-slate-50 text-[14.5px] text-slate-900 transition-colors focus:outline-none focus:border-[#1428A0] focus:bg-white focus:ring-[3px] focus:ring-[#1428A0]/10 dark:border-slate-600 dark:bg-slate-700 dark:text-white dark:focus:bg-slate-700"
+        style={{
+          background: cores.superficieClara,
+          borderColor: cores.borda,
+          color: cores.texto,
+        }}
+        className="w-full px-3.5 py-2.5 rounded-lg border-[1.5px] text-[14.5px] transition-colors focus:outline-none focus:border-[#1428A0] focus:ring-[3px] focus:ring-[#1428A0]/10"
         {...rest}
       />
     </div>

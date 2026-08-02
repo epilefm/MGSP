@@ -7,6 +7,7 @@ import { useAuth } from "../../auth/AuthContext";
 import { API_URL } from "../../config/api";
 import { GRUPOS, iconeParaTela } from "./screenIcons";
 import ThemeToggle from "../../theme/ThemeToggle";
+import { useTema, CORES } from "../../theme/ThemeContext";
 
 const RECENTES_KEY = "mts_telas_recentes";
 const RECENTES_MAX = 8;
@@ -30,6 +31,8 @@ export default function Home() {
   const [departamento, setDepartamento] = useState(null);
   const navigate = useNavigate();
   const { user, logout, podeAcessar } = useAuth();
+  const { tema } = useTema();
+  const cores = CORES[tema];
 
   useEffect(() => {
     axios
@@ -68,7 +71,7 @@ export default function Home() {
   const grupoAberto = gruposComTelas.find((g) => g.id === departamento) || null;
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+    <div className="min-h-screen" style={{ background: cores.fundo }}>
       {/* Cabeçalho */}
       <div className="relative overflow-hidden bg-gradient-to-br from-[#061542] via-[#1428A0] to-[#2f6fe0] px-6 py-7 text-white">
         <div className="pointer-events-none absolute -top-24 -right-24 h-64 w-64 rounded-full bg-white/5" />
@@ -116,12 +119,12 @@ export default function Home() {
 
       <div className="mx-auto max-w-6xl px-6 py-8">
         {carregando ? (
-          <p className="text-center text-slate-400">Carregando suas telas...</p>
+          <p className="text-center" style={{ color: cores.textoMuted }}>Carregando suas telas...</p>
         ) : gruposComTelas.length === 0 ? (
           <Empty
             className="mt-16"
             description={
-              <span className="text-slate-500 dark:text-slate-400">
+              <span style={{ color: cores.textoMuted }}>
                 Nenhuma tela liberada ainda. Fale com o administrador do sistema
                 para que ele libere o acesso às telas que você precisa usar.
               </span>
@@ -132,7 +135,7 @@ export default function Home() {
             {/* Acessados recentemente - atalho rápido, sem limite de departamento */}
             {!grupoAberto && recentes.length > 0 && (
               <div className="mb-8">
-                <div className="mb-3 flex items-center gap-2 text-slate-500 dark:text-slate-400">
+                <div className="mb-3 flex items-center gap-2" style={{ color: cores.textoMuted }}>
                   <History size={15} />
                   <span className="text-sm font-semibold">Acessados recentemente</span>
                 </div>
@@ -143,7 +146,8 @@ export default function Home() {
                       <button
                         key={item.slug}
                         onClick={() => irParaTela(item.slug)}
-                        className="flex items-center gap-2 rounded-full border border-slate-200 bg-white py-1.5 pl-2 pr-3.5 text-sm text-slate-700 shadow-sm transition-colors hover:border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:border-slate-600"
+                        style={{ background: cores.superficie, borderColor: cores.borda, color: cores.texto }}
+                        className="flex items-center gap-2 rounded-full border py-1.5 pl-2 pr-3.5 text-sm shadow-sm transition-colors"
                       >
                         <span
                           className="flex h-6 w-6 items-center justify-center rounded-full"
@@ -181,12 +185,12 @@ export default function Home() {
                       </div>
                       <div className="flex items-center justify-between px-4 py-3.5">
                         <div>
-                          <div className="font-semibold text-slate-800 dark:text-slate-100">{grupo.nome}</div>
-                          <div className="mt-0.5 text-xs text-slate-400 dark:text-slate-500">
+                          <div className="font-semibold" style={{ color: cores.texto }}>{grupo.nome}</div>
+                          <div className="mt-0.5 text-xs" style={{ color: cores.textoMuted }}>
                             {grupo.itens.length} tela(s)
                           </div>
                         </div>
-                        <ChevronRight size={16} className="shrink-0 text-slate-300 dark:text-slate-600" />
+                        <ChevronRight size={16} className="shrink-0" style={{ color: cores.textoMuted }} />
                       </div>
                     </Card>
                   );
@@ -197,7 +201,8 @@ export default function Home() {
               <div>
                 <button
                   onClick={() => setDepartamento(null)}
-                  className="mb-5 flex items-center gap-1.5 text-sm font-medium text-[#1428A0] hover:underline dark:text-[#7c93e6]"
+                  style={{ color: tema === "dark" ? "#7c93e6" : "#1428A0" }}
+                  className="mb-5 flex items-center gap-1.5 text-sm font-medium hover:underline"
                 >
                   <ArrowLeft size={15} /> Departamentos
                 </button>
@@ -209,7 +214,7 @@ export default function Home() {
                   >
                     <grupoAberto.icone size={20} />
                   </span>
-                  <h2 className="text-lg font-bold text-slate-800 dark:text-slate-100">{grupoAberto.nome}</h2>
+                  <h2 className="text-lg font-bold" style={{ color: cores.texto }}>{grupoAberto.nome}</h2>
                 </div>
 
                 <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6">
@@ -219,8 +224,8 @@ export default function Home() {
                       <button
                         key={item.slug}
                         onClick={() => irParaTela(item.slug)}
-                        className="group flex flex-col items-center gap-2 rounded-2xl bg-white p-4 text-center shadow-sm ring-1 ring-slate-100 transition hover:shadow-md dark:bg-slate-800 dark:ring-slate-700"
-                        style={{ "--tw-shadow-color": grupoAberto.cor }}
+                        style={{ background: cores.superficie, boxShadow: `0 1px 3px ${cores.borda}` }}
+                        className="group flex flex-col items-center gap-2 rounded-2xl p-4 text-center transition hover:shadow-md"
                       >
                         <span
                           className="flex h-14 w-14 items-center justify-center rounded-2xl transition-transform group-hover:scale-105"
@@ -228,7 +233,7 @@ export default function Home() {
                         >
                           <Icone size={24} strokeWidth={1.8} />
                         </span>
-                        <span className="line-clamp-2 text-[11.5px] font-medium leading-tight text-slate-600 dark:text-slate-300">
+                        <span className="line-clamp-2 text-[11.5px] font-medium leading-tight" style={{ color: cores.texto }}>
                           {item.nome}
                         </span>
                         {item.is_public && (
@@ -246,7 +251,7 @@ export default function Home() {
         )}
       </div>
 
-      <div className="pb-8 text-center text-xs text-slate-400 dark:text-slate-600">
+      <div className="pb-8 text-center text-xs" style={{ color: cores.textoMuted }}>
         SEDA(M) · MX SMD · © 2026 SAMSUNG.COM
       </div>
     </div>
