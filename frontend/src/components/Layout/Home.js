@@ -105,7 +105,7 @@ export default function Home() {
               globalmente por algum componente) que estava aplicando margem
               extra em tags de título/parágrafo sem eu perceber pela classe;
               inline style sempre vence, não importa a causa raiz. */}
-          <div className="grid grid-cols-[1fr_auto_1fr] items-start" style={{ marginTop: -4 }}>
+          <div className="grid grid-cols-[1fr_auto_1fr] items-center" style={{ marginTop: 8 }}>
             <div />
             <div className="flex flex-col items-center text-center">
               <div style={{ margin: 0, padding: 0, lineHeight: 1.2 }} className="text-3xl font-bold sm:text-4xl">
