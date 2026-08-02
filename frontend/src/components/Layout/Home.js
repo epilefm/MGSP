@@ -9,20 +9,25 @@ import { GRUPOS, iconeParaTela } from "./screenIcons";
 import ThemeToggle from "../../theme/ThemeToggle";
 import { useTema, CORES } from "../../theme/ThemeContext";
 
-const RECENTES_KEY = "mts_telas_recentes";
 const RECENTES_MAX = 8;
 
-function lerRecentes() {
+// Chave por usuário (não por navegador) - terminal compartilhado: se não
+// escopar por conta, quem loga depois vê os "recentes" de quem usou antes.
+function chaveRecentes(userId) {
+  return `mts_telas_recentes_${userId}`;
+}
+
+function lerRecentes(userId) {
   try {
-    return JSON.parse(localStorage.getItem(RECENTES_KEY)) || [];
+    return JSON.parse(localStorage.getItem(chaveRecentes(userId))) || [];
   } catch {
     return [];
   }
 }
 
-function registrarAcesso(slug) {
-  const atuais = lerRecentes().filter((s) => s !== slug);
-  localStorage.setItem(RECENTES_KEY, JSON.stringify([slug, ...atuais].slice(0, RECENTES_MAX)));
+function registrarAcesso(slug, userId) {
+  const atuais = lerRecentes(userId).filter((s) => s !== slug);
+  localStorage.setItem(chaveRecentes(userId), JSON.stringify([slug, ...atuais].slice(0, RECENTES_MAX)));
 }
 
 export default function Home() {
@@ -64,13 +69,13 @@ export default function Home() {
     const todasAcessiveis = gruposComTelas.flatMap((g) =>
       g.itens.map((t) => ({ ...t, grupoId: g.id, cor: g.cor }))
     );
-    return lerRecentes()
+    return lerRecentes(user?.id)
       .map((slug) => todasAcessiveis.find((t) => t.slug === slug))
       .filter(Boolean);
-  }, [gruposComTelas]);
+  }, [gruposComTelas, user?.id]);
 
   const irParaTela = (slug) => {
-    registrarAcesso(slug);
+    registrarAcesso(slug, user?.id);
     navigate(`/${slug}`);
   };
 
@@ -214,12 +219,12 @@ export default function Home() {
                         <ChevronRight size={16} className="shrink-0" style={{ color: cores.textoMuted }} />
                       </div>
                     </Card>
-                    {/* Selo estilo notificação de app - círculo vermelho no
-                        canto do card, meio pra dentro/meio pra fora. */}
+                    {/* Selo estilo notificação de app - círculo vermelho com
+                        anel de contorno no canto do card, tipo iOS/Android. */}
                     {pendencias > 0 && (
                       <span
-                        className="pointer-events-none absolute -right-1.5 -top-1.5 flex h-5 min-w-[20px] items-center justify-center rounded-full px-1 text-[11px] font-bold text-white"
-                        style={{ background: "#ff4d4f", boxShadow: `0 0 0 2px ${cores.fundo}` }}
+                        className="pointer-events-none absolute -right-2 -top-2 flex h-6 min-w-[24px] items-center justify-center rounded-full px-1.5 text-xs font-bold text-white"
+                        style={{ background: "#ff4d4f", border: `3px solid ${cores.superficie}` }}
                       >
                         {pendencias > 9 ? "9+" : pendencias}
                       </span>
