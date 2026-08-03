@@ -52,6 +52,7 @@ import RegistroForm from './RegistroForm';
 import RegistroPreview from './RegistroPreview';
 import { useTema, TemaAntd } from '../../../theme/ThemeContext';
 import ThemeToggle from '../../../theme/ThemeToggle';
+import { useAuth } from '../../../auth/AuthContext';
 
 // ============================================
 // FUNÇÕES UTILITÁRIAS PARA FORMATAÇÃO DE RESPOSTAS DA IA
@@ -381,10 +382,11 @@ const FormatarRespostaIA = ({ conteudo }) => {
 
 const HanaroScrap = () => {
   const { tema } = useTema();
+  const { user } = useAuth();
 
   // Estados para os dados do formulário
   const [formData, setFormData] = useState({
-    matricula: '',
+    matricula: user?.matricula || '',
     nomeOperador: '',
     tipoScrap: '',
     tipoPlaca: '',
@@ -665,7 +667,7 @@ const HanaroScrap = () => {
   ]);
 
   // Estados para controle da interface
-  const [employee, setEmployee] = useState(null);
+  const [employee, setEmployee] = useState(user ? { nome: user.nome } : null);
   const [saving, setSaving] = useState(false);
   const [activeTab, setActiveTab] = useState('registro'); // 'registro', 'historico', 'aprovacao'
   const [authModal, setAuthModal] = useState(false);
@@ -676,7 +678,6 @@ const HanaroScrap = () => {
   // Refs para os campos de input
   const inputRefs = useRef([]);
   const fieldOrder = [
-    'matricula',
     'cn',
     'modeloId',
     'qty',
@@ -1135,25 +1136,7 @@ ${JSON.stringify(historicoResumo, null, 2)}`;
     if (window.clearFieldError) {
       window.clearFieldError(field);
     }
-    
-    // Atualizar nome do operador quando matrícula mudar
-    if (field === 'matricula' && value.length >= 2) {
-      // Buscar funcionário no banco de dados
-      fetch(`${API_URL}/verifyMatricula/${value}`)
-        .then(res => res.json())
-        .then(data => {
-          if (data && data.exists) {
-            setEmployee({ nome: data.nome });
-          } else {
-            setEmployee(null);
-          }
-        })
-        .catch(error => {
-          console.error('Erro ao buscar funcionário:', error);
-          setEmployee(null);
-        });
-    }
-    
+
     // Atualizar HALB, nome do modelo e planta quando modelo mudar
     if (field === 'modeloId') {
       // Buscar modelo pelo ID ou pelo nome (para suportar datalist)
@@ -1611,15 +1594,15 @@ ${JSON.stringify(historicoResumo, null, 2)}`;
         // Recarregar dados pendentes
         loadPendentes();
         
-        // Reset form
+        // Reset form (matrícula/nome continuam vindos do login, não zeram)
         setFormData({
-          matricula: '', nomeOperador: '', tipoScrap: '', tipoPlaca: '', modeloId: '',
+          matricula: user?.matricula || '', nomeOperador: '', tipoScrap: '', tipoPlaca: '', modeloId: '',
           modeloNome: '', halb: '', qty: '', linhaId: '', linhaNome: '',
           turno: '', plantaId: '', plantaNome: '', origemId: '', origemNome: '',
           equipamentoId: '', equipamentoNome: '', causaId: '', causaNome: '',
           causaRaiz: '', acaoCorretiva: '', contramedida: '', custoUnitario: 0, custoTotal: 0,
         });
-        setEmployee(null);
+        setEmployee(user ? { nome: user.nome } : null);
         setObservacaoEquipamento('');
         setObservacaoCausa('');
         setRequiredFields({
@@ -2252,7 +2235,6 @@ ${JSON.stringify(historicoResumo, null, 2)}`;
               formData={formData}
               setFormData={setFormData}
               employee={employee}
-              setEmployee={setEmployee}
               requiredFields={requiredFields}
               setRequiredFields={setRequiredFields}
               fieldsWithError={fieldsWithError}

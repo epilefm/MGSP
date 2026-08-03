@@ -1,4 +1,3 @@
-import { API_URL } from '../../../config/api';
 import React, { useState, useEffect, useRef } from 'react';
 import {
   User, Tag, QrCode, Layers, Factory, Hash, Navigation, Clock, MapPin,
@@ -24,11 +23,10 @@ const C_DARK = {
 };
 
 const RegistroForm = ({ 
-  formData, 
-  setFormData, 
-  employee, 
-  setEmployee,
-  requiredFields, 
+  formData,
+  setFormData,
+  employee,
+  requiredFields,
   setRequiredFields,
   fieldsWithError,
   cnDuplicada,
@@ -252,52 +250,17 @@ const RegistroForm = ({
             <User size={12} style={{ color: '#0969da' }} />
             Identificação
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '140px 1fr', gap: 8, marginBottom: 10 }}>
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10,
+            padding: '8px 10px', borderRadius: 6,
+            background: C.hover, border: `1px solid ${C.border}`
+          }}>
+            <CheckCircle2 size={14} style={{ color: C.success, flexShrink: 0 }} />
             <div>
-              <div style={lbl}>Matrícula *</div>
-              <div style={{ position: 'relative' }}>
-                <input
-                  type="text"
-                  placeholder="MAT001"
-                  maxLength={8}
-                  value={formData.matricula}
-                  onChange={e => handleFormChange('matricula', e.target.value.toUpperCase())}
-                  onBlur={() => {
-                    if (formData.matricula.trim()) {
-                      fetch(`${API_URL}/verifyMatricula/${formData.matricula}`)
-                        .then(res => res.json())
-                        .then(data => {
-                          if (data && data.exists) {
-                            setEmployee({ nome: data.nome });
-                          } else {
-                            setEmployee(null);
-                          }
-                        });
-                    }
-                  }}
-                  ref={el => inputRefs.current.matricula = el}
-                  style={inp({
-                    border: `1px solid ${employee ? C.success : (formData.matricula ? C.error : C.border)}`,
-                    paddingRight: 26
-                  })}
-                />
-                {employee && <CheckCircle2 size={12} style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', color: C.success }} />}
-                {!employee && formData.matricula && <XCircle size={12} style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', color: C.error }} />}
+              <div style={{ fontSize: 12, fontWeight: 600, color: C.text }}>{employee?.nome}</div>
+              <div style={{ fontSize: 10, color: C.textMuted }}>
+                Matrícula {formData.matricula} · preenchido automaticamente pelo seu login
               </div>
-            </div>
-            <div>
-              <div style={lbl}>Funcionário</div>
-              <input
-                type="text"
-                value={employee ? employee.nome : ''}
-                readOnly
-                placeholder="Preenche automático"
-                style={inp({
-                  background: C.hover,
-                  cursor: 'not-allowed',
-                  color: employee ? C.text : C.textMuted
-                })}
-              />
             </div>
           </div>
           <div style={lbl}>
