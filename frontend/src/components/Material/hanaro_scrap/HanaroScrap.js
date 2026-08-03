@@ -1222,7 +1222,11 @@ ${JSON.stringify(historicoResumo, null, 2)}`;
       try {
         const response = await fetch(`${API_URL}/getOrigens`);
         const data = await response.json();
-        setOrigens(data);
+        // fetch não rejeita em erro HTTP (só em falha de rede) - se o backend
+        // respondeu 500 (ex: tabela indisponível), "data" vem como um objeto
+        // de erro, não uma lista. Sem essa checagem, equipamentos.find()/etc
+        // quebram a tela inteira mais adiante.
+        setOrigens(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error('Erro ao carregar origens:', error);
       }
@@ -1233,7 +1237,7 @@ ${JSON.stringify(historicoResumo, null, 2)}`;
       try {
         const response = await fetch(`${API_URL}/getEquipamentos`);
         const data = await response.json();
-        setEquipamentos(data);
+        setEquipamentos(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error('Erro ao carregar equipamentos:', error);
       }
@@ -1244,7 +1248,7 @@ ${JSON.stringify(historicoResumo, null, 2)}`;
       try {
         const response = await fetch(`${API_URL}/getCausas`);
         const data = await response.json();
-        setCausas(data);
+        setCausas(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error('Erro ao carregar causas:', error);
       }
