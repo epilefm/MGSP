@@ -1,25 +1,37 @@
 import React from 'react';
 import { Eye, DollarSign, CheckCircle2 } from 'lucide-react';
+import { useTema } from '../../../theme/ThemeContext';
 
-const RegistroPreview = ({ 
-  formData, 
-  employee, 
-  linhas, 
-  origens, 
-  equipamentos, 
-  causas, 
-  observacaoEquipamento, 
+const C_LIGHT = {
+  bg: '#f6f8fa', card: '#ffffff', card2: '#f6f8fa', border: '#d0d7de',
+  text: '#1f2328', textSec: '#656d76', textMuted: '#9198a1',
+  accent: '#0969da', accentBg: 'rgba(9,105,218,0.08)',
+  input: '#ffffff', hover: '#f6f8fa', divider: '#eaecef',
+  success: '#22c55e', warning: '#f59e0b', error: '#ef4444',
+};
+
+const C_DARK = {
+  bg: '#0d1117', card: '#161b22', card2: '#0d1117', border: '#30363d',
+  text: '#e6edf3', textSec: '#8b949e', textMuted: '#6e7681',
+  accent: '#58a6ff', accentBg: 'rgba(88,166,255,0.12)',
+  input: '#0d1117', hover: '#1c2129', divider: '#21262d',
+  success: '#3fb950', warning: '#d29922', error: '#f85149',
+};
+
+const RegistroPreview = ({
+  formData,
+  employee,
+  linhas,
+  origens,
+  equipamentos,
+  causas,
+  observacaoEquipamento,
   observacaoCausa,
-  formatCurrency 
+  formatCurrency
 }) => {
   // Cores do tema
-  const C = {
-    bg: '#f6f8fa', card: '#ffffff', card2: '#f6f8fa', border: '#d0d7de',
-    text: '#1f2328', textSec: '#656d76', textMuted: '#9198a1',
-    accent: '#0969da', accentBg: 'rgba(9,105,218,0.08)',
-    input: '#ffffff', hover: '#f6f8fa', divider: '#eaecef',
-    success: '#22c55e', warning: '#f59e0b', error: '#ef4444',
-  };
+  const { tema } = useTema();
+  const C = tema === 'dark' ? C_DARK : C_LIGHT;
 
   // Cor dinâmica baseada no valor
   const custoColor = formData.custoTotal > 5000 ? '#ef4444' : formData.custoTotal > 1000 ? '#f59e0b' : '#22c55e';

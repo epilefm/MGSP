@@ -5,21 +5,28 @@ import { DatePicker, ConfigProvider } from 'antd';
 import dayjs from 'dayjs';
 import ptBR from 'antd/locale/pt_BR';
 import 'antd/dist/reset.css';
-import { 
-  BarChart, Bar, LineChart, Line, AreaChart, Area, PieChart, Pie, Cell, 
-  XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, RadarChart, 
+import {
+  BarChart, Bar, LineChart, Line, AreaChart, Area, PieChart, Pie, Cell,
+  XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, RadarChart,
   PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ComposedChart, YAxis as YAxis2
 } from 'recharts';
+import { useTema } from '../../../theme/ThemeContext';
 
 const { RangePicker } = DatePicker;
 
-// CSS injection para corrigir fundo preto do calendario
-const injectCalendarStyles = () => {
+// CSS injection para corrigir fundo preto do calendario - recebe o tema
+// porque isso usa !important (vence qualquer token de ConfigProvider), então
+// precisa ser reinjetado com as cores certas toda vez que o tema mudar.
+const injectCalendarStyles = (tema) => {
   const styleId = 'hanaro-calendar-fix';
   // Remove estilo existente se houver
   const existing = document.getElementById(styleId);
   if (existing) existing.remove();
-  
+
+  const headerBg = tema === 'dark' ? '#1c2129' : '#f6f8fa';
+  const panelBg = tema === 'dark' ? '#161b22' : '#ffffff';
+  const text = tema === 'dark' ? '#e6edf3' : '#1f2328';
+
   const style = document.createElement('style');
   style.id = styleId;
   style.textContent = `
@@ -32,9 +39,9 @@ const injectCalendarStyles = () => {
     .ant-picker-panel-container th,
     th.ant-picker-cell,
     .ant-picker-cell-header {
-      background: #f6f8fa !important;
-      background-color: #f6f8fa !important;
-      color: #1f2328 !important;
+      background: ${headerBg} !important;
+      background-color: ${headerBg} !important;
+      color: ${text} !important;
     }
     .ant-picker-header,
     .ant-picker-header-view,
@@ -48,30 +55,48 @@ const injectCalendarStyles = () => {
     .ant-picker-ranges,
     .ant-picker-ranges ul,
     .ant-picker-ranges li {
-      background-color: #ffffff !important;
+      background-color: ${panelBg} !important;
     }
     .ant-picker-cell-inner {
-      color: #1f2328 !important;
+      color: ${text} !important;
     }
   `;
   document.head.appendChild(style);
 };
 
-// Hook para injetar estilos quando o componente montar
-const useCalendarStyleFix = () => {
+// Hook para injetar estilos quando o componente montar - e de novo sempre
+// que o tema mudar (dependência [tema] no efeito).
+const useCalendarStyleFix = (tema) => {
   useEffect(() => {
-    injectCalendarStyles();
+    injectCalendarStyles(tema);
     // Re-injeta apos delay para garantir que pegue o CSS do AntD
-    const timeout = setTimeout(() => injectCalendarStyles(), 100);
-    const timeout2 = setTimeout(() => injectCalendarStyles(), 500);
+    const timeout = setTimeout(() => injectCalendarStyles(tema), 100);
+    const timeout2 = setTimeout(() => injectCalendarStyles(tema), 500);
     return () => {
       clearTimeout(timeout);
       clearTimeout(timeout2);
     };
-  }, []);
+  }, [tema]);
+};
+
+const C_LIGHT = {
+  bg: '#f6f8fa', card: '#ffffff', card2: '#f6f8fa', border: '#d0d7de',
+  text: '#1f2328', textSec: '#656d76', textMuted: '#9198a1',
+  accent: '#0969da', accentBg: 'rgba(9,105,218,0.08)',
+  input: '#ffffff', hover: '#f6f8fa', divider: '#eaecef',
+};
+
+const C_DARK = {
+  bg: '#0d1117', card: '#161b22', card2: '#0d1117', border: '#30363d',
+  text: '#e6edf3', textSec: '#8b949e', textMuted: '#6e7681',
+  accent: '#58a6ff', accentBg: 'rgba(88,166,255,0.12)',
+  input: '#0d1117', hover: '#1c2129', divider: '#21262d',
 };
 
 const DashboardHanaro = () => {
+  const { tema } = useTema();
+  const C = tema === 'dark' ? C_DARK : C_LIGHT;
+
   // Estados para filtros
   const hoje = dayjs();
   const [dateRange, setDateRange] = useState([hoje, hoje]);
@@ -732,7 +757,7 @@ const DashboardHanaro = () => {
   }, [dateRange?.[0], dateRange?.[1], modeloFilter, origemFilter, equipamentoFilter, causaFilter, linhaFilter, faseFilter, turnoFilter, responsavelFilter, tipoScrapFilter, periodoFilter]);
 
   // Aplica correcao do calendario
-  useCalendarStyleFix();
+  useCalendarStyleFix(tema);
   
   return (
     <div style={{ padding: '24px 0' }}>
@@ -742,8 +767,8 @@ const DashboardHanaro = () => {
       {/* Filtros */}
       <div 
         style={{
-          background: '#fff',
-          border: '1px solid #d0d7de',
+          background: C.card,
+          border: `1px solid ${C.border}`,
           borderRadius: 12,
           padding: filtrosExpandidos ? 20 : 12,
           marginBottom: 24,
@@ -780,9 +805,9 @@ const DashboardHanaro = () => {
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <Filter size={18} color="#0969da" />
-            <span style={{ fontSize: 14, fontWeight: 600, color: '#1f2328' }}>Filtros</span>
+            <span style={{ fontSize: 14, fontWeight: 600, color: C.text }}>Filtros</span>
             {!filtrosExpandidos && (
-              <span style={{ fontSize: 11, color: '#656d76', background: '#f6f8fa', padding: '2px 8px', borderRadius: 10 }}>
+              <span style={{ fontSize: 11, color: C.textSec, background: C.bg, padding: '2px 8px', borderRadius: 10 }}>
                 {dateRange[0] && dateRange[1] ? `${formatDate(dateRange[0])} até ${formatDate(dateRange[1])}` : 'Hoje'}
                 {modeloFilter && ` • Modelo: ${modeloFilter}`}
                 {origemFilter && ` • Origem: ${origemFilter}`}
@@ -799,10 +824,10 @@ const DashboardHanaro = () => {
               display: 'flex',
               alignItems: 'center',
               padding: '6px',
-              background: '#f6f8fa',
-              border: '1px solid #d0d7de',
+              background: C.bg,
+              border: `1px solid ${C.border}`,
               borderRadius: 6,
-              color: '#1f2328',
+              color: C.text,
               cursor: 'pointer'
             }}
             title={filtrosExpandidos ? 'Minimizar filtros' : 'Maximizar filtros'}
@@ -824,7 +849,7 @@ const DashboardHanaro = () => {
                   display: 'block', 
                   fontSize: 11, 
                   fontWeight: 500, 
-                  color: '#656d76', 
+                  color: C.textSec, 
                   marginBottom: 4 
                 }}>
                   <Filter size={10} style={{ display: 'inline', marginRight: 4 }} />
@@ -835,9 +860,9 @@ const DashboardHanaro = () => {
                   theme={{
                     components: {
                       Picker: {
-                        cellBgColor: '#ffffff',
-                        cellHoverBgColor: '#f6f8fa',
-                        panelBg: '#ffffff',
+                        cellBgColor: C.card,
+                        cellHoverBgColor: C.bg,
+                        panelBg: C.hover,
                       }
                     }
                   }}
@@ -862,9 +887,9 @@ const DashboardHanaro = () => {
               
               {/* Modelo */}
               <div>
-                <label style={{ display: 'block', fontSize: 11, fontWeight: 500, color: '#656d76', marginBottom: 4 }}>Modelo</label>
+                <label style={{ display: 'block', fontSize: 11, fontWeight: 500, color: C.textSec, marginBottom: 4 }}>Modelo</label>
                 <select value={modeloFilter} onChange={(e) => setModeloFilter(e.target.value)}
-                  style={{ width: '100%', padding: '6px 10px', border: '1px solid #d0d7de', borderRadius: 6, fontSize: 12, boxSizing: 'border-box', backgroundColor: '#fff' }}>
+                  style={{ width: '100%', padding: '6px 10px', border: `1px solid ${C.border}`, borderRadius: 6, fontSize: 12, boxSizing: 'border-box', backgroundColor: C.input }}>
                   <option value="">Todos</option>
                   {modelosDisponiveis.map((m, idx) => (<option key={idx} value={m.modelo}>{m.modelo}</option>))}
                 </select>
@@ -872,9 +897,9 @@ const DashboardHanaro = () => {
               
               {/* Origem */}
               <div>
-                <label style={{ display: 'block', fontSize: 11, fontWeight: 500, color: '#656d76', marginBottom: 4 }}>Origem</label>
+                <label style={{ display: 'block', fontSize: 11, fontWeight: 500, color: C.textSec, marginBottom: 4 }}>Origem</label>
                 <select value={origemFilter} onChange={(e) => setOrigemFilter(e.target.value)}
-                  style={{ width: '100%', padding: '6px 10px', border: '1px solid #d0d7de', borderRadius: 6, fontSize: 12, boxSizing: 'border-box', backgroundColor: '#fff' }}>
+                  style={{ width: '100%', padding: '6px 10px', border: `1px solid ${C.border}`, borderRadius: 6, fontSize: 12, boxSizing: 'border-box', backgroundColor: C.input }}>
                   <option value="">Todas</option>
                   {origensDisponiveis.map((o, idx) => (<option key={idx} value={o.origem}>{o.origem}</option>))}
                 </select>
@@ -882,9 +907,9 @@ const DashboardHanaro = () => {
               
               {/* Equipamento */}
               <div>
-                <label style={{ display: 'block', fontSize: 11, fontWeight: 500, color: '#656d76', marginBottom: 4 }}>Equipamento</label>
+                <label style={{ display: 'block', fontSize: 11, fontWeight: 500, color: C.textSec, marginBottom: 4 }}>Equipamento</label>
                 <select value={equipamentoFilter} onChange={(e) => setEquipamentoFilter(e.target.value)}
-                  style={{ width: '100%', padding: '6px 10px', border: '1px solid #d0d7de', borderRadius: 6, fontSize: 12, boxSizing: 'border-box', backgroundColor: '#fff' }}>
+                  style={{ width: '100%', padding: '6px 10px', border: `1px solid ${C.border}`, borderRadius: 6, fontSize: 12, boxSizing: 'border-box', backgroundColor: C.input }}>
                   <option value="">Todos</option>
                   {equipamentosDisponiveis.map((eq, idx) => (<option key={idx} value={eq.equipamento}>{eq.equipamento}</option>))}
                 </select>
@@ -892,9 +917,9 @@ const DashboardHanaro = () => {
               
               {/* Causa */}
               <div>
-                <label style={{ display: 'block', fontSize: 11, fontWeight: 500, color: '#656d76', marginBottom: 4 }}>Causa</label>
+                <label style={{ display: 'block', fontSize: 11, fontWeight: 500, color: C.textSec, marginBottom: 4 }}>Causa</label>
                 <select value={causaFilter} onChange={(e) => setCausaFilter(e.target.value)}
-                  style={{ width: '100%', padding: '6px 10px', border: '1px solid #d0d7de', borderRadius: 6, fontSize: 12, boxSizing: 'border-box', backgroundColor: '#fff' }}>
+                  style={{ width: '100%', padding: '6px 10px', border: `1px solid ${C.border}`, borderRadius: 6, fontSize: 12, boxSizing: 'border-box', backgroundColor: C.input }}>
                   <option value="">Todas</option>
                   {causasDisponiveis.map((c, idx) => (<option key={idx} value={c.causa}>{c.causa}</option>))}
                 </select>
@@ -902,9 +927,9 @@ const DashboardHanaro = () => {
               
               {/* Linha */}
               <div>
-                <label style={{ display: 'block', fontSize: 11, fontWeight: 500, color: '#656d76', marginBottom: 4 }}>Linha</label>
+                <label style={{ display: 'block', fontSize: 11, fontWeight: 500, color: C.textSec, marginBottom: 4 }}>Linha</label>
                 <select value={linhaFilter} onChange={(e) => setLinhaFilter(e.target.value)}
-                  style={{ width: '100%', padding: '6px 10px', border: '1px solid #d0d7de', borderRadius: 6, fontSize: 12, boxSizing: 'border-box', backgroundColor: '#fff' }}>
+                  style={{ width: '100%', padding: '6px 10px', border: `1px solid ${C.border}`, borderRadius: 6, fontSize: 12, boxSizing: 'border-box', backgroundColor: C.input }}>
                   <option value="">Todas</option>
                   {linhasDisponiveis.map((l, idx) => (<option key={idx} value={l.linha}>{l.linha}</option>))}
                 </select>
@@ -912,9 +937,9 @@ const DashboardHanaro = () => {
               
               {/* Fase */}
               <div>
-                <label style={{ display: 'block', fontSize: 11, fontWeight: 500, color: '#656d76', marginBottom: 4 }}>Fase</label>
+                <label style={{ display: 'block', fontSize: 11, fontWeight: 500, color: C.textSec, marginBottom: 4 }}>Fase</label>
                 <select value={faseFilter} onChange={(e) => setFaseFilter(e.target.value)}
-                  style={{ width: '100%', padding: '6px 10px', border: '1px solid #d0d7de', borderRadius: 6, fontSize: 12, boxSizing: 'border-box', backgroundColor: '#fff' }}>
+                  style={{ width: '100%', padding: '6px 10px', border: `1px solid ${C.border}`, borderRadius: 6, fontSize: 12, boxSizing: 'border-box', backgroundColor: C.input }}>
                   <option value="">Todas</option>
                   {fasesDisponiveis.map((f, idx) => (<option key={idx} value={f.fase}>{f.fase}</option>))}
                 </select>
@@ -922,9 +947,9 @@ const DashboardHanaro = () => {
               
               {/* Turno */}
               <div>
-                <label style={{ display: 'block', fontSize: 11, fontWeight: 500, color: '#656d76', marginBottom: 4 }}>Turno</label>
+                <label style={{ display: 'block', fontSize: 11, fontWeight: 500, color: C.textSec, marginBottom: 4 }}>Turno</label>
                 <select value={turnoFilter} onChange={(e) => setTurnoFilter(e.target.value)}
-                  style={{ width: '100%', padding: '6px 10px', border: '1px solid #d0d7de', borderRadius: 6, fontSize: 12, boxSizing: 'border-box', backgroundColor: '#fff' }}>
+                  style={{ width: '100%', padding: '6px 10px', border: `1px solid ${C.border}`, borderRadius: 6, fontSize: 12, boxSizing: 'border-box', backgroundColor: C.input }}>
                   <option value="">Todos</option>
                   {turnosDisponiveis.map((t, idx) => (<option key={idx} value={t.turno}>{t.turno}</option>))}
                 </select>
@@ -932,9 +957,9 @@ const DashboardHanaro = () => {
               
               {/* Responsável */}
               <div>
-                <label style={{ display: 'block', fontSize: 11, fontWeight: 500, color: '#656d76', marginBottom: 4 }}>Responsável</label>
+                <label style={{ display: 'block', fontSize: 11, fontWeight: 500, color: C.textSec, marginBottom: 4 }}>Responsável</label>
                 <select value={responsavelFilter} onChange={(e) => setResponsavelFilter(e.target.value)}
-                  style={{ width: '100%', padding: '6px 10px', border: '1px solid #d0d7de', borderRadius: 6, fontSize: 12, boxSizing: 'border-box', backgroundColor: '#fff' }}>
+                  style={{ width: '100%', padding: '6px 10px', border: `1px solid ${C.border}`, borderRadius: 6, fontSize: 12, boxSizing: 'border-box', backgroundColor: C.input }}>
                   <option value="">Todos</option>
                   {responsaveisDisponiveis.map((r, idx) => (<option key={idx} value={r.responsavel}>{r.responsavel}</option>))}
                 </select>
@@ -942,9 +967,9 @@ const DashboardHanaro = () => {
               
               {/* Tipo Scrap */}
               <div>
-                <label style={{ display: 'block', fontSize: 11, fontWeight: 500, color: '#656d76', marginBottom: 4 }}>Tipo Scrap</label>
+                <label style={{ display: 'block', fontSize: 11, fontWeight: 500, color: C.textSec, marginBottom: 4 }}>Tipo Scrap</label>
                 <select value={tipoScrapFilter} onChange={(e) => setTipoScrapFilter(e.target.value)}
-                  style={{ width: '100%', padding: '6px 10px', border: '1px solid #d0d7de', borderRadius: 6, fontSize: 12, boxSizing: 'border-box', backgroundColor: '#fff' }}>
+                  style={{ width: '100%', padding: '6px 10px', border: `1px solid ${C.border}`, borderRadius: 6, fontSize: 12, boxSizing: 'border-box', backgroundColor: C.input }}>
                   <option value="">Todos</option>
                   {tipoScrapDisponiveis.map((ts, idx) => (<option key={idx} value={ts.tipo_scrap}>{ts.tipo_scrap}</option>))}
                 </select>
@@ -969,10 +994,10 @@ const DashboardHanaro = () => {
                 }}
                 style={{
                   padding: '8px 16px',
-                  background: '#f6f8fa',
-                  border: '1px solid #d0d7de',
+                  background: C.bg,
+                  border: `1px solid ${C.border}`,
                   borderRadius: 6,
-                  color: '#1f2328',
+                  color: C.text,
                   fontSize: 13,
                   fontWeight: 500,
                   cursor: 'pointer'
@@ -1005,8 +1030,8 @@ const DashboardHanaro = () => {
         >
           <div 
             style={{
-              background: '#fff',
-              border: '1px solid #d0d7de',
+              background: C.card,
+              border: `1px solid ${C.border}`,
               borderRadius: 12,
               padding: 24,
               width: 'calc(100vw - 100px)',
@@ -1023,7 +1048,7 @@ const DashboardHanaro = () => {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, flexShrink: 0 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <AreaChartIcon size={20} color="#0ea5e9" />
-                <span style={{ fontSize: 16, fontWeight: 700, color: '#1f2328' }}>Evolução por Período - Visão Expandida</span>
+                <span style={{ fontSize: 16, fontWeight: 700, color: C.text }}>Evolução por Período - Visão Expandida</span>
               </div>
               <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                 {/* Seletor de Período */}
@@ -1040,9 +1065,9 @@ const DashboardHanaro = () => {
                       style={{
                         padding: '6px 12px',
                         borderRadius: 6,
-                        border: `1px solid ${periodoFilter === opt.value ? '#0969da' : '#d0d7de'}`,
-                        background: periodoFilter === opt.value ? '#0969da' : '#fff',
-                        color: periodoFilter === opt.value ? '#fff' : '#656d76',
+                        border: `1px solid ${periodoFilter === opt.value ? C.accent : C.border}`,
+                        background: periodoFilter === opt.value ? C.accent : C.card,
+                        color: periodoFilter === opt.value ? '#fff' : C.textSec,
                         fontSize: 12,
                         fontWeight: periodoFilter === opt.value ? 600 : 500,
                         cursor: 'pointer',
@@ -1064,9 +1089,9 @@ const DashboardHanaro = () => {
                     width: 36,
                     height: 36,
                     borderRadius: 8,
-                    border: '1px solid #d0d7de',
-                    background: '#f6f8fa',
-                    color: '#1f2328',
+                    border: `1px solid ${C.border}`,
+                    background: C.bg,
+                    color: C.text,
                     cursor: 'pointer',
                     transition: 'all 0.2s',
                     marginLeft: 8
@@ -1080,7 +1105,7 @@ const DashboardHanaro = () => {
             {/* Contador de períodos */}
             {periodoData.length > 0 && (
               <div style={{ marginBottom: 12, flexShrink: 0 }}>
-                <span style={{ fontSize: 12, color: '#656d76', background: '#f6f8fa', padding: '4px 12px', borderRadius: 12, fontWeight: 600 }}>
+                <span style={{ fontSize: 12, color: C.textSec, background: C.bg, padding: '4px 12px', borderRadius: 12, fontWeight: 600 }}>
                   📊 {periodoData.length} {periodoFilter === 'diario' ? 'dias' : periodoFilter === 'semanal' ? 'semanas' : periodoFilter === 'mensal' ? 'meses' : 'anos'} no período
                 </span>
               </div>
@@ -1089,14 +1114,14 @@ const DashboardHanaro = () => {
             {/* Gráfico - ocupa todo espaço restante */}
             <div style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
               {loadingPeriodo ? (
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#656d76', fontSize: 14 }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: C.textSec, fontSize: 14 }}>
                   <div style={{ animation: 'spin 1s linear infinite', marginRight: 8 }}>
                     <RefreshCw size={20} />
                   </div>
                   Carregando dados...
                 </div>
               ) : periodoData.length === 0 ? (
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#9198a1', fontSize: 14 }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', color: C.textMuted, fontSize: 14 }}>
                   Sem dados para exibir
                 </div>
               ) : (
@@ -1132,10 +1157,10 @@ const DashboardHanaro = () => {
                     <Tooltip 
                       contentStyle={{ 
                         borderRadius: 8, 
-                        border: '1px solid #d0d7de', 
+                        border: `1px solid ${C.border}`, 
                         fontSize: 13,
                         boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-                        background: '#fff'
+                        background: C.card
                       }}
                       formatter={(value, name) => {
                         if (name === 'custo') return [`R$ ${value?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`, 'Custo Scrap'];
@@ -1200,31 +1225,31 @@ const DashboardHanaro = () => {
       }}>
         {/* Card de Total do Período */}
         <div style={{
-          background: '#fff',
-          border: '1px solid #d0d7de',
+          background: C.card,
+          border: `1px solid ${C.border}`,
           borderRadius: 12,
           padding: 24,
           height: 'fit-content'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
             <BarChart3 size={18} color="#0969da" />
-            <span style={{ fontSize: 14, fontWeight: 600, color: '#1f2328' }}>Total do Período</span>
+            <span style={{ fontSize: 14, fontWeight: 600, color: C.text }}>Total do Período</span>
           </div>
           
           <div style={{ textAlign: 'center', padding: '32px 0' }}>
             <div style={{ 
               fontSize: 36, 
               fontWeight: 800, 
-              color: data.totalValor > 0 ? '#ef4444' : '#656d76',
+              color: data.totalValor > 0 ? '#ef4444' : C.textSec,
               fontFamily: "'DM Mono', monospace",
               marginBottom: 8
             }}>
               {data.totalValor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
             </div>
-            <div style={{ fontSize: 14, color: '#656d76', marginBottom: 16 }}>
+            <div style={{ fontSize: 14, color: C.textSec, marginBottom: 16 }}>
               {data.totalRegistros} registros | {data.totalQtd} scraps
             </div>
-            <div style={{ fontSize: 12, color: '#9198a1' }}>
+            <div style={{ fontSize: 12, color: C.textMuted }}>
               {dateRange[0] && dateRange[1] ? `${formatDate(dateRange[0])} até ${formatDate(dateRange[1])}` : 'Data: -'}
             </div>
           </div>
@@ -1232,8 +1257,8 @@ const DashboardHanaro = () => {
 
         {/* GRÁFICO 10: PERÍODO POR CUSTO - Estilo STOCKS (Area + Bar) */}
         <div style={{
-          background: '#fff',
-          border: '1px solid #d0d7de',
+          background: C.card,
+          border: `1px solid ${C.border}`,
           borderRadius: 12,
           padding: expandedCharts.periodo ? 24 : 16,
           position: expandedCharts.periodo ? 'fixed' : 'relative',
@@ -1251,9 +1276,9 @@ const DashboardHanaro = () => {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <AreaChartIcon size={16} color="#0ea5e9" />
-              <span style={{ fontSize: 13, fontWeight: 600, color: '#1f2328' }}>Evolução por Período</span>
+              <span style={{ fontSize: 13, fontWeight: 600, color: C.text }}>Evolução por Período</span>
               {periodoData.length > 0 && (
-                <span style={{ fontSize: 10, color: '#656d76', background: '#f6f8fa', padding: '2px 6px', borderRadius: 10 }}>
+                <span style={{ fontSize: 10, color: C.textSec, background: C.bg, padding: '2px 6px', borderRadius: 10 }}>
                   {periodoData.length} {periodoFilter === 'diario' ? 'dias' : periodoFilter === 'semanal' ? 'semanas' : periodoFilter === 'mensal' ? 'meses' : 'anos'}
                 </span>
               )}
@@ -1274,9 +1299,9 @@ const DashboardHanaro = () => {
                     style={{
                       padding: '4px 8px',
                       borderRadius: 5,
-                      border: `1px solid ${periodoFilter === opt.value ? '#0969da' : '#d0d7de'}`,
-                      background: periodoFilter === opt.value ? '#0969da' : '#fff',
-                      color: periodoFilter === opt.value ? '#fff' : '#656d76',
+                      border: `1px solid ${periodoFilter === opt.value ? C.accent : C.border}`,
+                      background: periodoFilter === opt.value ? C.accent : C.card,
+                      color: periodoFilter === opt.value ? '#fff' : C.textSec,
                       fontSize: 10,
                       fontWeight: periodoFilter === opt.value ? 600 : 400,
                       cursor: 'pointer',
@@ -1299,9 +1324,9 @@ const DashboardHanaro = () => {
                   width: 32,
                   height: 32,
                   borderRadius: 6,
-                  border: '1px solid #d0d7de',
-                  background: expandedCharts.periodo ? '#0969da' : '#f6f8fa',
-                  color: expandedCharts.periodo ? '#fff' : '#656d76',
+                  border: `1px solid ${C.border}`,
+                  background: expandedCharts.periodo ? C.accent : C.bg,
+                  color: expandedCharts.periodo ? '#fff' : C.textSec,
                   cursor: 'pointer',
                   transition: 'all 0.2s',
                   marginLeft: 8
@@ -1312,9 +1337,9 @@ const DashboardHanaro = () => {
             </div>
           </div>
           {loadingPeriodo ? (
-            <div style={{ textAlign: 'center', padding: '40px 0', color: '#656d76', fontSize: 12 }}>Carregando...</div>
+            <div style={{ textAlign: 'center', padding: '40px 0', color: C.textSec, fontSize: 12 }}>Carregando...</div>
           ) : periodoData.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '40px 0', color: '#9198a1', fontSize: 12 }}>Sem dados</div>
+            <div style={{ textAlign: 'center', padding: '40px 0', color: C.textMuted, fontSize: 12 }}>Sem dados</div>
           ) : (
             <ResponsiveContainer width="100%" height={expandedCharts.periodo ? 'calc(100vh - 280px)' : 200}>
               <ComposedChart data={periodoData} margin={{ top: 25, right: 10, left: -20, bottom: -45 }}>
@@ -1333,7 +1358,7 @@ const DashboardHanaro = () => {
                 <YAxis yAxisId="left" tick={{ fontSize: 10, fill: '#ef4444' }} label={{ value: 'Custo Scrap (R$)', angle: -90, position: 'insideLeft', fill: '#ef4444', fontSize: 11 }} />
                 <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 10, fill: '#273A8C' }} label={{ value: 'Quantidade', angle: 90, position: 'insideRight', fill: '#273A8C', fontSize: 11 }} />
                 <Tooltip 
-                  contentStyle={{ borderRadius: 8, border: '1px solid #d0d7de', fontSize: 12 }}
+                  contentStyle={{ borderRadius: 8, border: `1px solid ${C.border}`, fontSize: 12 }}
                   formatter={(value, name) => {
                     if (name === 'custo') return [`R$ ${value?.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`, 'Custo Scrap'];
                     return [`${value} un`, 'Qtd'];
@@ -1380,24 +1405,24 @@ const DashboardHanaro = () => {
         
         {/* GRÁFICO 1: MODELO - Barras Verticais com Rótulos */}
         <div style={{
-          background: '#fff',
-          border: '1px solid #d0d7de',
+          background: C.card,
+          border: `1px solid ${C.border}`,
           borderRadius: 12,
           padding: 16
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
             <BarChart3 size={16} color="#0969da" />
-            <span style={{ fontSize: 13, fontWeight: 600, color: '#1f2328' }}>Por Modelo</span>
+            <span style={{ fontSize: 13, fontWeight: 600, color: C.text }}>Por Modelo</span>
             {modeloData.length > 5 && (
-              <span style={{ fontSize: 10, color: '#656d76', background: '#f6f8fa', padding: '2px 6px', borderRadius: 10 }}>
+              <span style={{ fontSize: 10, color: C.textSec, background: C.bg, padding: '2px 6px', borderRadius: 10 }}>
                 {modeloData.length}
               </span>
             )}
           </div>
           {loadingModelo ? (
-            <div style={{ textAlign: 'center', padding: '40px 0', color: '#656d76', fontSize: 12 }}>Carregando...</div>
+            <div style={{ textAlign: 'center', padding: '40px 0', color: C.textSec, fontSize: 12 }}>Carregando...</div>
           ) : modeloData.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '40px 0', color: '#9198a1', fontSize: 12 }}>Sem dados</div>
+            <div style={{ textAlign: 'center', padding: '40px 0', color: C.textMuted, fontSize: 12 }}>Sem dados</div>
           ) : (
             <ResponsiveContainer width="100%" height={280}>
               <BarChart data={modeloData.slice(0, 10)} margin={{ top: 20, right: 10, left: -20, bottom: -1 }}>
@@ -1410,15 +1435,15 @@ const DashboardHanaro = () => {
                       const data = payload[0].payload;
                       return (
                         <div style={{ 
-                          background: '#fff', 
-                          border: '1px solid #d0d7de', 
+                          background: C.card, 
+                          border: `1px solid ${C.border}`, 
                           borderRadius: 8, 
                           padding: 12,
                           fontSize: 12,
                           boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
                         }}>
                           <strong style={{ display: 'block', marginBottom: 8 }}>{label}</strong>
-                          <div style={{ color: '#0969da', marginBottom: 4 }}>Qty: {data.totalQtd} unidades</div>
+                          <div style={{ color: C.accent, marginBottom: 4 }}>Qty: {data.totalQtd} unidades</div>
                           <div style={{ color: '#16a34a', fontWeight: 600 }}>Custo: R$ {(data.totalValor || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</div>
                         </div>
                       );
@@ -1426,7 +1451,7 @@ const DashboardHanaro = () => {
                     return null;
                   }}
                 />
-                <Bar dataKey="totalQtd" fill="#0969da" radius={[6, 6, 0, 0]} label={{ position: 'top', fontSize: 11, fill: '#1f2328', fontWeight: 600 }} />
+                <Bar dataKey="totalQtd" fill="#0969da" radius={[6, 6, 0, 0]} label={{ position: 'top', fontSize: 11, fill: C.text, fontWeight: 600 }} />
               </BarChart>
             </ResponsiveContainer>
           )}
@@ -1434,24 +1459,24 @@ const DashboardHanaro = () => {
 
         {/* GRÁFICO 2: ORIGEM - Pizza/Doughnut */}
         <div style={{
-          background: '#fff',
-          border: '1px solid #d0d7de',
+          background: C.card,
+          border: `1px solid ${C.border}`,
           borderRadius: 12,
           padding: 16
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
             <PieChartIcon size={16} color="#16a34a" />
-            <span style={{ fontSize: 13, fontWeight: 600, color: '#1f2328' }}>Por Origem</span>
+            <span style={{ fontSize: 13, fontWeight: 600, color: C.text }}>Por Origem</span>
             {origemData.length > 5 && (
-              <span style={{ fontSize: 10, color: '#656d76', background: '#f6f8fa', padding: '2px 6px', borderRadius: 10 }}>
+              <span style={{ fontSize: 10, color: C.textSec, background: C.bg, padding: '2px 6px', borderRadius: 10 }}>
                 {origemData.length}
               </span>
             )}
           </div>
           {loadingOrigem ? (
-            <div style={{ textAlign: 'center', padding: '40px 0', color: '#656d76', fontSize: 12 }}>Carregando...</div>
+            <div style={{ textAlign: 'center', padding: '40px 0', color: C.textSec, fontSize: 12 }}>Carregando...</div>
           ) : origemData.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '40px 0', color: '#9198a1', fontSize: 12 }}>Sem dados</div>
+            <div style={{ textAlign: 'center', padding: '40px 0', color: C.textMuted, fontSize: 12 }}>Sem dados</div>
           ) : (
             <ResponsiveContainer width="100%" height={280}>
               <PieChart>
@@ -1477,8 +1502,8 @@ const DashboardHanaro = () => {
                       const data = payload[0].payload;
                       return (
                         <div style={{ 
-                          background: '#fff', 
-                          border: '1px solid #d0d7de', 
+                          background: C.card, 
+                          border: `1px solid ${C.border}`, 
                           borderRadius: 8, 
                           padding: 12,
                           fontSize: 12,
@@ -1501,24 +1526,24 @@ const DashboardHanaro = () => {
 
         {/* GRÁFICO 3: EQUIPAMENTO - Barras Verticais com Rótulos */}
         <div style={{
-          background: '#fff',
-          border: '1px solid #d0d7de',
+          background: C.card,
+          border: `1px solid ${C.border}`,
           borderRadius: 12,
           padding: 16
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
             <BarChart3 size={16} color="#7c3aed" />
-            <span style={{ fontSize: 13, fontWeight: 600, color: '#1f2328' }}>Por Equipamento</span>
+            <span style={{ fontSize: 13, fontWeight: 600, color: C.text }}>Por Equipamento</span>
             {equipamentoData.length > 5 && (
-              <span style={{ fontSize: 10, color: '#656d76', background: '#f6f8fa', padding: '2px 6px', borderRadius: 10 }}>
+              <span style={{ fontSize: 10, color: C.textSec, background: C.bg, padding: '2px 6px', borderRadius: 10 }}>
                 {equipamentoData.length}
               </span>
             )}
           </div>
           {loadingEquipamento ? (
-            <div style={{ textAlign: 'center', padding: '40px 0', color: '#656d76', fontSize: 12 }}>Carregando...</div>
+            <div style={{ textAlign: 'center', padding: '40px 0', color: C.textSec, fontSize: 12 }}>Carregando...</div>
           ) : equipamentoData.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '40px 0', color: '#9198a1', fontSize: 12 }}>Sem dados</div>
+            <div style={{ textAlign: 'center', padding: '40px 0', color: C.textMuted, fontSize: 12 }}>Sem dados</div>
           ) : (
             <ResponsiveContainer width="100%" height={280}>
               <BarChart data={equipamentoData.slice(0, 10)} margin={{ top: 20, right: 10, left: -20, bottom: -1 }}>
@@ -1531,8 +1556,8 @@ const DashboardHanaro = () => {
                       const data = payload[0].payload;
                       return (
                         <div style={{ 
-                          background: '#fff', 
-                          border: '1px solid #d0d7de', 
+                          background: C.card, 
+                          border: `1px solid ${C.border}`, 
                           borderRadius: 8, 
                           padding: 12,
                           fontSize: 12,
@@ -1547,7 +1572,7 @@ const DashboardHanaro = () => {
                     return null;
                   }}
                 />
-                <Bar dataKey="totalQtd" fill="#7c3aed" radius={[6, 6, 0, 0]} label={{ position: 'top', fontSize: 11, fill: '#1f2328', fontWeight: 600 }} />
+                <Bar dataKey="totalQtd" fill="#7c3aed" radius={[6, 6, 0, 0]} label={{ position: 'top', fontSize: 11, fill: C.text, fontWeight: 600 }} />
               </BarChart>
             </ResponsiveContainer>
           )}
@@ -1555,24 +1580,24 @@ const DashboardHanaro = () => {
 
         {/* GRÁFICO 4: CAUSA - Barras Verticais com Rótulos */}
         <div style={{
-          background: '#fff',
-          border: '1px solid #d0d7de',
+          background: C.card,
+          border: `1px solid ${C.border}`,
           borderRadius: 12,
           padding: 16
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
             <BarChart3 size={16} color="#ec4899" />
-            <span style={{ fontSize: 13, fontWeight: 600, color: '#1f2328' }}>Por Causa</span>
+            <span style={{ fontSize: 13, fontWeight: 600, color: C.text }}>Por Causa</span>
             {causaData.length > 5 && (
-              <span style={{ fontSize: 10, color: '#656d76', background: '#f6f8fa', padding: '2px 6px', borderRadius: 10 }}>
+              <span style={{ fontSize: 10, color: C.textSec, background: C.bg, padding: '2px 6px', borderRadius: 10 }}>
                 {causaData.length}
               </span>
             )}
           </div>
           {loadingCausa ? (
-            <div style={{ textAlign: 'center', padding: '40px 0', color: '#656d76', fontSize: 12 }}>Carregando...</div>
+            <div style={{ textAlign: 'center', padding: '40px 0', color: C.textSec, fontSize: 12 }}>Carregando...</div>
           ) : causaData.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '40px 0', color: '#9198a1', fontSize: 12 }}>Sem dados</div>
+            <div style={{ textAlign: 'center', padding: '40px 0', color: C.textMuted, fontSize: 12 }}>Sem dados</div>
           ) : (
             <ResponsiveContainer width="100%" height={280}>
               <BarChart data={causaData.slice(0, 10)} margin={{ top: 20, right: 10, left: -20, bottom: 12 }}>
@@ -1585,8 +1610,8 @@ const DashboardHanaro = () => {
                       const data = payload[0].payload;
                       return (
                         <div style={{ 
-                          background: '#fff', 
-                          border: '1px solid #d0d7de', 
+                          background: C.card, 
+                          border: `1px solid ${C.border}`, 
                           borderRadius: 8, 
                           padding: 12,
                           fontSize: 12,
@@ -1601,7 +1626,7 @@ const DashboardHanaro = () => {
                     return null;
                   }}
                 />
-                <Bar dataKey="totalQtd" fill="#ec4899" radius={[6, 6, 0, 0]} label={{ position: 'top', fontSize: 11, fill: '#1f2328', fontWeight: 600 }} />
+                <Bar dataKey="totalQtd" fill="#ec4899" radius={[6, 6, 0, 0]} label={{ position: 'top', fontSize: 11, fill: C.text, fontWeight: 600 }} />
               </BarChart>
             </ResponsiveContainer>
           )}
@@ -1609,24 +1634,24 @@ const DashboardHanaro = () => {
 
         {/* GRÁFICO 5: LINHA - Barras Verticais com Rótulos */}
         <div style={{
-          background: '#fff',
-          border: '1px solid #d0d7de',
+          background: C.card,
+          border: `1px solid ${C.border}`,
           borderRadius: 12,
           padding: 16
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
             <BarChart3 size={16} color="#f59e0b" />
-            <span style={{ fontSize: 13, fontWeight: 600, color: '#1f2328' }}>Por Linha</span>
+            <span style={{ fontSize: 13, fontWeight: 600, color: C.text }}>Por Linha</span>
             {linhaData.length > 5 && (
-              <span style={{ fontSize: 10, color: '#656d76', background: '#f6f8fa', padding: '2px 6px', borderRadius: 10 }}>
+              <span style={{ fontSize: 10, color: C.textSec, background: C.bg, padding: '2px 6px', borderRadius: 10 }}>
                 {linhaData.length}
               </span>
             )}
           </div>
           {loadingLinha ? (
-            <div style={{ textAlign: 'center', padding: '40px 0', color: '#656d76', fontSize: 12 }}>Carregando...</div>
+            <div style={{ textAlign: 'center', padding: '40px 0', color: C.textSec, fontSize: 12 }}>Carregando...</div>
           ) : linhaData.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '40px 0', color: '#9198a1', fontSize: 12 }}>Sem dados</div>
+            <div style={{ textAlign: 'center', padding: '40px 0', color: C.textMuted, fontSize: 12 }}>Sem dados</div>
           ) : (
             <ResponsiveContainer width="100%" height={280}>
               <BarChart data={linhaData.slice(0, 10)} margin={{ top: 20, right: 10, left: -20, bottom: -30 }}>
@@ -1639,8 +1664,8 @@ const DashboardHanaro = () => {
                       const data = payload[0].payload;
                       return (
                         <div style={{ 
-                          background: '#fff', 
-                          border: '1px solid #d0d7de', 
+                          background: C.card, 
+                          border: `1px solid ${C.border}`, 
                           borderRadius: 8, 
                           padding: 12,
                           fontSize: 12,
@@ -1655,7 +1680,7 @@ const DashboardHanaro = () => {
                     return null;
                   }}
                 />
-                <Bar dataKey="totalQtd" fill="#f59e0b" radius={[6, 6, 0, 0]} label={{ position: 'top', fontSize: 11, fill: '#1f2328', fontWeight: 600 }} />
+                <Bar dataKey="totalQtd" fill="#f59e0b" radius={[6, 6, 0, 0]} label={{ position: 'top', fontSize: 11, fill: C.text, fontWeight: 600 }} />
               </BarChart>
             </ResponsiveContainer>
           )}
@@ -1663,24 +1688,24 @@ const DashboardHanaro = () => {
 
         {/* GRÁFICO 6: FASE - Doughnut com Custo */}
         <div style={{
-          background: '#fff',
-          border: '1px solid #d0d7de',
+          background: C.card,
+          border: `1px solid ${C.border}`,
           borderRadius: 12,
           padding: 16
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
             <PieChartIcon size={16} color="#06b6d4" />
-            <span style={{ fontSize: 13, fontWeight: 600, color: '#1f2328' }}>Por Fase</span>
+            <span style={{ fontSize: 13, fontWeight: 600, color: C.text }}>Por Fase</span>
             {faseData.length > 5 && (
-              <span style={{ fontSize: 10, color: '#656d76', background: '#f6f8fa', padding: '2px 6px', borderRadius: 10 }}>
+              <span style={{ fontSize: 10, color: C.textSec, background: C.bg, padding: '2px 6px', borderRadius: 10 }}>
                 {faseData.length}
               </span>
             )}
           </div>
           {loadingFase ? (
-            <div style={{ textAlign: 'center', padding: '40px 0', color: '#656d76', fontSize: 12 }}>Carregando...</div>
+            <div style={{ textAlign: 'center', padding: '40px 0', color: C.textSec, fontSize: 12 }}>Carregando...</div>
           ) : faseData.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '40px 0', color: '#9198a1', fontSize: 12 }}>Sem dados</div>
+            <div style={{ textAlign: 'center', padding: '40px 0', color: C.textMuted, fontSize: 12 }}>Sem dados</div>
           ) : (
             <ResponsiveContainer width="100%" height={280}>
               <PieChart>
@@ -1706,8 +1731,8 @@ const DashboardHanaro = () => {
                       const data = payload[0].payload;
                       return (
                         <div style={{ 
-                          background: '#fff', 
-                          border: '1px solid #d0d7de', 
+                          background: C.card, 
+                          border: `1px solid ${C.border}`, 
                           borderRadius: 8, 
                           padding: 12,
                           fontSize: 12,
@@ -1730,24 +1755,24 @@ const DashboardHanaro = () => {
 
         {/* GRÁFICO 7: TURNO - Doughnut com Custo */}
         <div style={{
-          background: '#fff',
-          border: '1px solid #d0d7de',
+          background: C.card,
+          border: `1px solid ${C.border}`,
           borderRadius: 12,
           padding: 16
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
             <PieChartIcon size={16} color="#84cc16" />
-            <span style={{ fontSize: 13, fontWeight: 600, color: '#1f2328' }}>Por Turno</span>
+            <span style={{ fontSize: 13, fontWeight: 600, color: C.text }}>Por Turno</span>
             {turnoData.length > 5 && (
-              <span style={{ fontSize: 10, color: '#656d76', background: '#f6f8fa', padding: '2px 6px', borderRadius: 10 }}>
+              <span style={{ fontSize: 10, color: C.textSec, background: C.bg, padding: '2px 6px', borderRadius: 10 }}>
                 {turnoData.length}
               </span>
             )}
           </div>
           {loadingTurno ? (
-            <div style={{ textAlign: 'center', padding: '40px 0', color: '#656d76', fontSize: 12 }}>Carregando...</div>
+            <div style={{ textAlign: 'center', padding: '40px 0', color: C.textSec, fontSize: 12 }}>Carregando...</div>
           ) : turnoData.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '40px 0', color: '#9198a1', fontSize: 12 }}>Sem dados</div>
+            <div style={{ textAlign: 'center', padding: '40px 0', color: C.textMuted, fontSize: 12 }}>Sem dados</div>
           ) : (
             <ResponsiveContainer width="100%" height={280}>
               <PieChart>
@@ -1773,8 +1798,8 @@ const DashboardHanaro = () => {
                       const data = payload[0].payload;
                       return (
                         <div style={{ 
-                          background: '#fff', 
-                          border: '1px solid #d0d7de', 
+                          background: C.card, 
+                          border: `1px solid ${C.border}`, 
                           borderRadius: 8, 
                           padding: 12,
                           fontSize: 12,
@@ -1796,24 +1821,24 @@ const DashboardHanaro = () => {
 
         {/* GRÁFICO 8: RESPONSÁVEL - Barras Verticais com Custo */}
         <div style={{
-          background: '#fff',
-          border: '1px solid #d0d7de',
+          background: C.card,
+          border: `1px solid ${C.border}`,
           borderRadius: 12,
           padding: 16
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
             <BarChart3 size={16} color="#a855f7" />
-            <span style={{ fontSize: 13, fontWeight: 600, color: '#1f2328' }}>Por Responsável</span>
+            <span style={{ fontSize: 13, fontWeight: 600, color: C.text }}>Por Responsável</span>
             {responsavelData.length > 5 && (
-              <span style={{ fontSize: 10, color: '#656d76', background: '#f6f8fa', padding: '2px 6px', borderRadius: 10 }}>
+              <span style={{ fontSize: 10, color: C.textSec, background: C.bg, padding: '2px 6px', borderRadius: 10 }}>
                 {responsavelData.length}
               </span>
             )}
           </div>
           {loadingResponsavel ? (
-            <div style={{ textAlign: 'center', padding: '40px 0', color: '#656d76', fontSize: 12 }}>Carregando...</div>
+            <div style={{ textAlign: 'center', padding: '40px 0', color: C.textSec, fontSize: 12 }}>Carregando...</div>
           ) : responsavelData.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '40px 0', color: '#9198a1', fontSize: 12 }}>Sem dados</div>
+            <div style={{ textAlign: 'center', padding: '40px 0', color: C.textMuted, fontSize: 12 }}>Sem dados</div>
           ) : (
             <ResponsiveContainer width="100%" height={280}>
               <BarChart data={responsavelData.slice(0, 10).map(item => ({ ...item, responsavelCurto: truncateName(item.responsavel) }))} margin={{ top: 20, right: 10, left: -20, bottom: -1 }}>
@@ -1826,8 +1851,8 @@ const DashboardHanaro = () => {
                       const data = payload[0].payload;
                       return (
                         <div style={{ 
-                          background: '#fff', 
-                          border: '1px solid #d0d7de', 
+                          background: C.card, 
+                          border: `1px solid ${C.border}`, 
                           borderRadius: 8, 
                           padding: 12,
                           fontSize: 12,
@@ -1842,7 +1867,7 @@ const DashboardHanaro = () => {
                     return null;
                   }}
                 />
-                <Bar dataKey="totalQtd" fill="#a855f7" radius={[6, 6, 0, 0]} label={{ position: 'top', fontSize: 11, fill: '#1f2328', fontWeight: 600 }} />
+                <Bar dataKey="totalQtd" fill="#a855f7" radius={[6, 6, 0, 0]} label={{ position: 'top', fontSize: 11, fill: C.text, fontWeight: 600 }} />
               </BarChart>
             </ResponsiveContainer>
           )}
@@ -1850,24 +1875,24 @@ const DashboardHanaro = () => {
 
         {/* GRÁFICO 9: TIPO SCRAP - Doughnut com Custo */}
         <div style={{
-          background: '#fff',
-          border: '1px solid #d0d7de',
+          background: C.card,
+          border: `1px solid ${C.border}`,
           borderRadius: 12,
           padding: 16
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
             <PieChartIcon size={16} color="#ef4444" />
-            <span style={{ fontSize: 13, fontWeight: 600, color: '#1f2328' }}>Por Tipo Scrap</span>
+            <span style={{ fontSize: 13, fontWeight: 600, color: C.text }}>Por Tipo Scrap</span>
             {tipoScrapData.length > 5 && (
-              <span style={{ fontSize: 10, color: '#656d76', background: '#f6f8fa', padding: '2px 6px', borderRadius: 10 }}>
+              <span style={{ fontSize: 10, color: C.textSec, background: C.bg, padding: '2px 6px', borderRadius: 10 }}>
                 {tipoScrapData.length}
               </span>
             )}
           </div>
           {loadingTipoScrap ? (
-            <div style={{ textAlign: 'center', padding: '40px 0', color: '#656d76', fontSize: 12 }}>Carregando...</div>
+            <div style={{ textAlign: 'center', padding: '40px 0', color: C.textSec, fontSize: 12 }}>Carregando...</div>
           ) : tipoScrapData.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '40px 0', color: '#9198a1', fontSize: 12 }}>Sem dados</div>
+            <div style={{ textAlign: 'center', padding: '40px 0', color: C.textMuted, fontSize: 12 }}>Sem dados</div>
           ) : (
             <ResponsiveContainer width="100%" height={280}>
               <PieChart>
@@ -1893,8 +1918,8 @@ const DashboardHanaro = () => {
                       const data = payload[0].payload;
                       return (
                         <div style={{ 
-                          background: '#fff', 
-                          border: '1px solid #d0d7de', 
+                          background: C.card, 
+                          border: `1px solid ${C.border}`, 
                           borderRadius: 8, 
                           padding: 12,
                           fontSize: 12,
@@ -1921,12 +1946,12 @@ const DashboardHanaro = () => {
       {logMessage && (
         <div style={{
           marginTop: 16,
-          background: logMessage.includes('❌') ? '#fef2f2' : logMessage.includes('✅') ? '#f0fdf4' : '#f6f8fa',
-          border: `1px solid ${logMessage.includes('❌') ? '#fecaca' : logMessage.includes('✅') ? '#bbf7d0' : '#d0d7de'}`,
+          background: logMessage.includes('❌') ? '#fef2f2' : logMessage.includes('✅') ? '#f0fdf4' : C.bg,
+          border: `1px solid ${logMessage.includes('❌') ? '#fecaca' : logMessage.includes('✅') ? '#bbf7d0' : C.border}`,
           borderRadius: 8,
           padding: 12,
           fontSize: 13,
-          color: logMessage.includes('❌') ? '#dc2626' : logMessage.includes('✅') ? '#16a34a' : '#1f2328',
+          color: logMessage.includes('❌') ? '#dc2626' : logMessage.includes('✅') ? '#16a34a' : C.text,
           fontFamily: "'DM Mono', monospace",
           wordBreak: 'break-all'
         }}>

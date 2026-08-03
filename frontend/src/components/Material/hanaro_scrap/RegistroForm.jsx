@@ -1,10 +1,27 @@
 import { API_URL } from '../../../config/api';
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  User, Tag, QrCode, Layers, Factory, Hash, Navigation, Clock, MapPin, 
-  Wrench, AlertTriangle, HelpCircle, CheckCircle, ShieldAlert, Save, 
-  RefreshCw, ChevronDown, AlertCircle, CheckCircle2, XCircle, ClipboardList, Plus 
+import {
+  User, Tag, QrCode, Layers, Factory, Hash, Navigation, Clock, MapPin,
+  Wrench, AlertTriangle, HelpCircle, CheckCircle, ShieldAlert, Save,
+  RefreshCw, ChevronDown, AlertCircle, CheckCircle2, XCircle, ClipboardList, Plus
 } from 'lucide-react';
+import { useTema } from '../../../theme/ThemeContext';
+
+const C_LIGHT = {
+  bg: '#f6f8fa', card: '#ffffff', card2: '#f6f8fa', border: '#d0d7de',
+  text: '#1f2328', textSec: '#656d76', textMuted: '#9198a1',
+  accent: '#0969da', accentBg: 'rgba(9,105,218,0.08)',
+  input: '#ffffff', hover: '#f6f8fa', divider: '#eaecef',
+  success: '#22c55e', warning: '#f59e0b', error: '#ef4444',
+};
+
+const C_DARK = {
+  bg: '#0d1117', card: '#161b22', card2: '#0d1117', border: '#30363d',
+  text: '#e6edf3', textSec: '#8b949e', textMuted: '#6e7681',
+  accent: '#58a6ff', accentBg: 'rgba(88,166,255,0.12)',
+  input: '#0d1117', hover: '#1c2129', divider: '#21262d',
+  success: '#3fb950', warning: '#d29922', error: '#f85149',
+};
 
 const RegistroForm = ({ 
   formData, 
@@ -56,15 +73,10 @@ const RegistroForm = ({
     return value && String(value).trim() !== '';
   }).length;
   const progressPercent = Math.round((filledCount / required.length) * 100);
-  
+
   // Cores do tema
-  const C = {
-    bg: '#f6f8fa', card: '#ffffff', card2: '#f6f8fa', border: '#d0d7de',
-    text: '#1f2328', textSec: '#656d76', textMuted: '#9198a1',
-    accent: '#0969da', accentBg: 'rgba(9,105,218,0.08)',
-    input: '#ffffff', hover: '#f6f8fa', divider: '#eaecef',
-    success: '#22c55e', warning: '#f59e0b', error: '#ef4444',
-  };
+  const { tema } = useTema();
+  const C = tema === 'dark' ? C_DARK : C_LIGHT;
 
   // Style helpers
   const inp = (fieldId, extra = {}) => {
@@ -406,7 +418,7 @@ const RegistroForm = ({
                         display: 'flex',
                         alignItems: 'center',
                         gap: 4,
-                        background: '#fff',
+                        background: C.card,
                         border: `1px solid ${C.success}40`,
                         borderRadius: 4,
                         padding: '4px 8px',

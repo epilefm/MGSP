@@ -50,6 +50,8 @@ import { saveAs } from 'file-saver';
 import { Send, Square, Bot, Sparkles, Maximize2 } from 'lucide-react';
 import RegistroForm from './RegistroForm';
 import RegistroPreview from './RegistroPreview';
+import { useTema, TemaAntd } from '../../../theme/ThemeContext';
+import ThemeToggle from '../../../theme/ThemeToggle';
 
 // ============================================
 // FUNÇÕES UTILITÁRIAS PARA FORMATAÇÃO DE RESPOSTAS DA IA
@@ -378,6 +380,8 @@ const FormatarRespostaIA = ({ conteudo }) => {
 };
 
 const HanaroScrap = () => {
+  const { tema } = useTema();
+
   // Estados para os dados do formulário
   const [formData, setFormData] = useState({
     matricula: '',
@@ -1841,7 +1845,10 @@ ${JSON.stringify(historicoResumo, null, 2)}`;
   };
 
   // ── CSS Variables ─────────────────
-  const cssVars = {
+  // Uma paleta clara e uma escura com as mesmas chaves - como o resto do
+  // arquivo inteiro referencia var(--xxx) em vez de hex cravado, trocar só
+  // esses valores já retematiza a tela inteira.
+  const cssVarsLight = {
     '--bg': '#f6f8fa',
     '--card-bg': '#ffffff',
     '--border': '#d0d7de',
@@ -1865,9 +1872,40 @@ ${JSON.stringify(historicoResumo, null, 2)}`;
     '--error': '#ef4444',
     '--info': '#3b82f6',
   };
+  const cssVarsDark = {
+    '--bg': '#0d1117',
+    '--card-bg': '#161b22',
+    '--border': '#30363d',
+    '--text-primary': '#e6edf3',
+    '--text-secondary': '#8b949e',
+    '--text-muted': '#6e7681',
+    '--accent': '#58a6ff',
+    '--accent-hover': '#79c0ff',
+    '--hover-bg': '#1c2129',
+    '--ring-bg': '#21262d',
+    '--badge-blue': '#58a6ff',
+    '--badge-green': '#3fb950',
+    '--badge-red': '#f85149',
+    '--badge-yellow': '#d29922',
+    '--badge-gray': '#8b949e',
+    '--input-bg': '#0d1117',
+    '--row-hover': '#1c2129',
+    '--table-head-bg': '#1c2129',
+    '--success': '#3fb950',
+    '--warning': '#d29922',
+    '--error': '#f85149',
+    '--info': '#58a6ff',
+  };
+  const cssVars = tema === 'dark' ? cssVarsDark : cssVarsLight;
+  // Bolha de erro do chat IA - único lugar do arquivo com cor de superfície
+  // cravada fora do sistema de var(--xxx) acima.
+  const chatErroBg = tema === 'dark' ? '#2d0f0f' : '#fef2f2';
+  const chatErroTexto = tema === 'dark' ? '#f87171' : '#dc2626';
+  const chatErroBorda = tema === 'dark' ? '#7f1d1d' : '#fecaca';
 
   return (
-    <div style={{ 
+    <TemaAntd>
+    <div style={{
       ...cssVars,
       fontFamily: "'DM Sans', sans-serif",
       backgroundColor: 'var(--bg)',
@@ -1946,6 +1984,7 @@ ${JSON.stringify(historicoResumo, null, 2)}`;
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <ThemeToggle variant="ghost" />
         </div>
       </div>
 
@@ -3682,18 +3721,18 @@ ${JSON.stringify(historicoResumo, null, 2)}`;
                   <div style={{
                     padding: msg.role === 'user' ? '12px 16px' : '14px 18px',
                     borderRadius: 16,
-                    background: msg.role === 'user' 
+                    background: msg.role === 'user'
                       ? 'linear-gradient(135deg, #0969da, #0550ae)'
-                      : msg.error 
-                        ? '#fef2f2'
+                      : msg.error
+                        ? chatErroBg
                         : 'var(--hover-bg)',
-                    color: msg.role === 'user' ? '#fff' : msg.error ? '#dc2626' : 'var(--text-primary)',
+                    color: msg.role === 'user' ? '#fff' : msg.error ? chatErroTexto : 'var(--text-primary)',
                     fontSize: 14,
                     lineHeight: 1.5,
-                    boxShadow: msg.role === 'user' 
-                      ? '0 2px 8px rgba(9, 105, 218, 0.2)' 
+                    boxShadow: msg.role === 'user'
+                      ? '0 2px 8px rgba(9, 105, 218, 0.2)'
                       : '0 1px 3px rgba(0,0,0,0.08)',
-                    border: msg.error ? '1px solid #fecaca' : 'none'
+                    border: msg.error ? `1px solid ${chatErroBorda}` : 'none'
                   }}>
                     {msg.role === 'user' ? (
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -3876,6 +3915,7 @@ ${JSON.stringify(historicoResumo, null, 2)}`;
         )}
       </div>
     </div>
+    </TemaAntd>
   );
 };
 
