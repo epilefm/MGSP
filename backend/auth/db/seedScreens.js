@@ -111,10 +111,11 @@ const TESTE_TODAS_PUBLICAS = true;
 // lista manda mais que TESTE_TODAS_PUBLICAS: mesmo com o teste geral ligado,
 // essas continuam fora do ar pra usuário comum.
 const TELAS_EM_DESENVOLVIMENTO = new Set([
-  // Material - só "Entrada de Material" (EntMaterial2) fica visível por enquanto
+  // Material - "Entrada de Material" (EntMaterial2) e Hanaro Scrap ficam
+  // visíveis; o resto continua escondido por enquanto.
   "Material_Analysis", "Charts", "LavEnt", "InputScreenEntrada", "InputScreenSaida",
   "InputScreenDevolucao", "InputScreenDescarte", "DescarteInput", "Inventario",
-  "HanaroScrap", "ListaEntradaWIP", "Mapa", "Pgto",
+  "ListaEntradaWIP", "Mapa", "Pgto",
   // Qualidade
   "ESD_Edit", "baking", "Sub", "Mapping", "SubScreen", "WPlantHistory",
   "PlantScreen", "Prod", "WPlant", "DefectTracking", "SaidaSub",
