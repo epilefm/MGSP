@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Table, Modal, Button, Tag, Checkbox, Input, Space, Typography, message } from "antd";
 import { ArrowLeft, KeyRound, ShieldCheck, History } from "lucide-react";
 import { API_URL } from "../../config/api";
-import { useTema, CORES } from "../../theme/ThemeContext";
+import { useTema, CORES, TemaAntd } from "../../theme/ThemeContext";
 import ThemeToggle from "../../theme/ThemeToggle";
 
 const { Title, Text } = Typography;
@@ -230,6 +230,7 @@ export default function AdminPanel() {
   ];
 
   return (
+    <TemaAntd>
     <div className="min-h-screen" style={{ background: cores.fundo }}>
       <div className="mx-auto max-w-6xl px-6 py-6">
         <div className="mb-4 flex items-center justify-between">
@@ -344,5 +345,6 @@ export default function AdminPanel() {
         />
       </Modal>
     </div>
+    </TemaAntd>
   );
 }

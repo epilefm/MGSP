@@ -35,8 +35,16 @@ function temaInicial() {
 }
 
 // Deixa o tema disponível pro app inteiro (classe "dark" no <html>, pra
-// funcionar com o dark: do Tailwind) e também repassa pro antd, que tem seu
-// próprio sistema de cores e não segue a classe do Tailwind sozinho.
+// funcionar com o dark: do Tailwind nas telas que eu redesenhei).
+//
+// IMPORTANTE: o ConfigProvider do antd (tema escuro pro antd) NÃO fica aqui
+// no nível raiz de propósito. Se ficasse, ele re-tematizaria os componentes
+// antd de TODAS as ~250 telas legadas do sistema original (Table, Input,
+// Card etc.) sempre que alguém ligasse o modo escuro - mesmo em telas que
+// nunca foram desenhadas pra isso, deixando o visual quebrado/diferente do
+// original (foi exatamente o que aconteceu com a InspecMX). O tema escuro
+// do antd só deve valer dentro das telas que eu de fato redesenhei - ver
+// <TemaAntd> abaixo, usado em Home.js/AdminPanel.js/FloatingNav.js.
 export function ThemeProvider({ children }) {
   const [tema, setTema] = useState(temaInicial);
 
@@ -51,12 +59,7 @@ export function ThemeProvider({ children }) {
 
   return (
     <ThemeContext.Provider value={value}>
-      <ConfigProvider
-        theme={{
-          algorithm: tema === "dark" ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
-          token: { colorPrimary: "#1428A0" },
-        }}
-      >
+      <ConfigProvider theme={{ algorithm: antdTheme.defaultAlgorithm, token: { colorPrimary: "#1428A0" } }}>
         {children}
       </ConfigProvider>
     </ThemeContext.Provider>
@@ -65,4 +68,21 @@ export function ThemeProvider({ children }) {
 
 export function useTema() {
   return useContext(ThemeContext);
+}
+
+// Escopo local do tema escuro pro antd - só usar dentro de telas novas
+// (não-legadas). Aninhar ConfigProvider funciona no antd: este aqui vale só
+// pra essa subárvore, sem afetar o resto do app.
+export function TemaAntd({ children }) {
+  const { tema } = useTema();
+  return (
+    <ConfigProvider
+      theme={{
+        algorithm: tema === "dark" ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
+        token: { colorPrimary: "#1428A0" },
+      }}
+    >
+      {children}
+    </ConfigProvider>
+  );
 }

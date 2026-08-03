@@ -7,7 +7,7 @@ import { useAuth } from "../../auth/AuthContext";
 import { API_URL } from "../../config/api";
 import { GRUPOS, iconeParaTela } from "./screenIcons";
 import ThemeToggle from "../../theme/ThemeToggle";
-import { useTema, CORES } from "../../theme/ThemeContext";
+import { useTema, CORES, TemaAntd } from "../../theme/ThemeContext";
 
 const RECENTES_MAX = 8;
 
@@ -82,6 +82,7 @@ export default function Home() {
   const grupoAberto = gruposComTelas.find((g) => g.id === departamento) || null;
 
   return (
+    <TemaAntd>
     <div className="min-h-screen" style={{ background: cores.fundo }}>
       {/* Cabeçalho */}
       <div
@@ -316,5 +317,6 @@ export default function Home() {
         SEDA(M) · MX SMD · © 2026
       </div>
     </div>
+    </TemaAntd>
   );
 }

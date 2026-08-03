@@ -6,7 +6,7 @@ import { Compass, Home as HomeIcon, X } from "lucide-react";
 import { useAuth } from "../../auth/AuthContext";
 import { API_URL } from "../../config/api";
 import { GRUPOS, iconeParaTela } from "./screenIcons";
-import { useTema, CORES } from "../../theme/ThemeContext";
+import { useTema, CORES, TemaAntd } from "../../theme/ThemeContext";
 
 // Ícone flutuante de acesso rápido, presente em todas as telas de conteúdo
 // (embutido em RequireAuth.js, não precisa editar tela por tela). Fica
@@ -47,6 +47,7 @@ export default function FloatingNav() {
   if (caminho === "/" || caminho === "/home") return null;
 
   return (
+    <TemaAntd>
     <div className="fixed bottom-5 right-5 z-[999] print:hidden">
       {aberto && (
         <div
@@ -114,5 +115,6 @@ export default function FloatingNav() {
         {aberto ? <X size={22} /> : <Compass size={22} />}
       </button>
     </div>
+    </TemaAntd>
   );
 }
