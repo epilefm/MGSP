@@ -17,7 +17,7 @@ const SCREENS_BASE = [
   { slug: "DescarteInput", nome: "Registro de Descarte (alternativo)", grupo: "material" },
   { slug: "Inventario", nome: "Registro de Inventário", grupo: "material" },
   { slug: "HanaroScrap", nome: "Hanaro Scrap", grupo: "material" },
-  { slug: "EntMaterial2", nome: "Entrada de Material (V2)", grupo: "material" },
+  { slug: "EntMaterial2", nome: "Entrada de Material", grupo: "material" },
   { slug: "ListaEntradaWIP", nome: "Lista de Entrada WIP", grupo: "material" },
   { slug: "Mapa", nome: "Mapa (AGV)", grupo: "material" },
   { slug: "Pgto", nome: "Pagamento (AGV)", grupo: "material" },
@@ -104,8 +104,34 @@ const SCREENS_BASE = [
 // Pra voltar ao controle por usuário: troque TESTE_TODAS_PUBLICAS pra false
 // e rode "node backend/auth/db/seed.js" de novo.
 const TESTE_TODAS_PUBLICAS = true;
-const SCREENS = TESTE_TODAS_PUBLICAS
-  ? SCREENS_BASE.map((tela) => ({ ...tela, is_public: true }))
-  : SCREENS_BASE;
+
+// Telas em desenvolvimento - incompletas, o admin ainda está mexendo nelas.
+// Ficam escondidas de todo mundo que não é admin (admin sempre vê tudo, via
+// bypass em authorizeScreen/podeAcessar - independe de is_public). Essa
+// lista manda mais que TESTE_TODAS_PUBLICAS: mesmo com o teste geral ligado,
+// essas continuam fora do ar pra usuário comum.
+const TELAS_EM_DESENVOLVIMENTO = new Set([
+  // Material - só "Entrada de Material" (EntMaterial2) fica visível por enquanto
+  "Material_Analysis", "Charts", "LavEnt", "InputScreenEntrada", "InputScreenSaida",
+  "InputScreenDevolucao", "InputScreenDescarte", "DescarteInput", "Inventario",
+  "HanaroScrap", "ListaEntradaWIP", "Mapa", "Pgto",
+  // Qualidade
+  "ESD_Edit", "baking", "Sub", "Mapping", "SubScreen", "WPlantHistory",
+  "PlantScreen", "Prod", "WPlant", "DefectTracking", "SaidaSub",
+  // Reparo
+  "OfflineSaida", "RepairTNP_IA",
+  // Produção
+  "CN_List", "HoraHora", "HoraHora2T", "HoraHora3T", "OfflineSplicing",
+  "Virtual_Label", "VirtualL_Modal",
+  // Manutenção
+  "Input_Reflow", "ReflowW", "Feeder", "InputSpindle",
+  // Suporte
+  "SpareParts", "DescriptN",
+]);
+
+const SCREENS = SCREENS_BASE.map((tela) => {
+  if (TELAS_EM_DESENVOLVIMENTO.has(tela.slug)) return { ...tela, is_public: false };
+  return TESTE_TODAS_PUBLICAS ? { ...tela, is_public: true } : tela;
+});
 
 module.exports = { SCREENS };
