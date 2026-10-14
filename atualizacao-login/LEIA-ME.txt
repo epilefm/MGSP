@@ -1,0 +1,76 @@
+ATUALIZAÇÃO DA TELA DE LOGIN - MGSP (linha de produção 3D)
+==========================================================
+
+Esta pasta tem os caminhos iguais aos do projeto. Copie a pasta "frontend"
+daqui para dentro da pasta do sistema no servidor (a que tem as pastas
+"frontend" e "backend") e aceite substituir os arquivos.
+
+Só o frontend muda. O backend e o banco de dados não precisam de nada.
+
+
+1) ARQUIVOS
+-----------
+
+  frontend/src/components/Auth/
+    LoginPage.js              SUBSTITUI  tela de login (animações de entrada e de "Acesso liberado")
+    AuthLayout.js             SUBSTITUI  layout: textos em cima, animação no meio, formulário com 480/520 px
+    LinhaProducaoScene.js     NOVO       animação da linha de produção (é a que está ativa)
+    MontagemScene.js          NOVO       modelo alternativo: uma placa sendo montada
+    LoginScene.js             NOVO       modelo alternativo: chip do MGSP
+    LinhaProducaoScene.test.js  NOVO     testes automáticos (opcionais)
+    MontagemScene.test.js       NOVO     testes automáticos (opcionais)
+    LoginScene.test.js          NOVO     testes automáticos (opcionais)
+
+  frontend/src/components/Layout/
+    pcbUtil.js                NOVO       função auxiliar usada pelas animações
+
+  Os três arquivos *Scene.js são obrigatórios, mesmo usando só um modelo:
+  o LoginPage.js aponta para os três, e o build falha se faltar algum.
+
+
+2) BIBLIOTECAS (rodar uma vez no servidor)
+------------------------------------------
+
+  Abra o terminal dentro da pasta "frontend" do servidor e rode:
+
+    npm install gsap@^3.15.0 @gsap/react@^2.1.2
+
+  O "three" já fazia parte do sistema. Para conferir:
+
+    npm ls three
+
+  Se aparecer "(empty)", instale também:
+
+    npm install three@^0.186.1
+
+
+3) PUBLICAR
+-----------
+
+  - Em modo desenvolvimento (npm start): a tela atualiza sozinha.
+    Se não atualizar, pare e rode "npm start" de novo.
+  - Em produção: gere o build de novo ("npm run build" na pasta frontend)
+    e publique a pasta build como você já faz hoje.
+
+  Depois abra o login e aperte Ctrl+F5 para limpar o cache do navegador.
+
+
+4) TROCAR O MODELO DA ANIMAÇÃO (opcional)
+----------------------------------------
+
+  No LoginPage.js, perto do topo:
+
+    const MODELO_DA_CENA = "linha";   // ou "montagem" ou "chip"
+
+
+5) SE ALGO DER ERRADO
+---------------------
+
+  Antes de copiar, faça uma cópia de segurança dos dois arquivos que serão
+  substituídos no servidor (LoginPage.js e AuthLayout.js). Para voltar,
+  basta recolocar os dois. Os arquivos novos podem ficar, porque não afetam
+  mais nada.
+
+  Em computadores sem aceleração 3D (WebGL), o login funciona normalmente,
+  só sem a animação. Quem ativou "reduzir movimento" no Windows vê a linha
+  parada.
